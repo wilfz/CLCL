@@ -13,6 +13,8 @@
 #include <windows.h>
 #undef  _INC_OLE
 #include <wchar.h>
+#include <shlobj.h>
+#include <Shlwapi.h>
 
 #include "..\CLCLPlugin.h"
 #include "resource.h"
@@ -22,7 +24,7 @@
 
 /* Global Variables */
 HINSTANCE hInst;
-TCHAR ini_path[BUF_SIZE];
+TCHAR ini_path[MAX_PATH];
 
 TCHAR date_format[BUF_SIZE];
 TCHAR time_format[BUF_SIZE];
@@ -74,11 +76,15 @@ int WINAPI DllMain(HINSTANCE hInstance, DWORD fdwReason, PVOID pvReserved)
  */
 static BOOL dll_initialize(void)
 {
-	TCHAR app_path[BUF_SIZE];
+	TCHAR dll_path[MAX_PATH];
+	TCHAR exe_path[MAX_PATH];
 	TCHAR *p, *r;
 
-	GetModuleFileName(hInst, app_path, BUF_SIZE - 1);
-	for (p = r = app_path; *p != TEXT('\0'); p++) {
+	// First look if it is portable installation.
+	// Handle NULL instead of hInst indicates to look 
+	// for the path of the exe instead of the current dll.
+	GetModuleFileName(NULL, exe_path, MAX_PATH - 1);
+	for (p = r = exe_path; *p != TEXT('\0'); p++) {
 #ifndef UNICODE
 		if (IsDBCSLeadByte((BYTE)*p) == TRUE) {
 			p++;
@@ -90,7 +96,55 @@ static BOOL dll_initialize(void)
 		}
 	}
 	*r = TEXT('\0');
-	wsprintf(ini_path, TEXT("%s\\%s"), app_path, INI_FILE_NAME);
+
+	UINT portable = 0;
+	TCHAR clcl_ini_path[MAX_PATH];
+	swprintf_s(clcl_ini_path, MAX_PATH, TEXT("%s\\%s"), exe_path, TEXT("clcl.ini"));
+	if (PathFileExists(clcl_ini_path)) {
+		portable = GetPrivateProfileInt(TEXT("GENERAL"), TEXT("GENERAL"), 0, clcl_ini_path);
+	}
+
+	// get the dll folder
+	GetModuleFileName(hInst, dll_path, MAX_PATH - 1);
+	for (p = r = dll_path; *p != TEXT('\0'); p++) {
+#ifndef UNICODE
+		if (IsDBCSLeadByte((BYTE)*p) == TRUE) {
+			p++;
+			continue;
+		}
+#endif	// UNICODE
+		if (*p == TEXT('\\') || *p == TEXT('/')) {
+			r = p;
+		}
+	}
+	*r = TEXT('\0');
+
+	if (portable == 1) { // If portable installation
+		swprintf_s(ini_path, MAX_PATH, TEXT("%s\\%s"), dll_path, INI_FILE_NAME); // locate ini in dll folder
+		// If ini file does not yet exist in dll folder we locate it 
+		// in the exe folder where clcl.ini also resides.
+		if (PathFileExists(ini_path) == FALSE)
+			swprintf_s(ini_path, MAX_PATH, TEXT("%s\\%s"), exe_path, INI_FILE_NAME); // same folder as clcl.exe and clcl.ini
+	}
+	else {
+		// For normal installation (not portable app) set ini_path to the same folder as %LOCALAPPDATA%\CLCL\clcl.ini
+		// so that we have write access.
+		// See Clcl\main.c line 2234 ff (get_work_path())
+		TCHAR local_app_data[MAX_PATH];
+		if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, local_app_data))) {
+			swprintf_s(ini_path, MAX_PATH, TEXT("%s\\clcl\\%s"), local_app_data, INI_FILE_NAME);
+			// If ini file not yet exists here, we may read the settings form old location in dll folder
+			// but I don't consider it necessary.
+			//if (PathFileExists(ini_path) == FALSE) {
+			//	TCHAR old_ini[MAX_PATH];
+			//	wsprintf(old_ini, TEXT("%s\\%s"), dll_path, INI_FILE_NAME);
+			//	if (PathFileExists(old_ini)) {
+			//		// TODO: read values from old_ini
+			//		// and return
+			//	}
+			//}
+		}
+	}
 
 	GetPrivateProfileString(TEXT("convert_date"), TEXT("date_format"), TEXT(""), date_format, BUF_SIZE - 1, ini_path);
 	GetPrivateProfileString(TEXT("convert_date"), TEXT("time_format"), TEXT(""), time_format, BUF_SIZE - 1, ini_path);
