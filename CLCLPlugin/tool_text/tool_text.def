@@ -3,6 +3,9 @@ EXETYPE WINDOWS
 EXPORTS
 	get_tool_info_w
 
+	convert_date
+	convert_date_property
+
 	to_lower
 	to_lower_property
 	to_upper

@@ -30,6 +30,7 @@ extern TCHAR put_text_close[];
 
 /*
  * set_put_text_proc - 挟み込む文字を設定
+ * Edit the strings to prepend / append
  */
 static BOOL CALLBACK set_put_text_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -68,6 +69,7 @@ static BOOL CALLBACK set_put_text_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPAR
 
 /*
  * item_put_text - テキストの挟み込み
+ * prepend and append strings to data
  */
 static int item_put_text(DATA_INFO *di, const TCHAR *str_open, const TCHAR *str_close)
 {
@@ -77,19 +79,23 @@ static int item_put_text(DATA_INFO *di, const TCHAR *str_open, const TCHAR *str_
 	int size;
 
 	// コピー元ロック
+	// lock copy source
 	if ((from_mem = GlobalLock(di->data)) == NULL) {
 		return TOOL_ERROR;
 	}
 
 	// サイズを取得
+	// calculate target size
 	size = lstrlen((TCHAR *)str_open) + lstrlen((TCHAR *)from_mem) + lstrlen(str_close) + 1;
 
 	// コピー先確保
+	// reserve memory for copy target
 	if ((ret = GlobalAlloc(GHND, sizeof(TCHAR) * size)) == NULL) {
 		GlobalUnlock(di->data);
 		return TOOL_ERROR;
 	}
 	// コピー先ロック
+	// lock copy target
 	if ((to_mem = GlobalLock(ret)) == NULL) {
 		GlobalFree(ret);
 		GlobalUnlock(di->data);
@@ -97,6 +103,7 @@ static int item_put_text(DATA_INFO *di, const TCHAR *str_open, const TCHAR *str_
 	}
 
 	// 挟み込み
+	// copying to target
 	r = lstrcpy((TCHAR *)to_mem, str_open) + lstrlen(str_open);
 	r = lstrcpy(r, (TCHAR *)from_mem) + lstrlen((TCHAR *)from_mem);
 	lstrcpy(r, str_close);

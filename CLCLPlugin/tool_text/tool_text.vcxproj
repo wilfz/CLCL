@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="convert_date.c" />
     <ClCompile Include="delete_crlf.c" />
     <ClCompile Include="join_text.c" />
     <ClCompile Include="put_text.c" />

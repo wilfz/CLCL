@@ -45,6 +45,9 @@
     <ClCompile Include="word_break.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="convert_date.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="tool_text.rc">

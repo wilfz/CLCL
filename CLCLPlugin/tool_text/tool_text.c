@@ -12,8 +12,10 @@
 #define _INC_OLE
 #include <windows.h>
 #undef  _INC_OLE
+#include <wchar.h>
 
 #include "..\CLCLPlugin.h"
+#include "resource.h"
 
 /* Define */
 #define	INI_FILE_NAME				TEXT("tool_text.ini")
@@ -21,6 +23,9 @@
 /* Global Variables */
 HINSTANCE hInst;
 TCHAR ini_path[BUF_SIZE];
+
+TCHAR date_format[BUF_SIZE];
+TCHAR time_format[BUF_SIZE];
 
 TCHAR quote_char[BUF_SIZE];
 
@@ -87,6 +92,9 @@ static BOOL dll_initialize(void)
 	*r = TEXT('\0');
 	wsprintf(ini_path, TEXT("%s\\%s"), app_path, INI_FILE_NAME);
 
+	GetPrivateProfileString(TEXT("convert_date"), TEXT("date_format"), TEXT(""), date_format, BUF_SIZE - 1, ini_path);
+	GetPrivateProfileString(TEXT("convert_date"), TEXT("time_format"), TEXT(""), time_format, BUF_SIZE - 1, ini_path);
+
 	GetPrivateProfileString(TEXT("quote"), TEXT("char"), TEXT(">"), quote_char, BUF_SIZE - 1, ini_path);
 
 	word_break_break_cnt = GetPrivateProfileInt(TEXT("word_break"), TEXT("break_cnt"), 80, ini_path);
@@ -115,68 +123,105 @@ static BOOL dll_uninitialize(void)
 
 /*
  * get_tool_info_w - ツール情報取得
+ * Get tool information
+ *
+ *	引数 / argument:
+ *		hWnd - 呼び出し元ウィンドウ / the calling window
+ *		index - 取得のインデックス (0～) / the index of the acquisition (from 0)
+ *		tgi - ツール取得情報 / tool retrieval information
+ *
+ *	戻り値 / Return value:
+ *		TRUE - 次に取得するツールあり / has tools to get next
+ *		FALSE - 取得の終了 / end of acquisition
  */
 __declspec(dllexport) BOOL CALLBACK get_tool_info_w(const HWND hWnd, const int index, TOOL_GET_INFO *tgi)
 {
 	switch (index) {
 	case 0:
-		lstrcpy(tgi->title, TEXT("To &Lower"));
+		//lstrcpy(tgi->title, TEXT("日時変換(&D)"));
+		//lstrcpy(tgi->title, TEXT("&Date and Time Conversion"));
+		LoadString(hInst, IDS_DATE_TIME_CONVERSION, tgi->title, BUF_SIZE - 1);
+		lstrcpy(tgi->func_name, TEXT("convert_date"));
+		lstrcpy(tgi->cmd_line, TEXT(""));
+		tgi->call_type = CALLTYPE_ITEM_TO_CLIPBOARD;
+		return TRUE;
+
+	case 1:
+		//lstrcpy(tgi->title, TEXT("小文字に変換(&L)"));
+		//lstrcpy(tgi->title, TEXT("To &Lower"));
+		LoadString(hInst, IDS_TO_LOWER, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("to_lower"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_MENU_COPY_PASTE | CALLTYPE_VIEWER;
 		return TRUE;
 
-	case 1:
-		lstrcpy(tgi->title, TEXT("To &Upper"));
+	case 2:
+		//lstrcpy(tgi->title, TEXT("大文字に変換(&U)"));
+		//lstrcpy(tgi->title, TEXT("To &Upper"));
+		LoadString(hInst, IDS_TO_UPPER, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("to_upper"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_MENU_COPY_PASTE | CALLTYPE_VIEWER;
 		return TRUE;
 
-	case 2:
-		lstrcpy(tgi->title, TEXT("&Quotation"));
+	case 3:
+		//lstrcpy(tgi->title, TEXT("引用(&Q)"));
+		//lstrcpy(tgi->title, TEXT("&Quotation"));
+		LoadString(hInst, IDS_QUOTATION, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("quote"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_MENU_COPY_PASTE | CALLTYPE_VIEWER;
 		return TRUE;
 
-	case 3:
-		lstrcpy(tgi->title, TEXT("U&n Quotation"));
+	case 4:
+		//lstrcpy(tgi->title, TEXT("引用解除(&N)"));
+		//lstrcpy(tgi->title, TEXT("U&n Quotation"));
+		LoadString(hInst, IDS_UNQUOTATION, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("unquote"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_MENU_COPY_PASTE | CALLTYPE_VIEWER;
 		return TRUE;
 
-	case 4:
-		lstrcpy(tgi->title, TEXT("&Word Wrap"));
+	case 5:
+		//lstrcpy(tgi->title, TEXT("テキスト整形(&W)"));
+		//lstrcpy(tgi->title, TEXT("&Word Wrap"));
+		LoadString(hInst, IDS_WORDWRAP, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("word_break"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_MENU_COPY_PASTE | CALLTYPE_VIEWER;
 		return TRUE;
 
-	case 5:
-		lstrcpy(tgi->title, TEXT("<&TAG></TAG>"));
+	case 6:
+		//lstrcpy(tgi->title, TEXT("テキストの挟み込み(&P)"));
+		//lstrcpy(tgi->title, TEXT("<&TAG></TAG>"));
+		LoadString(hInst, IDS_TAG, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("put_text"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_MENU_COPY_PASTE | CALLTYPE_VIEWER;
 		return TRUE;
 
-	case 6:
-		lstrcpy(tgi->title, TEXT("Delete C&RLF"));
+	case 7:
+		//lstrcpy(tgi->title, TEXT("改行の除去(&R)"));
+		//lstrcpy(tgi->title, TEXT("Delete C&RLF"));
+		LoadString(hInst, IDS_DELETE_CRLF, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("delete_crlf"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_MENU_COPY_PASTE | CALLTYPE_VIEWER;
 		return TRUE;
 
-	case 7:
-		lstrcpy(tgi->title, TEXT("C&onnection of text"));
+	case 8:
+		//lstrcpy(tgi->title, TEXT("テキストの連結(&O)"));
+		//lstrcpy(tgi->title, TEXT("C&onnection of text"));
+		LoadString(hInst, IDS_CONNECT_TEXT, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("join_text"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_VIEWER;
 		return TRUE;
 
-	case 8:
-		lstrcpy(tgi->title, TEXT("&Edit"));
+	case 9:
+		//lstrcpy(tgi->title, TEXT("テキスト編集(&E)"));
+		//lstrcpy(tgi->title, TEXT("&Edit"));
+		LoadString(hInst, IDS_EDIT_CLIPBOARD, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("text_edit"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_MENU_COPY_PASTE;

@@ -78,6 +78,7 @@ __declspec(dllexport) int CALLBACK join_text(const HWND hWnd, TOOL_EXEC_INFO *te
 	}
 
 	// サイズ取得
+	// Get size
 	for (wk_tdi = tdi; wk_tdi != NULL; wk_tdi = wk_tdi->next) {
 #ifdef UNICODE
 		di = (DATA_INFO *)SendMessage(hWnd, WM_ITEM_GET_FORMAT_TO_ITEM, (WPARAM)TEXT("UNICODE TEXT"), (LPARAM)wk_tdi->di);
@@ -110,6 +111,7 @@ __declspec(dllexport) int CALLBACK join_text(const HWND hWnd, TOOL_EXEC_INFO *te
 		return TOOL_ERROR;
 	}
 	// テキストの連結
+	// Text concatenation 
 	p = (TCHAR *)to_mem;
 	for (wk_tdi = tdi; wk_tdi != NULL; wk_tdi = wk_tdi->next) {
 #ifdef UNICODE
@@ -133,6 +135,7 @@ __declspec(dllexport) int CALLBACK join_text(const HWND hWnd, TOOL_EXEC_INFO *te
 	GlobalUnlock(data);
 
 	// クリップボードに送る
+	// Send to clipboard
 	if (OpenClipboard(hWnd) == FALSE) {
 		GlobalFree(data);
 		return TOOL_ERROR;

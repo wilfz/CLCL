@@ -42,6 +42,14 @@ static int item_to_lower(DATA_INFO *di)
 
 /*
  * to_lower - テキストを小文字に変換
+ *
+ *	引数 / argument:
+ *		hWnd - 呼び出し元ウィンドウ / the calling window
+ *		tei - ツール実行情報 / tool execution information
+ *		tdi - ツール用アイテム情報 / item information for tools
+ *
+ *	戻り値 / Return value:
+ *		TOOL_
  */
 __declspec(dllexport) int CALLBACK to_lower(const HWND hWnd, TOOL_EXEC_INFO *tei, TOOL_DATA_INFO *tdi)
 {
