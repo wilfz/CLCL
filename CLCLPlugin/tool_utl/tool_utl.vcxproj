@@ -94,7 +94,7 @@
       <SubSystem>Console</SubSystem>
       <OutputFile>.\Debug\tool_utl.dll</OutputFile>
       <ImportLibrary>.\Debug\tool_utl.lib</ImportLibrary>
-      <AdditionalDependencies>winmm.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\tool_utl.def</ModuleDefinitionFile>
       <ImageHasSafeExceptionHandlers />
     </Link>
@@ -137,7 +137,7 @@
       <SubSystem>Console</SubSystem>
       <OutputFile>.\Release\tool_utl.dll</OutputFile>
       <ImportLibrary>.\Release\tool_utl.lib</ImportLibrary>
-      <AdditionalDependencies>winmm.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\tool_utl.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
