@@ -39,12 +39,14 @@ static BOOL folder_select(const HWND hWnd, TCHAR *ret)
 	BROWSEINFO bi;
 	LPITEMIDLIST itemid_list;
 	TCHAR buf[BUF_SIZE];
+	TCHAR title[BUF_SIZE];
+	LoadString(hInst, IDS_SEL_OUTPUT_FOLDER, title, BUF_SIZE - 1);
 
 	bi.hwndOwner = hWnd;
 	bi.pidlRoot = (const struct _ITEMIDLIST *)CSIDL_DESKTOP;
 	*buf = TEXT('\0');
 	bi.pszDisplayName = buf;
-	bi.lpszTitle = TEXT("Please select a folder to output.");
+	bi.lpszTitle = title;
 	bi.ulFlags = BIF_RETURNONLYFSDIRS;
 	bi.lpfn = NULL;
 	bi.lParam = 0;
@@ -173,7 +175,11 @@ __declspec(dllexport) int CALLBACK multi_save(const HWND hWnd, TOOL_EXEC_INFO *t
 		wsprintf(file_name, multi_save_file_name, i);
 		wsprintf(path, TEXT("%s\\%s"), save_path, file_name);
 		if (SendMessage(hWnd, WM_ITEM_TO_FILE, (WPARAM)path, (LPARAM)wk_tdi->di) == FALSE) {
-			MessageBox(hWnd, TEXT("Failed in save."), TEXT("Output"), MB_ICONERROR);
+			TCHAR failed[BUF_SIZE];
+			LoadString(hInst, IDS_SAVE_FAILED, failed, BUF_SIZE - 1);
+			TCHAR caption[BUF_SIZE];
+			LoadString(hInst, IDS_CAPTION_OUTPUT, caption, BUF_SIZE - 1);
+			MessageBox(hWnd, failed, caption, MB_ICONERROR);
 			return TOOL_CANCEL;
 		}
 	}

@@ -12,15 +12,19 @@
 #define _INC_OLE
 #include <windows.h>
 #undef  _INC_OLE
+#include <wchar.h>
+#include <shlobj.h>
+#include <Shlwapi.h>
 
 #include "..\CLCLPlugin.h"
+#include "resource.h"
 
 /* Define */
 #define	INI_FILE_NAME				TEXT("tool_utl.ini")
 
 /* Global Variables */
 HINSTANCE hInst;
-TCHAR ini_path[BUF_SIZE];
+TCHAR ini_path[MAX_PATH];
 
 static TCHAR wave_file[BUF_SIZE];
 
@@ -58,11 +62,15 @@ int WINAPI DllMain(HINSTANCE hInstance, DWORD fdwReason, PVOID pvReserved)
  */
 static BOOL dll_initialize(void)
 {
-	TCHAR app_path[BUF_SIZE];
+	TCHAR dll_path[MAX_PATH];
+	TCHAR exe_path[MAX_PATH];
 	TCHAR *p, *r;
 
-	GetModuleFileName(hInst, app_path, BUF_SIZE - 1);
-	for (p = r = app_path; *p != TEXT('\0'); p++) {
+	// First look if it is portable installation.
+	// Handle NULL instead of hInst indicates to look 
+	// for the path of the exe instead of the current dll.
+	GetModuleFileName(NULL, exe_path, MAX_PATH - 1);
+	for (p = r = exe_path; *p != TEXT('\0'); p++) {
 #ifndef UNICODE
 		if (IsDBCSLeadByte((BYTE)*p) == TRUE) {
 			p++;
@@ -74,7 +82,55 @@ static BOOL dll_initialize(void)
 		}
 	}
 	*r = TEXT('\0');
-	wsprintf(ini_path, TEXT("%s\\%s"), app_path, INI_FILE_NAME);
+
+	UINT portable = 0;
+	TCHAR clcl_ini_path[MAX_PATH];
+	swprintf_s(clcl_ini_path, MAX_PATH, TEXT("%s\\%s"), exe_path, TEXT("clcl.ini"));
+	if (PathFileExists(clcl_ini_path)) {
+		portable = GetPrivateProfileInt(TEXT("GENERAL"), TEXT("GENERAL"), 0, clcl_ini_path);
+	}
+
+	// get the dll folder
+	GetModuleFileName(hInst, dll_path, MAX_PATH - 1);
+	for (p = r = dll_path; *p != TEXT('\0'); p++) {
+#ifndef UNICODE
+		if (IsDBCSLeadByte((BYTE)*p) == TRUE) {
+			p++;
+			continue;
+		}
+#endif	// UNICODE
+		if (*p == TEXT('\\') || *p == TEXT('/')) {
+			r = p;
+		}
+	}
+	*r = TEXT('\0');
+
+	if (portable == 1) { // If portable installation
+		swprintf_s(ini_path, MAX_PATH, TEXT("%s\\%s"), dll_path, INI_FILE_NAME); // locate ini in dll folder
+		// If ini file does not yet exist in dll folder we locate it 
+		// in the exe folder where clcl.ini also resides.
+		if (PathFileExists(ini_path) == FALSE)
+			swprintf_s(ini_path, MAX_PATH, TEXT("%s\\%s"), exe_path, INI_FILE_NAME); // same folder as clcl.exe and clcl.ini
+	}
+	else {
+		// For normal installation (not portable app) set ini_path to the same folder as %LOCALAPPDATA%\CLCL\clcl.ini
+		// so that we have write access.
+		// See Clcl\main.c line 2234 ff (get_work_path())
+		TCHAR local_app_data[MAX_PATH];
+		if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, local_app_data))) {
+			swprintf_s(ini_path, MAX_PATH, TEXT("%s\\clcl\\%s"), local_app_data, INI_FILE_NAME);
+			// If ini file not yet exists here, we may read the settings form old location in dll folder
+			// but I don't consider it necessary.
+			//if (PathFileExists(ini_path) == FALSE) {
+			//	TCHAR old_ini[MAX_PATH];
+			//	wsprintf(old_ini, TEXT("%s\\%s"), dll_path, INI_FILE_NAME);
+			//	if (PathFileExists(old_ini)) {
+			//		// TODO: read values from old_ini
+			//		// and return
+			//	}
+			//}
+		}
+	}
 
 	GetPrivateProfileString(TEXT("play_sound"), TEXT("wave_file"), TEXT(""), wave_file, BUF_SIZE - 1, ini_path);
 
@@ -98,42 +154,42 @@ __declspec(dllexport) BOOL CALLBACK get_tool_info_w(const HWND hWnd, const int i
 {
 	switch (index) {
 	case 0:
-		lstrcpy(tgi->title, TEXT("Clear &History"));
+		LoadString(hInst, IDS_CLEAR_HISTORY, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("clear_history"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_VIEWER;
 		return TRUE;
 
 	case 1:
-		lstrcpy(tgi->title, TEXT("Clear &Clipboard"));
+		LoadString(hInst, IDS_CLEAR_CLIPBOARD, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("clear_clipboard"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_VIEWER;
 		return TRUE;
 
 	case 2:
-		lstrcpy(tgi->title, TEXT("&Play Sound"));
+		LoadString(hInst, IDS_PLAY_SOUND, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("play_sound"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_ADD_HISTORY;
 		return TRUE;
 
 	case 3:
-		lstrcpy(tgi->title, TEXT("Always on &Top"));
+		LoadString(hInst, IDS_ALWAYS_ON_TOP, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("ztop"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_VIEWER;
 		return TRUE;
 
 	case 4:
-		lstrcpy(tgi->title, TEXT("&Un Top"));
+		LoadString(hInst, IDS_UN_TOP, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("unztop"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_VIEWER;
 		return TRUE;
 
 	case 5:
-		lstrcpy(tgi->title, TEXT("Save of &more items"));
+		LoadString(hInst, IDS_SAVE_SEVERAL, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("multi_save"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_VIEWER;
@@ -148,8 +204,13 @@ __declspec(dllexport) BOOL CALLBACK get_tool_info_w(const HWND hWnd, const int i
 __declspec(dllexport) int CALLBACK clear_history(const HWND hWnd, TOOL_EXEC_INFO *tei, TOOL_DATA_INFO *tdi)
 {
 	DATA_INFO *di;
-	
-	if (MessageBox(hWnd, TEXT("Are you sure you want to delete all items?"), TEXT("CLCL - Clear History"),
+
+	TCHAR clr_hist_question[BUF_SIZE];
+	LoadString(hInst, IDS_CLR_HIST_QUESTION, clr_hist_question, BUF_SIZE - 1);
+	TCHAR clr_hist_caption[BUF_SIZE];
+	LoadString(hInst, IDS_CLR_HIST_CAPTION, clr_hist_caption, BUF_SIZE - 1);
+
+	if (MessageBox(hWnd, clr_hist_question, clr_hist_caption,
 		MB_ICONQUESTION | MB_YESNO | MB_TOPMOST) == IDNO) {
 		return TOOL_SUCCEED;
 	}
@@ -211,13 +272,15 @@ __declspec(dllexport) BOOL CALLBACK play_sound_property(const HWND hWnd, TOOL_EX
 {
 	OPENFILENAME of;
 	TCHAR buf[MAX_PATH];
+	TCHAR title[BUF_SIZE];
+	LoadString(hInst, IDS_WAVE_FILE, title, BUF_SIZE - 1);
 
 	// ファイルの選択
 	ZeroMemory(&of, sizeof(OPENFILENAME));
 	of.lStructSize = sizeof(OPENFILENAME);
 	of.hInstance = hInst;
 	of.hwndOwner = hWnd;
-	of.lpstrTitle = TEXT("WAVE file");
+	of.lpstrTitle = title;
 	of.lpstrFilter = TEXT("*.wav\0*.wav\0*.*\0*.*\0\0");
 	of.nFilterIndex = 1;
 	lstrcpy(buf, wave_file);
