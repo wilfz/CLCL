@@ -14,6 +14,7 @@
 #undef  _INC_OLE
 
 #include "..\CLCLPlugin.h"
+#include "resource.h"
 
 /* Define */
 
@@ -57,49 +58,56 @@ __declspec(dllexport) BOOL CALLBACK get_tool_info_w(const HWND hWnd, const int i
 {
 	switch (index) {
 	case 0:
-		lstrcpy(tgi->title, TEXT("Remove specific format in item"));
+		// Remove specific format in item
+		LoadString(hInst, IDS_TEST1, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("test1"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_VIEWER;
 		return TRUE;
 
 	case 1:
-		lstrcpy(tgi->title, TEXT("Delete item"));
+		// Delete item
+		LoadString(hInst, IDS_TEST2, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("test2"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_VIEWER;
 		return TRUE;
 
 	case 2:
-		lstrcpy(tgi->title, TEXT("Save item"));
+		// Save item
+		LoadString(hInst, IDS_TEST3, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("test3"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_VIEWER;
 		return TRUE;
 
 	case 3:
-		lstrcpy(tgi->title, TEXT("Create a text item from a file"));
+		// Create a text item from a file
+		LoadString(hInst, IDS_TEST4, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("test4"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_VIEWER;
 		return TRUE;
 
 	case 4:
-		lstrcpy(tgi->title, TEXT("Show item title"));
+		// Show item title
+		LoadString(hInst, IDS_TEST5, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("test5"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_VIEWER;
 		return TRUE;
 
 	case 5:
-		lstrcpy(tgi->title, TEXT("Save the data in a separate file"));
+		// Save the data in a separate file
+		LoadString(hInst, IDS_TEST6, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("test6"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_START | CALLTYPE_END;
 		return TRUE;
 
 	case 6:
-		lstrcpy(tgi->title, TEXT("Test7"));
+		// Test7
+		LoadString(hInst, IDS_TEST7, tgi->title, BUF_SIZE - 1);
 		lstrcpy(tgi->func_name, TEXT("test7"));
 		lstrcpy(tgi->cmd_line, TEXT(""));
 		tgi->call_type = CALLTYPE_MENU | CALLTYPE_VIEWER;
