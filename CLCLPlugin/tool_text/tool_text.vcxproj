@@ -86,7 +86,7 @@
       <SubSystem>Console</SubSystem>
       <OutputFile>.\Release\tool_text.dll</OutputFile>
       <ImportLibrary>.\Release\tool_text.lib</ImportLibrary>
-      <AdditionalDependencies>odbc32.lib;odbccp32.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\tool_text.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
@@ -128,7 +128,7 @@
       <SubSystem>Console</SubSystem>
       <OutputFile>.\Debug\tool_text.dll</OutputFile>
       <ImportLibrary>.\Debug\tool_text.lib</ImportLibrary>
-      <AdditionalDependencies>odbc32.lib;odbccp32.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\tool_text.def</ModuleDefinitionFile>
       <ImageHasSafeExceptionHandlers />
     </Link>
