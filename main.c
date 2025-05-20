@@ -1896,19 +1896,22 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 		return item_to_clipboard(hWnd, (DATA_INFO *)lParam, (wParam == 0) ? TRUE : FALSE);
 
 	case WM_ITEM_CREATE:
-		// アイテムの作成
+		// アイテムの作成 / create an item
 		switch (wParam) {
 		case TYPE_DATA:
 			// データの作成
+			// create data with format_name specified in lParam
 			if (lParam == 0) {
 				return 0;
 			}
 			return (LRESULT)data_create_data(0, (TCHAR *)lParam, NULL, 0, TRUE, NULL);
 		case TYPE_ITEM:
 			// アイテムの作成
+			// create an item with title specified in lParam
 			return (LRESULT)data_create_item((TCHAR *)lParam, TRUE, NULL);
 		case TYPE_FOLDER:
 			// フォルダの作成
+			// create a folder with title specified in lParam
 			if (lParam == 0) {
 				return 0;
 			}
