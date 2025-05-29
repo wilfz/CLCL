@@ -10,7 +10,7 @@ CLCL is a software that records clipboard history.
 - Supports multiple clipboard formats
 - Frequently used standard phrases can be registered as templates in a hierarchical structure
 - Freely customize the menu displayed with hotkeys
-- History items templates items selected from the menu can be automatically pasted into the editor being edited
+- History items and template items can be selected from menu and automatically pasted into the current window
 - Display thumbprint images in the menu
 - Display tooltips in the menu
 - The format to leave and the format to save can be set up
