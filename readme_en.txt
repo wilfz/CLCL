@@ -26,8 +26,7 @@ Works on Windows XP and later OS.
 
 CLCL will be installed when you launch the downloaded file.
 
-Please uninstall from the Control Panel.
-Please uninstall after closing CLCL.
+Please uninstall from the Control Panel after closing CLCL.
 
 Data will be saved in the following folder. (For Windows 10)
 C:\Users\(username)\AppData\Local\CLCL
@@ -44,12 +43,12 @@ By default, the menu displays the history in ascending order.
 The menu can be customized in the settings.
 
 Right-clicking on the task tray icon will display the viewer.
-The left side of the viewer is a tree that displays the history and registered items.
-The right side of the viewer displays and edits the contents of the history and registered items. The edited contents will be reflected in the item when you move the focus. Some formats cannot be edited. The contents of the current clipboard cannot be edited.
+The left side of the viewer is a tree that displays the history and template items.
+The right side of the viewer displays and edits the contents of the history and template items. The edited contents will be reflected in the item when you move the focus. Some formats cannot be edited. The contents of the current clipboard cannot be edited.
 
 The "Clipboard" at the top of the tree is the current clipboard contents.
 The "History" in the tree is a list of the history.
-"Registered Items" in the tree is a list of registered items (such as standard phrases).
+"Templates" in the tree is a list of template items (such as standard phrases).
 
 	┌─■ Clipboard - Current clipboard contents
 	│ ├─□ TEXT - Formats in the current clipboard
@@ -67,14 +66,14 @@ The "History" in the tree is a list of the history.
 	│ ├─□ Today...
 	│ └─□ (BITMAP)
 	│
-	└─■ Registered items - Registered items
+	└─■ Templates - Template items
 	  │
 	  ├─■ Folder - Folder
 	  │ ├─□ Address...
 	  │ └─□ (BITMAP)
 	  │
-	  └─□ http://www... - Registered item
-		└─□ TEXT - Format in registered item
+	  └─□ http://www... - Template item
+		└─□ TEXT - Format in template item
 
 ■ Clipboard
 ・What is the clipboard?
@@ -94,7 +93,7 @@ CLCL's default settings are:
 	・UNICODE TEXT - Text
 	・BITMAP - Bitmap
 	・DROP FILE LIST - File
-The following will be saved in the history.
+These formats will be saved in the history.
 You can also save other formats in the history by using the optional "Filter".
 
 ■ History
@@ -106,33 +105,33 @@ A single history item contains multiple clipboard formats. The clipboard formats
 The number of history items remains as set in the optional "History".
 Only clipboard formats set to add in the optional "Filter" are added to the history.
 
-■ Registered Items
-Registered items can be used to register commonly used data such as standard phrases.
+■ Templates
+Templates can be used to register commonly used data such as standard phrases.
 You can add folders to organize them into hierarchical structures and give names to items.
 
-To add a registered item, open the viewer, select the history item, and select "Add to Registered Items" from the menu.
+To add a template item, open the viewer, select the history item, and select "Add to Templates" from the menu.
 Select the folder you want to add in the tree, and select "Create New" from the menu to create an item by loading the contents of an empty item or file.
 
-To add a folder, open the viewer, right-click on the location in the registered items where you want to add it, and select "Create Folder."
+To add a folder, open the viewer, right-click on the location in the templates where you want to add it, and select "Create Folder."
 
 To rename a folder or item, open the viewer, select the item you want to rename, right-click on it, and select "Rename."
 "Initialize Name" erases the name you set and displays the item's contents as the name.
 If you name an item "-", it will be displayed as a separator in the menu. The format and data in the item will be ignored.
 If you add & to the name, the character following it will be used as the shortcut key in the menu. If you want to display & itself in the menu, use &&.
 
-Right-click on a registered item to display the menu and select "Hotkey Settings" to assign a hotkey to the registered item. Pressing that key will send the registered item directly to the clipboard without displaying the menu, and will paste it directly if "Paste" is enabled.
-You can check the registered hotkeys in the list display area of the viewer. If you select other registered items, they will be displayed in the status bar.
+Right-click on a template item to display the menu and select "Hotkey Settings" to assign a hotkey to the template item. Pressing that key will send the template item directly to the clipboard without displaying the menu, and will paste it directly if "Paste" is enabled.
+You can check the registered hotkeys in the list display area of the viewer. If you select other template items, they will be displayed in the status bar.
 
-There is no limit to the number of registered items or the clipboard format.
+There is no limit to the number of template items or the clipboard format.
 
 ■ Send to Clipboard
-There are several ways to send history or registered items to the clipboard.
+There are several ways to send history or template items to the clipboard.
 
 ・Click the task tray to bring up a menu.
-If you select a history or registered item from the menu, the data will be sent to the clipboard and automatically pasted into the active window.
+If you select a history or template item from the menu, the data will be sent to the clipboard and automatically pasted into the active window.
 
 ・Press the hotkey (default is Alt + C) to bring up a menu.
-If you select a history or registered item from the menu, the data will be sent to the clipboard and automatically pasted into the active window.
+If you select a history or template item from the menu, the data will be sent to the clipboard and automatically pasted into the active window.
 
 ・Select an item in the viewer and bring up a right-click menu.
 If you select "Send to Clipboard", the selected item will be sent to the clipboard.
@@ -141,13 +140,13 @@ If you select "Send to Clipboard", the selected item will be sent to the clipboa
 The menu items displayed in the task tray or hotkey are set in the "Action" option.
 You can customize the menu behavior and display in the "Menu" option.
 
-If you move the mouse over a history or registered item in the menu, a tooltip with detailed information will be displayed at the mouse position. If you select an item with the keyboard, a tooltip will be displayed under the menu item.
+If you move the mouse over a history or template item in the menu, a tooltip with detailed information will be displayed at the mouse position. If you select an item with the keyboard, a tooltip will be displayed under the menu item.
 
-Right-clicking on a menu history or registered item will display the registered tools in a menu, and the selected tool will be executed and sent to the clipboard.
+Right-clicking on a menu history or template item will display the registered tools in a menu, and the selected tool will be executed and sent to the clipboard.
 
 To display the tool menu with the keyboard, press Ctrl and Enter to select an item.
 
-History and registered items display menu items according to the "Menu text display format" option. The displayed numbers start from 0, but if you want to change the starting value, set the starting number between the % and the character.
+History and template items display menu items according to the "Menu text display format" option. The displayed numbers start from 0, but if you want to change the starting value, set the starting number between the % and the character.
 
 Examples:
 	%0d -> 0,1,2,3...
@@ -223,7 +222,7 @@ Either the title or the class name needs to be entered, and if it is not entered
 	If you set the copy key as the cut key in the key settings for each window, specifying this option will prevent the characters from disappearing even if you cancel the tool.
 
 ■ Key settings for each window
-Select the history or registered item from the hotkey, and the paste action will automatically send the paste key to the window.
+Select the history or template item from the hotkey, and the paste action will automatically send the paste key to the window.
 By default, Ctrl + V is sent to all windows, but depending on the window, the paste key may be a different key.
 
 When the tool is called with a hotkey, the copy key (Ctrl + C) is sent to the window to perform the Copy -> Tool Processing -> Paste action.
@@ -236,13 +235,13 @@ If the copy and paste keys are not set, the default key settings will be used.
 Multiple keys can be set for one window. If multiple keys are set, the keys will be sent in order from the top.
 
 ■ Tools (plug-ins)
-To process history or registered item data or expand the functions of CLCL, set it in the "Tool" option.
+To process history or template item data or expand the functions of CLCL, set it in the "Tool" option.
 
-When you select the DLL and function name, the tool name and execution timing will be automatically set.
-The "Action Menu" execution timing allows you to execute from the menu set in the action option.
-The "Viewer" execution timing allows you to execute from the viewer's tool menu.
+When you select the DLL and function name, the tool name and call type will be automatically set.
+The call type "Action Menu" allows you to execute from the "Tools" popup menu.
+The call type "Viewer" allows you to execute from the viewer's tool menu.
 
-The "Send copy and paste" execution timing sends a copy to the active window, executes a tool on the copied data, and pastes the execution results into the active window.
+The "Send copy and paste" option copies the marked data from the active window, executes a tool on the copied data, and afterwards pastes the modified data back into the active window.
 If this option is not checked, the tool is executed on the most recent history item and sent to the clipboard. In the tool menu that appears when you right-click an item in the action menu, the tool is executed on the selected item and sent to the clipboard.
 If "Paste" is not enabled in the action settings, pasting will not be performed after copying and executing the tool.
 
@@ -306,7 +305,7 @@ K.Takata ( http://webs.to/ken/ )
 ・Ver 1.1.2 -> Ver 2.0.0
 	・Supports Unicode. As a result, older versions of Windows are no longer supported.
 	 →	The settings of the older version will be inherited, but tools and plugin formats must be Unicode-compatible.
-	・Changed the behavior to copy the file if the save is successful so that registered items are not deleted if the save process fails when CLCL is closed.
+	・Changed the behavior to copy the file if the save is successful so that template items are not deleted if the save process fails when CLCL is closed.
 	・Changed the icon design in the task tray.
 	・Changed the default behavior when clicking on the task tray.
 	→	Changed the menu to appear when left-clicking the task tray icon to take into account operation on tablets.
@@ -319,7 +318,7 @@ K.Takata ( http://webs.to/ken/ )
 ・Ver 1.1.0 -> Ver 1.1.1
 	・Improved the behavior when selecting the character position with the mouse in TEXT editing.
 	・Fixed the error that occurred when there was no history to save with the filter when closing.
-	・Made it possible to move items between history and registered items.
+	・Made it possible to move items between history and template items.
 	・Changed the method of displaying thumbnail images.
 	・Changed the initial value of the waiting time for copy and paste to 100.
 	・Fixed a problem where memory was not being released.
@@ -354,7 +353,7 @@ K.Takata ( http://webs.to/ken/ )
 	・Made minor adjustments to the options screen.
 
 ・Ver 1.0.4 -> Ver 1.0.5
-	・Made it possible to assign hotkeys to registered items.
+	・Made it possible to assign hotkeys to template items.
 	・Made hotkeys visible in the menu.
 	・The viewer position is no longer adjusted when launched.
 	・The position and size are now forcibly saved when closing the viewer.
@@ -379,7 +378,7 @@ K.Takata ( http://webs.to/ken/ )
 ・Ver 0.2.0 -> Ver 1.0.0
 	・Recreated
 	 Data and settings will not be carried over.
-	 If you want to migrate registered items from Ver 0.2.0 to Ver 1.0.0, start both and send the registered items from Ver 0.2.0 to the clipboard and add them to the history of Ver 1.0.0. Then, register the items from the history added to Ver 1.0.0 to the registered items of Ver 1.0.0. Tools that are compatible with Ver 0.2.0 can also be used with Ver 1.0.0. (Some restrictions apply) 
+	 If you want to migrate template items from Ver 0.2.0 to Ver 1.0.0, start both and send the template items from Ver 0.2.0 to the clipboard and add them to the history of Ver 1.0.0. Then, register the items from the history added to Ver 1.0.0 to the template items of Ver 1.0.0. Tools that are compatible with Ver 0.2.0 can also be used with Ver 1.0.0. (Some restrictions apply) 
 
 -- 
 
