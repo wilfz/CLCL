@@ -10,7 +10,7 @@ CLCL is a software that records clipboard history.
 - Supports multiple clipboard formats
 - Frequently used standard phrases can be registered as templates in a hierarchical structure
 - Freely customize the menu displayed with hotkeys
-- History items templates items selected from the menu can be automatically pasted into the editor being edited
+- History items and template items can be selected from menu and automatically pasted into the current window
 - Display thumbprint images in the menu
 - Display tooltips in the menu
 - The format to leave and the format to save can be set up
@@ -31,7 +31,7 @@ Please uninstall from the Control Panel after closing CLCL.
 
 Data will be saved in the following folder (for Windows 10):
 
-    C:\Users\\\{username\}\AppData\Local\CLCL
+    C:\Users\{username}\AppData\Local\CLCL
 
 To save data in the same location as CLCL.exe, set clcl_app.ini as follows and then start CLCL.
 
@@ -245,11 +245,11 @@ Multiple keys can be set for one window. If multiple keys are set, the keys will
 ## Tools (plug-ins)
 To process history or template item data or expand the functions of CLCL, set it in the "Tool" option.
 
-When you select the DLL and function name, the tool name and execution timing will be automatically set.
-The "Action Menu" execution timing allows you to execute from the menu set in the action option.
-The "Viewer" execution timing allows you to execute from the viewer's tool menu.
+When you select the DLL and function name, the tool name and call type will be automatically set.
+The call type "Action Menu" allows you to execute from the "Tools" popup menu.
+The call type "Viewer" allows you to execute from the viewer's tool menu.
 
-The "Send copy and paste" execution timing sends a copy to the active window, executes a tool on the copied data, and pastes the execution results into the active window.
+The "Send copy and paste" option copies the marked data from the active window, executes a tool on the copied data, and afterwards pastes the modified data back into the active window.
 If this option is not checked, the tool is executed on the most recent history item and sent to the clipboard. In the tool menu that appears when you right-click an item in the action menu, the tool is executed on the selected item and sent to the clipboard.
 If "Paste" is not enabled in the action settings, pasting will not be performed after copying and executing the tool.
 
