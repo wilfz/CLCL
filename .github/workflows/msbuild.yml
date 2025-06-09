@@ -52,9 +52,9 @@ jobs:
         path: setup_clcl.iss
 
     - run: |
-        mv CLCLPlugin/Release/CLCL.exe Setup/ 
-        mv CLCLPlugin/Release/CLCLHook.dll Setup/ 
-        mv CLCLPlugin/Release/CLCLSet.exe Setup/ 
+        mv Release/CLCL.exe Setup/ 
+        mv Release/CLCLHook.dll Setup/ 
+        mv Release/CLCLSet.exe Setup/ 
         mv CLCLPlugin/tool_test/Release/tool_test.dll Setup/ 
         mv CLCLPlugin/tool_clip/Release/tool_clip.dll Setup/ 
 
