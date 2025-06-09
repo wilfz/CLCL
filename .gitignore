@@ -16,11 +16,17 @@
 # Mono auto generated files
 mono_crash.*
 
+# CVS
+CVS/
+.#*
+.cvsignore
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
+[Ss]etup/
 x64/
 x86/
 [Aa][Rr][Mm]/
