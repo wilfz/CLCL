@@ -261,7 +261,20 @@ CLCL.exe [/vownx]
 ■ Special thanks
 K.Takata ( http://webs.to/ken/ )
 
+■ Credits
+- CLCL main program and plugins tool_text, tool_utl and tool_test are Copyright (C) by Ohno Tomoaki, who made it open source and put it under MIT license in 2024
+- Installer created by WilfZim with Inno Setup ( https://jrsoftware.org/isinfo.php )
+- Tool_clip plugin by WilfZim depends on Niels Lohmann's JSON library ( https://github.com/nlohmann/json ) for import and export of data
+- ReadMe.html uses github.css Stylesheet,   Copyright (c) 2017 Chris Patuzzo
+
 ■ Update history
+・Ver 2.1.3 -> Ver 2.1.4
+	- MIT license
+	- Plugins updated to current OS
+	- Merged Japanese and English Plugin Versions
+	- Installer with optional plugins
+	- English documentaion
+
 ・Ver 2.1.2 -> Ver 2.1.3
 	・Changed the system tray icon when not monitoring the clipboard.
 	・Improved the up and down movement buttons in the settings.

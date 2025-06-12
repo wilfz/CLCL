@@ -276,6 +276,13 @@ K.Takata ( http://webs.to/ken/ )
 - ReadMe.html uses github.css Stylesheet,   Copyright (c) 2017 Chris Patuzzo
 
 ## Update history
+- Ver 2.1.3 -> Ver 2.1.4
+	- MIT license
+	- Plugins updated to current OS
+	- Merged Japanese and English Plugin Versions
+	- Installer with optional plugins
+	- English documentaion
+
 - Ver 2.1.2 -> Ver 2.1.3
 
 	- Changed the system tray icon when not monitoring the clipboard.

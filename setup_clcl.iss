@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CLCL"
-#define MyAppVersion "2.1.3"
+#define MyAppVersion "2.1.4"
 #define MyAppPublisher "WilfZim"
 #define MyAppURL "https://nakka.com/soft/clcl/index_eng.html"
 #define MyGitHubRepo "https://github.com/wilfz/CLCL"
