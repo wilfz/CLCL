@@ -4,13 +4,14 @@ CLCL is a software that records clipboard history and offers means to store text
 Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved.
 Mr. Tomoaki put it under MIT license in 2024.
 
-This installation package is NOT the official package from https://www.nakka.com, but a recompile from https://github.com/wilfz/CLCL.
+This installation package is NOT the official package from https://www.nakka.com.
 
-This repository is a fork of https://github.com/nakkag/CLCL.
+The main program is the original download from there.
 
 README.html has been added to explain the use of CLCL.
 
-This installation package also includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html, which have been adapted and compiled for current operating system versions.
+This installation package also includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html. 
+The plugins have been adapted for current operating system and compiled from https://github.com/wilfz/CLCL/tree/plugins.
 
 The tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_clip.
 

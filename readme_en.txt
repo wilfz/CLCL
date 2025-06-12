@@ -142,7 +142,7 @@ You can customize the menu behavior and display in the "Menu" option.
 
 If you move the mouse over a history or template item in the menu, a tooltip with detailed information will be displayed at the mouse position. If you select an item with the keyboard, a tooltip will be displayed under the menu item.
 
-Right-clicking on a menu history or template item will display the registered tools in a menu, and the selected tool will be executed and sent to the clipboard.
+Right-clicking on a history or template item will display the registered tools in a menu, and the selected tool will be executed and sent to the clipboard.
 
 To display the tool menu with the keyboard, press Ctrl and Enter to select an item.
 
