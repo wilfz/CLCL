@@ -50,8 +50,8 @@ Name: "custom"; Description: "Custom installation"; Flags: iscustom
 [Components]
 Name: "main"; Description: "CLCL main program"; Types: full custom;
 Name: "help"; Description: "HTML Help File"; Types: full
-;Name: "tool_text"; Description: "Plugin for text manipulation"; Types: full
-;Name: "tool_utl"; Description: "Plugin with other utilities"; Types: full
+Name: "tool_text"; Description: "Plugin for text manipulation"; Types: full
+Name: "tool_utl"; Description: "Plugin with other utilities"; Types: full
 Name: "tool_clip"; Description: "Plugin by WilfZim"; Types: full
 Name: "tool_test"; Description: "Example plugin"; Types: full
 Name: "readme"; Description: "ReadMe"; Types: full custom
@@ -64,8 +64,8 @@ Source: "Release\CLCLSet.exe"; DestDir: "{app}"; Components: main; Flags: ignore
 Source: "Release\CLCLHook.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "clcl_app.ini"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "CLCLPlugin\tool_test\Release\tool_test.dll"; DestDir: "{app}"; Components: tool_test; Flags: ignoreversion
-;Source: "CLCLPlugin\tool_text\Release\tool_text.dll"; DestDir: "{app}"; Components: tool_text; Flags: ignoreversion
-;Source: "CLCLPlugin\tool_utl\Release\tool_utl.dll"; DestDir: "{app}"; Components: tool_utl; Flags: ignoreversion
+Source: "CLCLPlugin\tool_text\Release\tool_text.dll"; DestDir: "{app}"; Components: tool_text; Flags: ignoreversion
+Source: "CLCLPlugin\tool_utl\Release\tool_utl.dll"; DestDir: "{app}"; Components: tool_utl; Flags: ignoreversion
 Source: "CLCLPlugin\tool_clip\Release\tool_clip.dll"; DestDir: "{app}"; Components: tool_clip; Flags: ignoreversion
 Source: "readme_en.txt"; DestDir: "{app}"; Components: readme\en; Flags: ignoreversion isreadme
 Source: "readme_jp.txt"; DestDir: "{app}"; Components: readme\jp; Flags: ignoreversion isreadme
@@ -75,10 +75,10 @@ Source: "Documentation\README.html"; DestDir: "{app}"; Components: main help; Fl
 [Icons]
 ; Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
+Name: "{group}\{#MyAppName} Author's Page"; Filename: "{#MyAppURL}"
 Name: "{group}\{#MyAppName} Fork on GitHub"; Filename: "{#MyGitHubRepo}"
-Name: "{group}\Help"; Filename: "{app}\README.html"
-Name: "{group}\ReadMe"; Filename: "{app}\readme_jp.txt"
+Name: "{group}\Help"; Filename: "{app}\README.html"; Components: main help
+;Name: "{group}\ReadMe"; Filename: "{app}\readme_jp.txt"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
