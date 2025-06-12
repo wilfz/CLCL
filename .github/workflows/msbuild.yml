@@ -57,6 +57,8 @@ jobs:
         mv Release/CLCLSet.exe Setup/ 
         mv CLCLPlugin/tool_test/Release/tool_test.dll Setup/ 
         mv CLCLPlugin/tool_clip/Release/tool_clip.dll Setup/ 
+        mv CLCLPlugin/tool_text/Release/tool_text.dll Setup/ 
+        mv CLCLPlugin/tool_utl/Release/tool_utl.dll Setup/ 
 
     - uses: actions/upload-artifact@v4
       with:
