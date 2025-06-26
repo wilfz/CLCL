@@ -68,13 +68,13 @@ Source: "CLCLPlugin\tool_text\Release\tool_text.dll"; DestDir: "{app}"; Componen
 Source: "CLCLPlugin\tool_utl\Release\tool_utl.dll"; DestDir: "{app}"; Components: tool_utl; Flags: ignoreversion
 Source: "CLCLPlugin\tool_clip\Release\tool_clip.dll"; DestDir: "{app}"; Components: tool_clip; Flags: ignoreversion
 Source: "readme_en.txt"; DestDir: "{app}"; Components: readme\en; Flags: ignoreversion isreadme
-Source: "readme_jp.txt"; DestDir: "{app}"; Components: readme\jp; Flags: ignoreversion isreadme
+Source: "readme_jp.txt"; DestDir: "{app}"; Components: readme\jp main help; Flags: ignoreversion isreadme
 Source: "Documentation\README.html"; DestDir: "{app}"; Components: main help; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 ; Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{#MyAppName} - Clipboard Tool"; Filename: "{app}\{#MyAppExeName} /v"
 Name: "{group}\{#MyAppName} Author's Page"; Filename: "{#MyAppURL}"
 Name: "{group}\{#MyAppName} Fork on GitHub"; Filename: "{#MyGitHubRepo}"
 Name: "{group}\Help"; Filename: "{app}\README.html"; Components: main help
@@ -82,5 +82,5 @@ Name: "{group}\Help"; Filename: "{app}\README.html"; Components: main help
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName} /v"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
