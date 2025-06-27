@@ -75,9 +75,9 @@ Source: "Documentation\README.html"; DestDir: "{app}"; Components: main help; Fl
 [Icons]
 ; Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{#MyAppName} - Clipboard Tool"; Filename: "{app}\{#MyAppExeName}"
-Name: "{group}\{#MyAppName} Author's Page"; Filename: "{#MyAppURL}"
+Name: "{group}\{#MyAppName} Original Author's Page"; Filename: "{#MyAppURL}"
 Name: "{group}\{#MyAppName} Fork on GitHub"; Filename: "{#MyGitHubRepo}"
-Name: "{group}\Help"; Filename: "{app}\README.html"; Components: main help
+Name: "{group}\{#MyAppName} Help"; Filename: "{app}\README.html"; Components: main help
 ;Name: "{group}\ReadMe"; Filename: "{app}\readme_jp.txt"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 

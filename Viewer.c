@@ -2860,11 +2860,48 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 					mem_free(&buf);
 				}
 			}
-			lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2022 by Ohno Tomoaki. All rights reserved.\n\n")
+			lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved.\n\n")
 				TEXT("WEB SITE: https://www.nakka.com/\nE-MAIL: nakka@nakka.com"));
 			MessageBox(hWnd, var_msg, TEXT("About"), MB_OK | MB_ICONINFORMATION);
 		}
 			break;
+
+		case ID_MENUITEM_HELP_EN:
+		{
+			TCHAR help_path[MAX_PATH];
+			TCHAR* p, * r;
+			if (GetModuleFileName(NULL, help_path, sizeof(help_path)) > 0) {
+				for (p = r = help_path; *p != TEXT('\0'); p++) {
+#ifndef UNICODE
+					if (IsDBCSLeadByte((BYTE)*p) == TRUE) {
+						p++;
+						continue;
+					}
+#endif	// UNICODE
+					if (*p == TEXT('\\') || *p == TEXT('/')) {
+						r = p;
+					}
+				}
+				*r = TEXT('\0');
+
+				if (lstrlen(help_path) >= MAX_PATH - 15) {
+					break;
+				}
+
+				if (LOWORD(wParam) == ID_MENUITEM_HELP_EN)
+					lstrcpy(help_path + lstrlen(help_path), TEXT("\\README.html"));
+				else if (LOWORD(wParam) == ID_MENUITEM_HELP_EN)
+					lstrcpy(help_path + lstrlen(help_path), TEXT("\\readme_jp.txt"));
+				else
+					break;
+					
+				if (file_check_file(help_path) && ShellExecute(hWnd, TEXT("open"), help_path, NULL, NULL, SW_SHOWNORMAL) <= (HINSTANCE)32) {
+					//MessageBox(hWnd, message_get_res(IDS_VIEWER_HELP_NOT_FOUND), APP_NAME, MB_OK | MB_ICONEXCLAMATION);
+					break;
+				}
+			}
+		}
+		break;
 
 		case ID_MENUITEM_OPEN:
 			// •\Ž¦
