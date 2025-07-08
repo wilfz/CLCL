@@ -69,7 +69,7 @@ Source: "CLCLPlugin\tool_utl\Release\tool_utl.dll"; DestDir: "{app}"; Components
 Source: "CLCLPlugin\tool_clip\Release\tool_clip.dll"; DestDir: "{app}"; Components: tool_clip; Flags: ignoreversion
 Source: "readme_en.txt"; DestDir: "{app}"; Components: readme\en; Flags: ignoreversion isreadme
 Source: "readme_jp.txt"; DestDir: "{app}"; Components: readme\jp main help; Flags: ignoreversion isreadme
-Source: "Documentation\README.html"; DestDir: "{app}"; Components: main help; Flags: ignoreversion
+Source: "Release\clcl.html"; DestDir: "{app}"; Components: main help; Flags: ignoreversion
 Source: "CLCLPlugin\tool_clip\Release\tool_clip.html"; DestDir: "{app}"; Components: tool_clip; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
@@ -78,7 +78,7 @@ Source: "CLCLPlugin\tool_clip\Release\tool_clip.html"; DestDir: "{app}"; Compone
 Name: "{group}\{#MyAppName} - Clipboard Tool"; Filename: "{app}\{#MyAppExeName}"; Parameters: "/v"
 Name: "{group}\{#MyAppName} Original Author's Page"; Filename: "{#MyAppURL}"
 Name: "{group}\{#MyAppName} Fork on GitHub"; Filename: "{#MyGitHubRepo}"
-Name: "{group}\{#MyAppName} Help"; Filename: "{app}\README.html"; Components: main help
+Name: "{group}\{#MyAppName} Help"; Filename: "{app}\clcl.html"; Components: main help
 ;Name: "{group}\ReadMe"; Filename: "{app}\readme_jp.txt"
 Name: "{group}\Tool_Clip Help"; Filename: "{app}\tool_clip.html"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon

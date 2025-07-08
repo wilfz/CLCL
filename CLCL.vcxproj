@@ -134,9 +134,8 @@
       <AdditionalManifestFiles>$(ProjectDir)\res\manifest.xml %(AdditionalManifestFiles)</AdditionalManifestFiles>
     </Manifest>
     <PostBuildEvent>
-      <Command>pandoc --from=gfm --to=html5 README.md --output=Release\temp.html
-cd Documentation
-copy part1.fragment + github.css + part2.fragment + ..\Release\temp.html + part3.fragment clcl.html
+      <Command>copy README.md "Release\CLCL Documentation.md"
+pandoc --from=gfm --to=html5 "Release\CLCL Documentation.md" --embed-resources --standalone --css=Documentation\github.css --output="Release\clcl.html"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
