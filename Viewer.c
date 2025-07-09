@@ -2866,6 +2866,7 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 		}
 			break;
 
+		case ID_MENUITEM_HELP_JP:
 		case ID_MENUITEM_HELP_EN:
 		{
 			TCHAR help_path[MAX_PATH];
@@ -2889,8 +2890,8 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 				}
 
 				if (LOWORD(wParam) == ID_MENUITEM_HELP_EN)
-					lstrcpy(help_path + lstrlen(help_path), TEXT("\\README.html"));
-				else if (LOWORD(wParam) == ID_MENUITEM_HELP_EN)
+					lstrcpy(help_path + lstrlen(help_path), TEXT("\\clcl.html"));
+				else if (LOWORD(wParam) == ID_MENUITEM_HELP_JP)
 					lstrcpy(help_path + lstrlen(help_path), TEXT("\\readme_jp.txt"));
 				else
 					break;
