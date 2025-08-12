@@ -1,6 +1,6 @@
 # CLCL
 
-CLCL Ver 2.1.3
+CLCL Ver 2.1.4
 --
 
 ## Introduction
@@ -281,7 +281,9 @@ K.Takata ( http://webs.to/ken/ )
 	- Plugins updated to current OS
 	- Merged Japanese and English Plugin Versions
 	- Installer with optional plugins
-	- English documentaion
+	- English documentation
+	- HTML Help in Viewer menu
+	- expand environment variables in tool paths
 
 - Ver 2.1.2 -> Ver 2.1.3
 
