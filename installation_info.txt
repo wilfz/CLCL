@@ -8,10 +8,12 @@ This installation package is NOT the official package from https://www.nakka.com
 
 This repository is a fork of https://github.com/nakkag/CLCL.
 
+The installation package also includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html.
+tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_clip.
+The plugins have been reworked for current operating system.
+
+All above components are compiled with the latest platform toolset v143.
+
 CLCL.html has been added to explain the use of CLCL.
 
-This installation package also includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html. 
-The plugins have been adapted for current operating system and compiled from https://github.com/wilfz/CLCL.
-
-The tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_clip.
-
+WilfZim 08/2025

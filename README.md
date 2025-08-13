@@ -243,7 +243,10 @@ If the copy and paste keys are not set, the default key settings will be used.
 Multiple keys can be set for one window. If multiple keys are set, the keys will be sent in order from the top.
 
 ## Tools (plug-ins)
-To process history or template item data or expand the functions of CLCL, set it in the "Tool" option.
+The installation package also includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html. These plugins have been reworked to fit current operating systems.
+tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_clip.
+
+To process history or template item data or expand the functions of CLCL, add plugin-DLLs in the "Tool" option.
 
 When you select the DLL and function name, the tool name and call type will be automatically set.
 The call type "Action Menu" allows you to execute from the "Tools" popup menu.
@@ -270,9 +273,9 @@ If CLCL is already running, the command will be sent to the already running CLCL
 K.Takata ( http://webs.to/ken/ )
 
 ## Credits
-- CLCL main program and plugins tool_text, tool_utl and tool_test are Copyright (C) by Ohno Tomoaki, who made it open source and put it under MIT license in 2024
-- Installer created by WilfZim with Inno Setup ( https://jrsoftware.org/isinfo.php )
-- Tool_clip plugin by WilfZim depends on Niels Lohmann's JSON library ( https://github.com/nlohmann/json ) for import and export of data
+- CLCL main program and plugins tool_text, tool_utl and tool_test are Copyright (C) by [Ohno Tomoaki](https://nakka.com/), who made it open source and put it under MIT license in 2024
+- Installer created by WilfZim with [Inno Setup](https://jrsoftware.org/isinfo.php)
+- [Tool_clip plugin](https://github.com/wilfz/CLCL-tool_clip) by WilfZim depends on Niels Lohmann's JSON library ( https://github.com/nlohmann/json ) for import and export of data
 - ReadMe.html uses github.css Stylesheet,   Copyright (c) 2017 Chris Patuzzo
 
 ## Update history
@@ -410,6 +413,5 @@ The author is not responsible for any problems caused by this program. It is str
 
 Please contact nakka@nakka.com for bugs, requests, and questions. 
 
-Copyright (C) 1996-2022 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/ 
-2022/12/1
+Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/ 
 
