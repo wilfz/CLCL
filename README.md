@@ -23,13 +23,16 @@ CLCL is a software that records clipboard history.
 - Supports Unicode
 
 ## Installation
-Works on Windows XP and later OS.
+Works on current Windows OS.
 
-CLCL will be installed when you launch the downloaded file.
+To install CLCL launch the downloaded file setup_clcl214.exe. The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
 
-Please uninstall from the Control Panel after closing CLCL.
+If you want to uninstall do so from the Control Panel __after__ closing CLCL.
 
-Data will be saved in the following folder (for Windows 10):
+Alternatively you can download clcl.zip and unpack into a folder of your choice and start clcl.exe from there.
+
+
+Data will be saved in the following folder (for Windows 10/11):
 
     C:\Users\{username}\AppData\Local\CLCL
 
@@ -84,7 +87,7 @@ For example, you can paste text copied in Notepad into Word, and this is because
 
 ### Clipboard format
 The clipboard can hold multiple formats at once.
-For example, if you copy text in Notepad, the following four formats will be stored in the clipboard (Windows 10):
+For example, if you copy text in Notepad, the following four formats will be stored in the clipboard (Windows 10/11):
 
 	・UNICODE TEXT
 	・LOCALE
@@ -104,10 +107,10 @@ You can also save other formats in the history by using the optional "Filter".
 This is the history of data copied to the clipboard.
 Newly copied data is added to the top of the history.
 
-A single history item contains multiple clipboard formats. The clipboard formats with the highest priority are displayed in the menu and viewer, which are registered in the optional "Format".
+A single history item contains multiple clipboard formats. The clipboard formats with the highest priority is displayed in the menu and viewer. Priority is set in the "Format" tab of CLCL Options.
 
-The number of history items remains as set in the optional "History".
-Only clipboard formats set to add in the optional "Filter" are added to the history.
+The number of history items to keep is set in the "History" tab of CLCL Options.
+The "Filter" tab controls which formats are added to the history.
 
 ## Templates
 Templates can be used to register commonly used data such as standard phrases.
@@ -119,7 +122,7 @@ Select the folder you want to add in the tree, and select "Create New" from the 
 To add a folder, open the viewer, right-click on the location in the templates where you want to add it, and select "Create Folder."
 
 To rename a folder or item, open the viewer, select the item you want to rename, right-click on it, and select "Rename."
-"Initialize Name" erases the name you set and displays the item's contents as the name.
+"Clear Name" erases the name you set and displays the item's contents as the name.
 If you name an item "-", it will be displayed as a separator in the menu. The format and data in the item will be ignored.
 If you add & to the name, the character following it will be used as the shortcut key in the menu. If you want to display & itself in the menu, use &&.
 
@@ -246,13 +249,13 @@ Multiple keys can be set for one window. If multiple keys are set, the keys will
 The installation package also includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html. These plugins have been reworked to fit current operating systems.
 tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_clip.
 
-To process history or template item data or expand the functions of CLCL, add plugin-DLLs in the "Tool" option.
+To process history or template item data or add functions to CLCL, add plugin-DLLs in the "Tool" option.
 
 When you select the DLL and function name, the tool name and call type will be automatically set.
 The call type "Action Menu" allows you to execute from the "Tools" popup menu.
 The call type "Viewer" allows you to execute from the viewer's tool menu.
 
-The "Send copy and paste" option copies the marked data from the active window, executes a tool on the copied data, and afterwards pastes the modified data back into the active window.
+The "Send copy and paste" option copies the marked data from the active window, executes the tool on the copied data, and afterwards pastes the modified data back into the active window.
 If this option is not checked, the tool is executed on the most recent history item and sent to the clipboard. In the tool menu that appears when you right-click an item in the action menu, the tool is executed on the selected item and sent to the clipboard.
 If "Paste" is not enabled in the action settings, pasting will not be performed after copying and executing the tool.
 

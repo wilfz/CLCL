@@ -273,7 +273,9 @@ K.Takata ( http://webs.to/ken/ )
 	- Plugins updated to current OS
 	- Merged Japanese and English Plugin Versions
 	- Installer with optional plugins
-	- English documentaion
+	- English documentation
+	- HTML Help in Viewer menu
+	- expand environment variables in tool paths
 
 ・Ver 2.1.2 -> Ver 2.1.3
 	・Changed the system tray icon when not monitoring the clipboard.
@@ -294,7 +296,7 @@ K.Takata ( http://webs.to/ken/ )
 	 →Hold down Ctrl and use the mouse wheel, or Ctrl+↑↓ to change the magnification.
 	・Binaries are no longer separated into Japanese and English versions.
 	・Changed the settings save location to be saved in a separate area for each user.
-	 →	For Windows 10, "C:\Users\(username)\AppData\Local\CLCL"
+	 →	For Windows 10/11, "C:\Users\(username)\AppData\Local\CLCL"
 		(Automatically migrated on first launch)
 
 ・Ver 2.0.2 -> Ver 2.0.3
@@ -375,7 +377,8 @@ K.Takata ( http://webs.to/ken/ )
 
 ・Ver 1.0.3 -> Ver 1.0.4
 	・Files can now be automatically registered as external applications when dragged and dropped into the operation settings screen.
-	・Ver 1.0.2 -> Ver 1.0.3
+
+・Ver 1.0.2 -> Ver 1.0.3
 	・Fixed a bug where history was not saved correctly when the OS was shut down on Windows XP.
 
 ・Ver 1.0.1 -> Ver 1.0.2
@@ -399,5 +402,4 @@ The author is not responsible for any problems caused by this program. It is str
 
 Please contact nakka@nakka.com for bugs, requests, and questions. 
 
-Copyright (C) 1996-2022 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/ 
-2022/12/1
+Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/ 

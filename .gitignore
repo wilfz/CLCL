@@ -21,6 +21,8 @@ CVS/
 .#*
 .cvsignore
 
+release.md
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

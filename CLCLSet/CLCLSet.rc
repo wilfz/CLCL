@@ -874,7 +874,7 @@ END
 
 
 /////////////////////////////////////////////////////////////////////////////
-// âpåÍ (ïƒçë) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
@@ -1114,9 +1114,8 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Filter"
 FONT 8, "MS Sans Serif"
 BEGIN
-    CONTROL         "All formatting will be added to &history",IDC_RADIO_ALL_ADD,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,10,8,150,10
-    CONTROL         "All formatting will be exce&pted to history",IDC_RADIO_ALL_IGNORE,
+    CONTROL         "Add all formats to history",IDC_RADIO_ALL_ADD,"Button",BS_AUTORADIOBUTTON | WS_GROUP,10,8,150,10
+    CONTROL         "Exclude all formats from history",IDC_RADIO_ALL_IGNORE,
                     "Button",BS_AUTORADIOBUTTON,10,22,150,10
     LTEXT           "Filter &settings:",IDC_STATIC,10,40,200,8
     CONTROL         "List1",IDC_LIST_FILTER,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,5,50,240,135
@@ -1685,7 +1684,7 @@ BEGIN
     IDS_WINDOW_ERR_INPUT    "You must type ""Title"" and ""Class name."""
 END
 
-#endif    // âpåÍ (ïƒçë) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
