@@ -126,6 +126,7 @@ jobs:
           Setup/*.dll
           Setup/*.txt
           Setup/*.html
+          clcl_app.ini
 
         # The desired behavior if no files are found using the provided path.
         # Available Options:
