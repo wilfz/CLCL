@@ -66,6 +66,7 @@ jobs:
         mv Release/clcl.html Setup/ 
         cp readme_en.txt Setup/ 
         cp readme_jp.txt Setup/ 
+        cp clcl_app.ini Setup/ 
 
     - name: Publish Setup
       uses: actions/upload-artifact@v4
@@ -126,7 +127,7 @@ jobs:
           Setup/*.dll
           Setup/*.txt
           Setup/*.html
-          clcl_app.ini
+          Setup/clcl_app.ini
 
         # The desired behavior if no files are found using the provided path.
         # Available Options:
