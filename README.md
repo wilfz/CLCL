@@ -246,7 +246,8 @@ If the copy and paste keys are not set, the default key settings will be used.
 Multiple keys can be set for one window. If multiple keys are set, the keys will be sent in order from the top.
 
 ## Tools (plug-ins)
-The installation package also includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html. These plugins have been reworked to fit current operating systems.
+The installation package also includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html. These plugins have been reworked to fit current operating systems; especially the plugin DLLs are installed into the same folder as clcl.exe, the plugins' ini files to the same location as clcl.ini.
+
 tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_clip.
 
 To process history or template item data or add functions to CLCL, add plugin-DLLs in the "Tool" option.
