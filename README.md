@@ -335,7 +335,7 @@ K.Takata ( http://webs.to/ken/ )
 
 - Ver 1.1.2 -> Ver 2.0.0
 	- Supports Unicode. As a result, older versions of Windows are no longer supported.
-	  -	The settings of the older version will be inherited, but tools and plugin formats must be Unicode-compatible.
+	  - The settings of the older version will be inherited, but tools and plugin formats must be Unicode-compatible.
 	- Changed the behavior to copy the file if the save is successful so that template items are not deleted if the save process fails when CLCL is closed.
 	- Changed the icon design in the task tray.
 	- Changed the default behavior when clicking on the task tray.
@@ -418,4 +418,5 @@ The author is not responsible for any problems caused by this program. It is str
 Please contact nakka@nakka.com for bugs, requests, and questions. 
 
 Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/ 
+
 
