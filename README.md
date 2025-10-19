@@ -283,6 +283,10 @@ K.Takata ( http://webs.to/ken/ )
 - ReadMe.html uses github.css Stylesheet,   Copyright (c) 2017 Chris Patuzzo
 
 ## Update history
+- Ver 2.1.4 -> Ver 2.1.4.1
+	- Added clipboard access delay setting
+	- Change OS version check to recommended method
+
 - Ver 2.1.3 -> Ver 2.1.4
 	- MIT license
 	- Plugins updated to current OS

@@ -388,9 +388,11 @@ static void set_focus(const HWND active_wnd, const HWND focus_wnd)
 static void set_focus_info(const FOCUS_INFO *fi)
 {
 	// アクティブウィンドウの設定
+	// set the active window
 	_SetForegroundWindow(fi->active_wnd);
 	SendMessage(fi->active_wnd, WM_NCACTIVATE, (WPARAM)TRUE, 0);
 	// フォーカスの設定
+	// set the focus
 	if (window_focus_check(fi->active_wnd) == TRUE) {
 		set_focus(fi->active_wnd, fi->focus_wnd);
 	}
@@ -423,9 +425,11 @@ static void set_tray_icon(const HWND hWnd, const HICON hIcon, const TCHAR *buf)
 	}
 	if (tray_message(hWnd, NIM_MODIFY, TRAY_ID, hIcon, buf) == FALSE) {
 		// 変更できなかった場合は追加を行う
+		// if modification failed, add it
 		int i;
 		for (i = 0; i < 5; i++) {
 			// 追加できなかった場合はリトライする
+			// if add failed, retry
 			if (tray_message(hWnd, NIM_ADD, TRAY_ID, hIcon, buf)) {
 				break;
 			}
@@ -797,6 +801,7 @@ static BOOL clipboard_to_history(const HWND hWnd)
 	CopyMemory(&cp_tmi, &tmi, sizeof(TOOL_MENU_INFO));
 
 	// 除外ウィンドウのチェック
+	// check for windows to be excluded
 	if (window_ignore_check(GetForegroundWindow()) == FALSE) {
 		KillTimer(hWnd, ID_HISTORY_TIMER);
 		KillTimer(hWnd, ID_TOOL_TIMER);
@@ -806,10 +811,12 @@ static BOOL clipboard_to_history(const HWND hWnd)
 
 	// クリップボードが利用可能かどうかを事前にチェック
 	// 短い遅延を追加して他のアプリケーションのクリップボード操作を待つ
-	Sleep(10);
+	// add a short delay to wait for other applications' clipboard operations
+	Sleep(option.main_clipboard_access_delay);
 
 	if (OpenClipboard(hWnd) == FALSE) {
 		// クリップボードが利用可能になるまで待機
+		// wait until the clipboard is available
 		SetTimer(hWnd, ID_HISTORY_TIMER, RECLIP_INTERVAL, NULL);
 		if (tmi.enable == TRUE) {
 			SetTimer(hWnd, ID_TOOL_TIMER, option.tool_valid_interval, NULL);
@@ -821,6 +828,7 @@ static BOOL clipboard_to_history(const HWND hWnd)
 	ZeroMemory(&tmi, sizeof(TOOL_MENU_INFO));
 
 	// クリップボードからアイテムを作成
+	// create an item from the clipboard
 	*err_str = TEXT('\0');
 	if ((di = clipboard_to_item(err_str)) == NULL) {
 		CloseClipboard();
@@ -833,14 +841,17 @@ static BOOL clipboard_to_history(const HWND hWnd)
 	CloseClipboard();
 
 	// 履歴に追加
+	// add to history
 	if (history_add(&history_data.child, di, (cp_tmi.enable == TRUE) ? FALSE : TRUE) == FALSE) {
 		data_free(di);
 		return TRUE;
 	}
 	// 履歴に追加された時に実行するツール
+	// tools to be executed when added to history
 	tool_execute_all(hWnd, CALLTYPE_ADD_HISTORY, di);
 
 	// メニューからツール実行
+	// execute tool from menu
 	if (cp_tmi.enable == TRUE &&
 		(!(tool_execute(hWnd, cp_tmi.ti, CALLTYPE_MENU, di, NULL) & TOOL_CANCEL) ||
 		window_paste_check(GetForegroundWindow()) == TRUE) &&
@@ -848,27 +859,35 @@ static BOOL clipboard_to_history(const HWND hWnd)
 
 		data_delete(&history_data.child, di, FALSE);
 		// クリップボードにデータを送る
+		// send data to clipboard
 		SendMessage(hWnd, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)di);
 		data_free(di);
 		if (cp_tmi.paste != 0 && cp_tmi.ti != NULL && cp_tmi.ti->copy_paste == 1) {
 			// キーを離すまで待機
+			// wait until the key is released
 			key_wait();
 			// ホットキーの解除
+			// unregister hotkey
 			unregist_hotkey(hWnd);
 			// 貼り付け
+			// paste
 			sendkey_paste(GetForegroundWindow());
 			// ホットキーの登録
+			// register hotkey
 			regist_hotkey(hWnd, FALSE);
 		}
 	}
 
 	// タスクトレイのツールチップ設定
+	//
 	set_tray_tooltip(hWnd);
 	if (option.history_save == 1 && option.history_always_save == 1) {
 		// 履歴の保存
+		//
 		SendMessage(hWnd, WM_HISTORY_SAVE, 0, 0);
 	}
 	// 履歴の変化を通知
+	//
 	SendMessage(hWnd, WM_HISTORY_CHANGED, 0, 0);
 	return TRUE;
 }
