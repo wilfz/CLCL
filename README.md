@@ -283,9 +283,9 @@ K.Takata ( http://webs.to/ken/ )
 - ReadMe.html uses github.css Stylesheet,   Copyright (c) 2017 Chris Patuzzo
 
 ## Update history
-- Ver 2.1.4 -> Ver 2.1.4.1
-	- Added clipboard access delay setting
-	- Change OS version check to recommended method
+- Ver 2.1.4 -> HEAD
+	- Added clipboard access delay setting (Koichi-Kobayashi)
+	- Change OS version check to recommended method (Koichi-Kobayashi)
 
 - Ver 2.1.3 -> Ver 2.1.4
 	- MIT license
@@ -297,7 +297,6 @@ K.Takata ( http://webs.to/ken/ )
 	- expand environment variables in tool paths
 
 - Ver 2.1.2 -> Ver 2.1.3
-
 	- Changed the system tray icon when not monitoring the clipboard.
 	- Improved the up and down movement buttons in the settings.
 	- Improved so that the main screen does not appear when displaying the menu.
