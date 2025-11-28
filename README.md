@@ -8,7 +8,7 @@ CLCL is a software that records clipboard history.
 
 ## Functions
 - Supports multiple clipboard formats
-- Frequently used standard phrases can be registered as templates in a hierarchical structure
+- Register frequently used standard phrases as templates in a hierarchical structure
 - Freely customize the menu displayed with hotkeys
 - History items and template items can be selected from menu and automatically pasted into the current window
 - Display thumbprint images in the menu
@@ -27,24 +27,26 @@ Works on current Windows OS.
 
 To install CLCL launch the downloaded file setup_clcl214.exe. The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
 
-If you want to uninstall do so from the Control Panel __after__ closing CLCL.
+If you want to uninstall, do so from the Control Panel __after__ closing CLCL.
 
 Alternatively you can download clcl.zip and unpack into a folder of your choice and start clcl.exe from there.
 
 
 Data will be saved in the following folder (for Windows 10/11):
 
-    C:\Users\{username}\AppData\Local\CLCL
+	C:\Users\{username}\AppData\Local\CLCL
 
+### Portable Mode
 To save data in the same location as CLCL.exe, set clcl_app.ini as follows and then start CLCL.
-
-    [GENERAL]
-    portable=1
+```ini
+[GENERAL]
+portable=1
+```
 
 ## Startup
-When you start CLCL, a clip icon will be displayed in the task tray (the area with the clock in the corner of the taskbar).
+When you start CLCL, a clip icon appears in the task tray (the area with the clock in the corner of the taskbar).
 Clicking on this task tray icon will display a menu.
-By default, the menu displays the history in ascending order.
+By default, the menu displays the history in descending order (newest first).
 The menu can be customized in the settings.
 
 Right-clicking on the task tray icon will display the viewer.
@@ -82,8 +84,8 @@ The "History" in the tree is a list of the history.
 
 ## Clipboard
 ### What is the clipboard?
-The clipboard is an area for exchanging information between different applications.
-For example, you can paste text copied in Notepad into Word, and this is because the clipboard is used.
+The clipboard is an area where different applications can exchange data.
+For example, when you copy text in Notepad and paste it in Word, both applications use the clipboard.
 
 ### Clipboard format
 The clipboard can hold multiple formats at once.
@@ -107,7 +109,7 @@ You can also save other formats in the history by using the optional "Filter".
 This is the history of data copied to the clipboard.
 Newly copied data is added to the top of the history.
 
-A single history item contains multiple clipboard formats. The clipboard formats with the highest priority is displayed in the menu and viewer. Priority is set in the "Format" tab of CLCL Options.
+A single history item contains multiple clipboard formats. The clipboard format with the highest priority is displayed in the menu and viewer. Priority is set in the "Format" tab of CLCL Options.
 
 The number of history items to keep is set in the "History" tab of CLCL Options.
 The "Filter" tab controls which formats are added to the history.
@@ -134,7 +136,7 @@ There is no limit to the number of template items or the clipboard format.
 ## Send to Clipboard
 There are several ways to send history or template items to the clipboard.
 
--  Click the task tray to bring up a menu.
+- Click the task tray to bring up a menu.
 If you select a history or template item from the menu, the data will be sent to the clipboard and automatically pasted into the active window.
 
 - Press the hotkey (default is Alt + C) to bring up a menu.
@@ -221,8 +223,8 @@ The behavior of CLCL will change when Notepad is active.
 Either the title or the class name needs to be entered, and if it is not entered, it is the same as specifying only "*".
 
 - Don't add to history:
-    Copying in the set window will not be added to the history.
-    If you specify this option for an application that causes problems when added to the history, copying from that application will be ignored.
+	Copying in the set window will not be added to the history.
+	If you specify this option for an application that causes problems when added to the history, copying from that application will be ignored.
 
 - Don't set focus: 
 	Focus will not be set after activating the set window.
@@ -322,7 +324,7 @@ K.Takata ( http://webs.to/ken/ )
 	- Fixed typos in the English version settings screen.
 
 - Ver 2.0.1 -> Ver 2.0.2
-    - Support for Unicode in settings files.
+	- Support for Unicode in settings files.
 	  - Starting once with Ver 2.0.2 will make the settings file Unicode.
 		The files before conversion are backed up with the file names "general.ini.back" and "clcl.ini.back".
 		If you want to revert to an older version, use the above files.
