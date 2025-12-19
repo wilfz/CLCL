@@ -1,4 +1,4 @@
-﻿/*
+/*
  * CLCL
  *
  * main.c
@@ -295,6 +295,7 @@ static BOOL set_menu_layerer(const HWND hWnd, const int alpha)
 	}
 
 	// 半透明用API取得
+	// Get translucent API
 	user32_lib = LoadLibrary(TEXT("user32.dll"));
 	if (user32_lib == NULL) {
 		return FALSE;
@@ -308,6 +309,7 @@ static BOOL set_menu_layerer(const HWND hWnd, const int alpha)
 	lStyle = GetWindowLong(hWnd, GWL_EXSTYLE);
 	if (lStyle & WS_EX_LAYERED) {
 		// 既に半透明済み
+		// Already semi-transparent
 		FreeLibrary(user32_lib);
 		return TRUE;
 	}
@@ -315,6 +317,7 @@ static BOOL set_menu_layerer(const HWND hWnd, const int alpha)
 	SetWindowLong(hWnd, GWL_EXSTYLE, lStyle);
 
 	// 半透明
+	// translucent
 	SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
 	FreeLibrary(user32_lib);
 	return TRUE;
@@ -323,6 +326,7 @@ static BOOL set_menu_layerer(const HWND hWnd, const int alpha)
 
 /*
  * _SetForegroundWindow - ウィンドウをアクティブにする
+ * Activate window
  */
 BOOL _SetForegroundWindow(const HWND hWnd)
 {
@@ -492,6 +496,7 @@ static BOOL show_menu_tooltip(const HWND tooltip_wnd, const HMENU hMenu, const U
 
 /*
  * show_tool_menu - ツールメニューを表示
+ * Show Tools menu
  */
 static BOOL show_tool_menu(const HWND hWnd, DATA_INFO *di, const int paste)
 {
@@ -503,6 +508,7 @@ static BOOL show_tool_menu(const HWND hWnd, DATA_INFO *di, const int paste)
 		return FALSE;
 	}
 	// メニュー作成
+	// create menu
 	ZeroMemory(&mi, sizeof(MENU_INFO));
 	mi.content = MENU_CONTENT_TOOL;
 	popup_menu = menu_create(hWnd, &mi, 1, NULL, NULL);
@@ -517,6 +523,7 @@ static BOOL show_tool_menu(const HWND hWnd, DATA_INFO *di, const int paste)
 		return FALSE;
 	}
 	// メニュー表示
+	// show menu
 	_SetForegroundWindow(hWnd);
 	ret = menu_show(hWnd, popup_menu, NULL);
 	menu_destory(popup_menu);
@@ -529,6 +536,7 @@ static BOOL show_tool_menu(const HWND hWnd, DATA_INFO *di, const int paste)
 	}
 	if (mii->ti->copy_paste == 1) {
 		// クリップボードに送ってからツールを実行
+		// send to clipboard and execute tool
 		tmi.enable = TRUE;
 		tmi.ti = mii->ti;
 		tmi.paste = (GetKeyState(VK_SHIFT) >= 0) ? paste : 0;
@@ -536,6 +544,7 @@ static BOOL show_tool_menu(const HWND hWnd, DATA_INFO *di, const int paste)
 		return TRUE;
 	}
 	// ツールの実行
+	// execute tool
 	if (tool_execute(hWnd, mii->ti, CALLTYPE_MENU, di, NULL) & TOOL_DATA_MODIFIED) {
 		if (data_check(&history_data, di) != NULL) {
 			SendMessage(hWnd, WM_HISTORY_CHANGED, 0, 0);
@@ -559,12 +568,14 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 
 	if (popup_menu != NULL) {
 		// ポップアップメニュー表示中
+		// Pop-up menu is displayed
 		_SetForegroundWindow(hWnd);
 		return FALSE;
 	}
 	CopyMemory(&fi, &focus_info, sizeof(FOCUS_INFO));
 	if (caret == TRUE || fi.active_wnd == NULL) {
 		// フォーカス情報取得
+		// Get focus information
 		get_focus_info(&fi);
 	}
 	if (ai->caret == 0 || fi.caret == FALSE) {
@@ -572,9 +583,11 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 	}
 
 	// キー初期化
+	// key initialization
 	GetAsyncKeyState(VK_RBUTTON);
 
 	// メニュー作成
+	// Create menu
 	popup_menu = menu_create(hWnd, ai->menu_info, ai->menu_cnt, history_data.child, regist_data.child);
 	if (popup_menu == NULL) {
 		menu_free();
@@ -587,6 +600,7 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 		return FALSE;
 	}
 	// メニュー表示
+	// Display menu
 	_SetForegroundWindow(hWnd);
 	ShowWindow(hWnd, SW_HIDE);
 	ret = menu_show(hWnd, popup_menu, (caret_flag == TRUE) ? &fi.cpos : NULL);
@@ -596,17 +610,20 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 	mii = menu_get_info(ret);
 	if (ret <= 0 || ret == IDCANCEL || mii == NULL) {
 		// キャンセル
+		// cancel
 		if (GetForegroundWindow() == hWnd) {
 			set_focus_info(&fi);
 		}
 
 	} else if (mii->set_di != NULL) {
 		// アイテム
+		// item
 		if ((GetAsyncKeyState(VK_RBUTTON) == 1 || GetKeyState(VK_CONTROL) < 0) &&
 			option.menu_show_tool_menu == 1) {
 			DATA_INFO *di = mii->set_di;
 			menu_free();
 			// ツールメニュー表示
+			// Display tool menu
 			if (show_tool_menu(hWnd, di, ai->paste) == TRUE) {
 				set_focus_info(&fi);
 				SendMessage(hWnd, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)di);
@@ -616,33 +633,42 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 			return TRUE;
 		}
 		// クリップボードにデータを設定
+		// Set the data on the clipboard
 		set_focus_info(&fi);
 		SendMessage(hWnd, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)mii->set_di);
 		if (ai->paste == 1 && GetKeyState(VK_SHIFT) >= 0) {
 			// キーを離すまで待機
+			// Wait until key is released
 			key_wait();
 			// ホットキーの解除
+			// Cancel hotkey
 			unregist_hotkey(hWnd);
 			// 貼り付け
+			// paste
 			sendkey_paste(fi.active_wnd);
 			// ホットキーの登録
+			// Register the hotkey
 			regist_hotkey(hWnd, FALSE);
 		}
 
 	} else if (mii->ti != NULL) {
 		// ツール
+		// tool
 		set_focus_info(&fi);
 		if (mii->ti->copy_paste == 1) {
 			tmi.enable = TRUE;
 			tmi.ti = mii->ti;
 			tmi.paste = (GetKeyState(VK_SHIFT) >= 0) ? ai->paste : 0;
 			// キーを離すまで待機
+			// Wait until key is released
 			key_wait();
 			SetTimer(hWnd, ID_TOOL_TIMER, option.tool_valid_interval, NULL);
 			// コピー
+			// Copy
 			sendkey_copy(fi.active_wnd);
 		} else {
 			// ツール実行
+			// Execute the tool
 			if (tool_execute(hWnd, mii->ti, CALLTYPE_MENU, history_data.child, NULL) & TOOL_DATA_MODIFIED) {
 				SendMessage(hWnd, WM_HISTORY_CHANGED, 0, 0);
 				SendMessage(hWnd, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)history_data.child);
@@ -677,9 +703,11 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 
 	} else {
 		// コマンド
+		// command
 		SendMessage(hWnd, WM_COMMAND, ret, 0);
 	}
 	// メニュー情報の解放
+	// Release menu information
 	menu_free();
 	return TRUE;
 }
@@ -696,6 +724,7 @@ static BOOL action_execute(const HWND hWnd, const int type, const int id, const 
 	ZeroMemory(&tmi, sizeof(TOOL_MENU_INFO));
 
 	// 動作の検索
+	// Search for behavior
 	for (i = 0; i < option.action_cnt; i++) {
 		if (type == (option.action_info + i)->type && (option.action_info + i)->enable != 0) {
 			if (type == ACTION_TYPE_HOTKEY && id != (option.action_info + i)->id) {
@@ -705,6 +734,7 @@ static BOOL action_execute(const HWND hWnd, const int type, const int id, const 
 		}
 	}
 	// ツールの検索
+	//Search for tools
 	if (i >= option.action_cnt && type == ACTION_TYPE_HOTKEY) {
 		for (i = 0; i < option.tool_cnt; i++) {
 			if (id != (option.tool_info + i)->id) {
@@ -715,12 +745,14 @@ static BOOL action_execute(const HWND hWnd, const int type, const int id, const 
 				tmi.ti = option.tool_info + i;
 				tmi.paste = 1;
 				// キーを離すまで待機
+				// Wait until key is released
 				key_wait();
 				SetTimer(hWnd, ID_TOOL_TIMER, option.tool_valid_interval, NULL);
 				// コピー
 				sendkey_copy(GetForegroundWindow());
 			} else {
 				// ツール実行
+				// Execute the tool
 				if (tool_execute(hWnd, option.tool_info + i, CALLTYPE_MENU, history_data.child, NULL) & TOOL_DATA_MODIFIED) {
 					SendMessage(hWnd, WM_HISTORY_CHANGED, 0, 0);
 					SendMessage(hWnd, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)history_data.child);
@@ -730,6 +762,7 @@ static BOOL action_execute(const HWND hWnd, const int type, const int id, const 
 		}
 		if (i >= option.tool_cnt) {
 			// 登録アイテムを直接貼り付け
+			// Paste registered items directly
 			di = regist_hotkey_to_item(regist_data.child, id);
 			if (di != NULL) {
 				paste_di = di;
@@ -743,30 +776,36 @@ static BOOL action_execute(const HWND hWnd, const int type, const int id, const 
 	}
 
 	// 動作を実行
+	// Perform the action
 	switch ((option.action_info + i)->action) {
 	case ACTION_POPUPMEMU:
 		// ポップアップメニュー
+		// popup menu
 		ret = show_popup_menu(hWnd, option.action_info + i, caret);
 		ZeroMemory(&focus_info, sizeof(FOCUS_INFO));
 		return ret;
 
 	case ACTION_VIEWER:
 		// ビューア表示
+		// Display Viewer
 		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_VIEWER, 0);
 		break;
 
 	case ACTION_OPTION:
 		// オプション
+		// Options
 		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_OPTION, 0);
 		break;
 
 	case ACTION_CLIPBOARD_WATCH:
 		// クリップボード監視切り替え
+		// Toggle clipboard monitoring
 		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_CLIPBOARD_WATCH, 0);
 		break;
 
 	case ACTION_EXIT:
 		// 終了
+		// EXIT
 		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_EXIT, 0);
 		break;
 	}
@@ -781,6 +820,7 @@ static BOOL action_check(const int type)
 	int i;
 
 	// 動作の検索
+	// Search for behavior
 	for (i = 0; i < option.action_cnt; i++) {
 		if (type == (option.action_info + i)->type && (option.action_info + i)->enable != 0) {
 			return TRUE;
@@ -879,21 +919,22 @@ static BOOL clipboard_to_history(const HWND hWnd)
 	}
 
 	// タスクトレイのツールチップ設定
-	//
+	// Tooltip tray settings
 	set_tray_tooltip(hWnd);
 	if (option.history_save == 1 && option.history_always_save == 1) {
 		// 履歴の保存
-		//
+		// Save history
 		SendMessage(hWnd, WM_HISTORY_SAVE, 0, 0);
 	}
 	// 履歴の変化を通知
-	//
+	// Notify history has changed
 	SendMessage(hWnd, WM_HISTORY_CHANGED, 0, 0);
 	return TRUE;
 }
 
 /*
  * item_to_clipboard - アイテムをクリップボードに送る
+ * Send an item to the clipboard
  */
 static BOOL item_to_clipboard(const HWND hWnd, DATA_INFO *from_di, const BOOL delete_flag)
 {
@@ -902,6 +943,7 @@ static BOOL item_to_clipboard(const HWND hWnd, DATA_INFO *from_di, const BOOL de
 	int call_type = CALLTYPE_ITEM_TO_CLIPBOARD;
 
 	// データのコピー
+	// Copy data
 	if ((di = data_item_copy(from_di, FALSE, FALSE, err_str)) == NULL) {
 		if (*err_str != TEXT('\0')) {
 			_SetForegroundWindow(hWnd);
@@ -1551,6 +1593,7 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 		switch (LOWORD(wParam)) {
 		case ID_MENUITEM_EXIT:
 			// 終了
+			// exit
 			SendMessage(hWnd, WM_CLOSE, 0, 0);
 			break;
 
