@@ -1,4 +1,4 @@
-﻿/*
+/*
  * CLCL
  *
  * fmt_file_view.c
@@ -14,7 +14,10 @@
 #undef  _INC_OLE
 #include <shlobj.h>
 #include <commctrl.h>
+
+#if (defined(_MSC_VER) && _MSC_VER >=  1930)
 #include <versionhelpers.h>
+#endif
 
 #include "General.h"
 #include "Memory.h"
@@ -122,8 +125,22 @@ HDROP create_dropfile(const TCHAR **FileName, const int cnt, DWORD *ret_size)
 	int flen = 0;
 	int i;
 
-	// OSのバージョン取得（Windows 8.1以降の推奨方法）
-	if (IsWindowsVersionOrGreater(6, 0, 0)) {
+	// OSのバージョン取得
+	// Get OS version
+#if (defined(_MSC_VER) && _MSC_VER >=  1930)
+	// According to Microsoft documentation 
+	// Ver 5.0 refers to Windows 2000, Ver 5.1 refers to Windows XP
+	BOOL bWin32NT = IsWindowsVersionOrGreater(5, 0, 0);
+#else
+	OSVERSIONINFO osvi;
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	GetVersionEx(&osvi);
+	// According to Microsoft documentation 
+	// VER_PLATFORM_WIN32_NT indicates Windows XP / Windows 2000 or later.
+	BOOL bWin32NT = (osvi.dwPlatformId >= VER_PLATFORM_WIN32_NT);
+#endif
+
+	if (bWin32NT) {
 		fWide = TRUE;
 	}
 

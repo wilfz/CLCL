@@ -1,4 +1,4 @@
-﻿/*
+/*
  * CLCL
  *
  * fmt_Bitmap.c
@@ -13,7 +13,10 @@
 #include <windows.h>
 #undef  _INC_OLE
 #include <shlwapi.h>
+
+#if (defined(_MSC_VER) && _MSC_VER >=  1930)
 #include <versionhelpers.h>
+#endif
 
 #pragma comment(lib, "shlwapi.lib")
 
@@ -412,8 +415,22 @@ __declspec(dllexport) BOOL CALLBACK bitmap_get_menu_bitmap(DATA_INFO *di, const 
 	di->free_bitmap = TRUE;
 	old_to_hbmp = SelectObject(to_dc, di->menu_bitmap);
 
-	//OSバージョンのチェック（Windows 8.1以降の推奨方法）
-	if (IsWindowsVersionOrGreater(6, 0, 0) &&
+	//OSバージョンのチェック
+	//Check OS version
+#if (defined(_MSC_VER) && _MSC_VER >=  1930)
+	// According to Microsoft documentation 
+	// Ver 5.0 refers to Windows 2000, Ver 5.1 refers to Windows XP
+	BOOL bWin32NT = IsWindowsVersionOrGreater(5, 0, 0);
+#else
+	OSVERSIONINFO osvi;
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	GetVersionEx(&osvi);
+	// According to Microsoft documentation 
+	// VER_PLATFORM_WIN32_NT indicates Windows XP / Windows 2000 or later.
+	BOOL bWin32NT = (osvi.dwPlatformId >= VER_PLATFORM_WIN32_NT);
+#endif
+
+	if (bWin32NT &&
 		(width < bmp.bmWidth || height < bmp.bmHeight)) {
 		SetStretchBltMode(to_dc, HALFTONE);
 		SetBrushOrgEx(to_dc, 0, 0, NULL);
