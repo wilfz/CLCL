@@ -41,7 +41,7 @@ extern HINSTANCE hInst;
 extern HICON icon_menu_default;
 extern HICON icon_menu_folder;
 
-// ƒIƒvƒVƒ‡ƒ“
+// ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 extern OPTION_INFO option;
 
 /* Local Function Prototypes */
@@ -62,7 +62,7 @@ static BOOL menu_draw_ckeck(const HDC draw_dc, const int left, const int top, co
 static TCHAR menu_get_accelerator(TCHAR *str);
 
 /*
- * menu_item_free - ƒƒjƒ…[î•ñ‚Ì‰ğ•ú
+ * menu_item_free - ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã®è§£æ”¾
  */
 static void menu_item_free(MENU_ITEM_INFO *mii, int cnt)
 {
@@ -85,7 +85,7 @@ static void menu_item_free(MENU_ITEM_INFO *mii, int cnt)
 }
 
 /*
- * menu_free - ƒƒjƒ…[î•ñ‚Ì‰ğ•ú
+ * menu_free - ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã®è§£æ”¾
  */
 void menu_free(void)
 {
@@ -95,7 +95,7 @@ void menu_free(void)
 }
 
 /*
- * menu_show - ƒ}ƒEƒX‚ÌˆÊ’u‚Éƒƒjƒ…[‚ğ•\¦‚·‚é
+ * menu_show - ãƒã‚¦ã‚¹ã®ä½ç½®ã«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹
  */
 int menu_show(const HWND hWnd, const HMENU hMenu, const POINT *mpos)
 {
@@ -121,7 +121,7 @@ int menu_show(const HWND hWnd, const HMENU hMenu, const POINT *mpos)
 }
 
 /*
- * menu_id_to_menuitem - ƒƒjƒ…[ID‚©‚çƒƒjƒ…[î•ñ‚ğŒŸõ
+ * menu_id_to_menuitem - ãƒ¡ãƒ‹ãƒ¥ãƒ¼IDã‹ã‚‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã‚’æ¤œç´¢
  */
 static MENU_ITEM_INFO *menu_id_to_menuitem(MENU_ITEM_INFO *mii, const int mcnt, const UINT id)
 {
@@ -146,7 +146,7 @@ static MENU_ITEM_INFO *menu_id_to_menuitem(MENU_ITEM_INFO *mii, const int mcnt, 
 }
 
 /*
- * menu_get_info - ƒƒjƒ…[ID‚©‚çƒƒjƒ…[î•ñ‚ğæ“¾
+ * menu_get_info - ãƒ¡ãƒ‹ãƒ¥ãƒ¼IDã‹ã‚‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã‚’å–å¾—
  */
 MENU_ITEM_INFO *menu_get_info(const UINT id)
 {
@@ -154,7 +154,7 @@ MENU_ITEM_INFO *menu_get_info(const UINT id)
 }
 
 /*
- * menu_read_icon - ƒAƒCƒRƒ“æ“¾
+ * menu_read_icon - ã‚¢ã‚¤ã‚³ãƒ³å–å¾—
  */
 static HICON menu_read_icon(const TCHAR *file_name, const int index, const int icon_size)
 {
@@ -166,7 +166,7 @@ static HICON menu_read_icon(const TCHAR *file_name, const int index, const int i
 	if (file_name == NULL || *file_name == TEXT('\0')) {
 		return NULL;
 	}
-	// ƒtƒ@ƒCƒ‹‚©‚çƒAƒCƒRƒ“æ“¾
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã‚¢ã‚¤ã‚³ãƒ³å–å¾—
 	ExtractIconEx(file_name, index, &hIcon, &hsIcon, 1);
 	if (icon_size >= LICONSIZE) {
 		DestroyIcon(hsIcon);
@@ -175,7 +175,8 @@ static HICON menu_read_icon(const TCHAR *file_name, const int index, const int i
 		hIcon = hsIcon;
 	}
 	if (hIcon == NULL) {
-		// ŠÖ˜A•t‚¯‚©‚çƒAƒCƒRƒ“æ“¾
+		// é–¢é€£ä»˜ã‘ã‹ã‚‰ã‚¢ã‚¤ã‚³ãƒ³å–å¾—
+		// get icon from file association
 		icon_flag = SHGFI_ICON | ((icon_size == SICONSIZE) ? SHGFI_SMALLICON : SHGFI_LARGEICON);
 		SHGetFileInfo(file_name, SHGFI_USEFILEATTRIBUTES, &shfi, sizeof(SHFILEINFO), icon_flag);
 		hIcon = shfi.hIcon;
@@ -184,7 +185,7 @@ static HICON menu_read_icon(const TCHAR *file_name, const int index, const int i
 }
 
 /*
- * menu_create_font - ƒƒjƒ…[—pƒtƒHƒ“ƒg‚Ìì¬
+ * menu_create_font - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”¨ãƒ•ã‚©ãƒ³ãƒˆã®ä½œæˆ
  */
 static HFONT menu_create_font(void)
 {
@@ -204,7 +205,7 @@ static HFONT menu_create_font(void)
 }
 
 /*
- * menu_get_item_size - ƒI[ƒi[ƒhƒ[ƒƒjƒ…[€–Ú‚ÌƒTƒCƒY‚ğæ“¾
+ * menu_get_item_size - ã‚ªãƒ¼ãƒŠãƒ¼ãƒ‰ãƒ­ãƒ¼ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®ã‚µã‚¤ã‚ºã‚’å–å¾—
  */
 static int menu_get_item_size(const MENU_ITEM_INFO *mii, int *width)
 {
@@ -216,12 +217,12 @@ static int menu_get_item_size(const MENU_ITEM_INFO *mii, int *width)
 	text_y = mii->text_y;
 
 	if (mii->flag & MF_SEPARATOR) {
-		// ‹æØ‚è
+		// åŒºåˆ‡ã‚Š
 		ret_x = 0;
 		ret_y = option.menu_separator_height;
 
 	} else if (option.menu_show_icon != 1) {
-		// ƒeƒLƒXƒg‚Ì‚İ
+		// ãƒ†ã‚­ã‚¹ãƒˆã®ã¿
 		text_x += (option.menu_icon_margin + option.menu_icon_size + option.menu_text_margin_left + option.menu_text_margin_right);
 		ret_x = (text_x > option.menu_max_width) ? option.menu_max_width : text_x;
 
@@ -229,7 +230,7 @@ static int menu_get_item_size(const MENU_ITEM_INFO *mii, int *width)
 		ret_y = text_y;
 
 	} else if (mii->show_bitmap == TRUE) {
-		// ƒrƒbƒgƒ}ƒbƒv•\¦
+		// ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—è¡¨ç¤º
 		if (mii->show_di->menu_bmp_width == 0 && mii->show_di->menu_bmp_height == 0) {
 			bmp_x = option.menu_bitmap_width;
 			bmp_y = option.menu_bitmap_height;
@@ -245,7 +246,7 @@ static int menu_get_item_size(const MENU_ITEM_INFO *mii, int *width)
 			? bmp_y + (option.menu_icon_margin * 2) : text_y;
 
 	} else {
-		// ƒAƒCƒRƒ“•\¦
+		// ã‚¢ã‚¤ã‚³ãƒ³è¡¨ç¤º
 		text_x += (option.menu_icon_margin + option.menu_icon_size + option.menu_text_margin_left + option.menu_text_margin_right);
 		ret_x = (text_x > option.menu_max_width) ? option.menu_max_width : text_x;
 
@@ -260,7 +261,7 @@ static int menu_get_item_size(const MENU_ITEM_INFO *mii, int *width)
 }
 
 /*
- * menu_create_text - ƒAƒNƒZƒ‰ƒŒ[ƒ^•t‚«•¶š•¶š—ñ‚Ìì¬
+ * menu_create_text - ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ä»˜ãæ–‡å­—æ–‡å­—åˆ—ã®ä½œæˆ
  */
 static void menu_create_text(const int index, const TCHAR *buf, TCHAR *ret)
 {
@@ -292,7 +293,7 @@ static void menu_create_text(const int index, const TCHAR *buf, TCHAR *ret)
 		r = p;
 		p++;
 
-		// ƒx[ƒX’l
+		// ãƒ™ãƒ¼ã‚¹å€¤
 		if (*p >= TEXT('0') && *p <= TEXT('9')) {
 			base = _ttoi(p);
 			for (; *p >= TEXT('0') && *p <= TEXT('9'); p++)
@@ -305,20 +306,20 @@ static void menu_create_text(const int index, const TCHAR *buf, TCHAR *ret)
 		switch (*p) {
 		case TEXT('d'):
 		case TEXT('D'):
-			// ”š (10i”)
+			// æ•°å­— (10é€²æ•°)
 			_itot_s(num, ret, BUF_SIZE, 10);
 			ret += lstrlen(ret);
 			break;
 
 		case TEXT('x'):
-			// ”š (16i”) (¬•¶š)
+			// æ•°å­— (16é€²æ•°) (å°æ–‡å­—)
 			_itot_s(num, ret, BUF_SIZE, 16);
 			CharLower(ret);
 			ret += lstrlen(ret);
 			break;
 
 		case TEXT('X'):
-			// ”š (16i”)
+			// æ•°å­— (16é€²æ•°)
 			_itot_s(num, ret, BUF_SIZE, 16);
 			CharUpper(ret);
 			ret += lstrlen(ret);
@@ -326,47 +327,47 @@ static void menu_create_text(const int index, const TCHAR *buf, TCHAR *ret)
 
 		case TEXT('n'):
 		case TEXT('N'):
-			// ‚PŒ…‚Ì”š
+			// ï¼‘æ¡ã®æ•°å­—
 			*(ret++) = TEXT('0') + num % 10;
 			break;
 
 		case TEXT('a'):
-			// ƒAƒ‹ƒtƒ@ƒxƒbƒg (¬•¶š)
+			// ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ (å°æ–‡å­—)
 			*(ret++) = TEXT('a') + num % 26;
 			break;
 
 		case TEXT('A'):
-			// ƒAƒ‹ƒtƒ@ƒxƒbƒg
+			// ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ
 			*(ret++) = TEXT('A') + num % 26;
 			break;
 
 		case TEXT('b'):
-			// ƒAƒ‹ƒtƒ@ƒxƒbƒg + ”š (¬•¶š)
+			// ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ + æ•°å­— (å°æ–‡å­—)
 			i = num % (26 + 10);
 			*(ret++) = (i < 26) ? TEXT('a') + i : TEXT('0') + i - 26;
 			break;
 
 		case TEXT('B'):
-			// ƒAƒ‹ƒtƒ@ƒxƒbƒg + ”š
+			// ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ + æ•°å­—
 			i = num % (26 + 10);
 			*(ret++) = (i < 26) ? TEXT('A') + i : TEXT('0') + i - 26;
 			break;
 
 		case TEXT('c'):
-			// ”š + ƒAƒ‹ƒtƒ@ƒxƒbƒg (¬•¶š)
+			// æ•°å­— + ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ (å°æ–‡å­—)
 			i = num % (26 + 10);
 			*(ret++) = (i < 10) ? TEXT('0') + i : TEXT('a') + i - 10;
 			break;
 
 		case TEXT('C'):
-			// ”š + ƒAƒ‹ƒtƒ@ƒxƒbƒg
+			// æ•°å­— + ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ
 			i = num % (26 + 10);
 			*(ret++) = (i < 10) ? TEXT('0') + i : TEXT('A') + i - 10;
 			break;
 
 		case TEXT('t'):
 		case TEXT('T'):
-			// ƒ^ƒCƒgƒ‹
+			// ã‚¿ã‚¤ãƒˆãƒ«
 			lstrcpyn(ret, buf, BUF_SIZE);
 			ret += lstrlen(ret);
 			break;
@@ -391,7 +392,7 @@ static void menu_create_text(const int index, const TCHAR *buf, TCHAR *ret)
 }
 
 /*
- * menu_get_keyname - ƒL[–¼‚ğæ“¾
+ * menu_get_keyname - ã‚­ãƒ¼åã‚’å–å¾—
  */
 TCHAR *menu_get_keyname(const UINT modifiers, const UINT virtkey)
 {
@@ -413,7 +414,7 @@ TCHAR *menu_get_keyname(const UINT modifiers, const UINT virtkey)
 		lstrcat(buf, TEXT("Win+"));
 	}
 	if (virtkey == 0 || (scan_code = MapVirtualKey(virtkey, 0)) <= 0) {
-		// ‚È‚µ
+		// ãªã—
 		return NULL;
 	}
 	if (virtkey == VK_APPS ||
@@ -435,7 +436,7 @@ TCHAR *menu_get_keyname(const UINT modifiers, const UINT virtkey)
 }
 
 /*
- * menu_create_datainfo - ƒƒjƒ…[î•ñ‚Éƒf[ƒ^‚ğ“WŠJ
+ * menu_create_datainfo - ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã«ãƒ‡ãƒ¼ã‚¿ã‚’å±•é–‹
  */
 static BOOL menu_create_datainfo(DATA_INFO *set_di,
 								MENU_ITEM_INFO *mii, int menu_index, int *id,
@@ -451,16 +452,16 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 	int i, j;
 	int m, n;
 
-	// ‰ŠúˆÊ’uˆÚ“®
+	// åˆæœŸä½ç½®ç§»å‹•
 	for (m = 0; set_di != NULL && min > 0 && m < min - 1; set_di = set_di->next, m++)
 		;
 	if (step < 0) {
-		// ~‡
+		// é™é †
 		for (di = set_di, i = 0, n = m; di != NULL && (max <= 0 || n < max); di = di->next, i++, n++)
 			;
 		i += menu_index - 1;
 	} else {
-		// ¸‡
+		// æ˜‡é †
 		i = menu_index;
 	}
 
@@ -471,13 +472,13 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 
 		switch (di->type) {
 		case TYPE_FOLDER:
-			// ŠK‘w•\¦
+			// éšå±¤è¡¨ç¤º
 			(mii + i)->flag = MF_POPUP | MF_OWNERDRAW;
 			(mii + i)->show_di = di;
 
 			for (cdi = di->child, cnt = 0; cdi != NULL; cdi = cdi->next, cnt++)
 				;
-			// ƒƒjƒ…[€–Úî•ñ‚ÌŠm•Û
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®æƒ…å ±ã®ç¢ºä¿
 			if ((cmi = mem_calloc(sizeof(MENU_ITEM_INFO) * cnt)) == NULL) {
 				return FALSE;
 			}
@@ -487,24 +488,24 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 			break;
 
 		case TYPE_ITEM:
-			// ƒAƒCƒeƒ€
+			// ã‚¢ã‚¤ãƒ†ãƒ 
 			(mii + i)->flag = MF_OWNERDRAW;
 			(mii + i)->show_di = format_get_priority_highest(di);
 			break;
 
 		case TYPE_DATA:
-			// ƒf[ƒ^
+			// ãƒ‡ãƒ¼ã‚¿
 			(mii + i)->flag = MF_OWNERDRAW;
 			(mii + i)->show_di = di;
 			break;
 		}
 
-		// ƒƒjƒ…[‚É•\¦‚·‚éƒ^ƒCƒgƒ‹‚ğæ“¾
+		// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¡¨ç¤ºã™ã‚‹ã‚¿ã‚¤ãƒˆãƒ«ã‚’å–å¾—
 		format_get_menu_title((mii + i)->show_di);
-		// ƒ^ƒCƒgƒ‹‚ğİ’è
+		// ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®š
 		if (di->title != NULL) {
 			if (lstrcmp(di->title, TEXT("-")) == 0) {
-				// ‹æØ‚è
+				// åŒºåˆ‡ã‚Š
 				(mii + i)->id = 0;
 				(mii + i)->flag = MF_SEPARATOR | MF_OWNERDRAW;
 				(mii + i)->item = (LPCTSTR)(mii + i);
@@ -521,7 +522,7 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 			(mii + i)->text = alloc_copy(buf);
 
 		} else if ((mii + i)->show_di->format_name != NULL) {
-			// Œ`®–¼
+			// å½¢å¼å
 			p = tmp;
 			*(p++) = TEXT('(');
 			lstrcpyn(p, (mii + i)->show_di->format_name, BUF_SIZE - 3);
@@ -537,12 +538,12 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 		}
 
 		if (option.menu_show_hotkey == 1) {
-			// ƒzƒbƒgƒL[æ“¾
+			// ãƒ›ãƒƒãƒˆã‚­ãƒ¼å–å¾—
 			(mii + i)->hkey = menu_get_keyname(di->op_modifiers, di->op_virtkey);
 		}
 
 		if (option.menu_show_icon == 1) {
-			// ƒƒjƒ…[‚É•\¦‚·‚éƒAƒCƒRƒ“‚ğæ“¾
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¡¨ç¤ºã™ã‚‹ã‚¢ã‚¤ã‚³ãƒ³ã‚’å–å¾—
 			format_get_menu_icon((mii + i)->show_di);
 			if ((mii + i)->show_di->menu_icon == NULL) {
 				(mii + i)->icon = (di->type == TYPE_FOLDER) ? icon_menu_folder : icon_menu_default;
@@ -551,7 +552,7 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 			}
 			(mii + i)->free_icon = FALSE;
 
-			// ƒƒjƒ…[‚É•\¦‚·‚éƒrƒbƒgƒ}ƒbƒv‚ğæ“¾
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¡¨ç¤ºã™ã‚‹ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã‚’å–å¾—
 			if (option.menu_show_bitmap == 1) {
 				format_get_menu_bitmap((mii + i)->show_di);
 			}
@@ -563,7 +564,7 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 }
 
 /*
- * menu_create_info - ƒƒjƒ…[î•ñ‚Ìì¬
+ * menu_create_info - ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã®ä½œæˆ
  */
 static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt,
 										DATA_INFO *history_di, DATA_INFO *regist_di,
@@ -574,7 +575,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 	int i, j, t;
 	int cnt;
 
-	// ƒƒjƒ…[€–Ú”‚Ìæ“¾
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®æ•°ã®å–å¾—
 	for (i = 0, *ret_cnt = 0; i < menu_cnt; i++) {
 		switch ((menu_info + i)->content) {
 		case MENU_CONTENT_SEPARATOR:
@@ -619,17 +620,17 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 		}
 	}
 
-	// ƒƒjƒ…[€–Úî•ñ‚ÌŠm•Û
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®æƒ…å ±ã®ç¢ºä¿
 	if ((mii = mem_calloc(sizeof(MENU_ITEM_INFO) * (*ret_cnt))) == NULL) {
 		*ret_cnt = 0;
 		return NULL;
 	}
 
-	// ƒƒjƒ…[€–Úî•ñ‚Ìì¬
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®æƒ…å ±ã®ä½œæˆ
 	for (i = 0, j = 0; i < menu_cnt; i++) {
 		switch ((menu_info + i)->content) {
 		case MENU_CONTENT_SEPARATOR:
-			// ‹æØ‚è
+			// åŒºåˆ‡ã‚Š
 			(mii + j)->id = 0;
 			(mii + j)->flag = MF_SEPARATOR | MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
@@ -637,7 +638,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_HISTORY:
-			// —š—ğ (¸‡)
+			// å±¥æ­´ (æ˜‡é †)
 			if (menu_create_datainfo(history_di, mii, j, id, 1, (menu_info + i)->min, (menu_info + i)->max) == TRUE) {
 				for (di = history_di, cnt = 0; di != NULL &&
 					(menu_info + i)->min > 0 && cnt < (menu_info + i)->min - 1; di = di->next, cnt++);
@@ -647,7 +648,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_HISTORY_DESC:
-			// —š—ğ (~‡)
+			// å±¥æ­´ (é™é †)
 			if (menu_create_datainfo(history_di, mii, j, id, -1, (menu_info + i)->min, (menu_info + i)->max) == TRUE) {
 				for (di = history_di, cnt = 0; di != NULL &&
 					(menu_info + i)->min > 0 && cnt < (menu_info + i)->min - 1; di = di->next, cnt++)
@@ -659,7 +660,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_REGIST:
-			// “o˜^ƒAƒCƒeƒ€ (¸‡)
+			// ç™»éŒ²ã‚¢ã‚¤ãƒ†ãƒ  (æ˜‡é †)
 			di = regist_path_to_item(regist_di, (menu_info + i)->path);
 			if (di != NULL && menu_create_datainfo(di, mii, j, id, 1, 0, 0) == TRUE) {
 				for (; di != NULL; di = di->next, j++)
@@ -668,7 +669,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_REGIST_DESC:
-			// “o˜^ƒAƒCƒeƒ€ (~‡)
+			// ç™»éŒ²ã‚¢ã‚¤ãƒ†ãƒ  (é™é †)
 			di = regist_path_to_item(regist_di, (menu_info + i)->path);
 			if (di != NULL && menu_create_datainfo(di, mii, j, id, -1, 0, 0) == TRUE) {
 				for (; di != NULL; di = di->next, j++)
@@ -677,7 +678,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_POPUP:
-			// ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[
+			// ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 			(mii + j)->flag = MF_POPUP | MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
 			(mii + j)->text = alloc_copy((menu_info + i)->title);
@@ -690,7 +691,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_VIEWER:
-			// ƒrƒ…[ƒA
+			// ãƒ“ãƒ¥ãƒ¼ã‚¢
 			(mii + j)->id = ID_MENUITEM_VIEWER;
 			(mii + j)->flag = MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
@@ -702,7 +703,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_OPTION:
-			// ƒIƒvƒVƒ‡ƒ“
+			// ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 			(mii + j)->id = ID_MENUITEM_OPTION;
 			(mii + j)->flag = MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
@@ -714,7 +715,8 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_CLIPBOARD_WATCH:
-			// ƒNƒŠƒbƒvƒ{[ƒhŠÄ‹Ø‚è‘Ö‚¦
+			// ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ç›£è¦–åˆ‡ã‚Šæ›¿ãˆ
+			// toggle clipboard monitoring
 			(mii + j)->id = ID_MENUITEM_CLIPBOARD_WATCH;
 			(mii + j)->flag = MF_OWNERDRAW | ((option.main_clipboard_watch == 1) ? MF_CHECKED : 0);
 			(mii + j)->item = (LPCTSTR)(mii + j);
@@ -726,7 +728,8 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_TOOL:
-			// ƒc[ƒ‹
+			// ãƒ„ãƒ¼ãƒ«
+			// Tools
 			if ((menu_info + i)->path != NULL && *(menu_info + i)->path != TEXT('\0')) {
 				if ((t = tool_title_to_index((menu_info + i)->path)) != -1) {
 					(mii + j)->id = ID_MENUITEM_DATA + ((*id)++);
@@ -770,7 +773,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_APP:
-			// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“Às
+			// ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³å®Ÿè¡Œ
 			(mii + j)->id = ID_MENUITEM_DATA + ((*id)++);
 			(mii + j)->flag = MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
@@ -781,13 +784,13 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 				(mii + j)->icon = menu_read_icon((menu_info + i)->path, 0, option.menu_icon_size);
 			}
 			(mii + j)->free_icon = TRUE;
-			// ƒƒjƒ…[î•ñ‚ğİ’è
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã‚’è¨­å®š
 			(mii + j)->mi = menu_info + i;
 			j++;
 			break;
 
 		case MENU_CONTENT_CANCEL:
-			// ƒLƒƒƒ“ƒZƒ‹
+			// ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 			(mii + j)->id = IDCANCEL;
 			(mii + j)->flag = MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
@@ -799,7 +802,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_EXIT:
-			// I—¹
+			// çµ‚äº†
 			(mii + j)->id = ID_MENUITEM_EXIT;
 			(mii + j)->flag = MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
@@ -815,7 +818,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 }
 
 /*
- * menu_set_item - ƒƒjƒ…[‚É€–Ú‚ğİ’è
+ * menu_set_item - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«é …ç›®ã‚’è¨­å®š
  */
 static BOOL menu_set_item(const HDC hdc, const HMENU hMenu, MENU_ITEM_INFO *mii, const int cnt)
 {
@@ -826,9 +829,9 @@ static BOOL menu_set_item(const HDC hdc, const HMENU hMenu, MENU_ITEM_INFO *mii,
 	int menu_flag;
 	int i;
 
-	// ƒƒjƒ…[€–Ú‚Ì’Ç‰Á
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®è¿½åŠ 
 	for (i = 0; i < cnt; i++) {
-		// ƒƒjƒ…[‚Ì‚‚³‚ğæ“¾
+		// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é«˜ã•ã‚’å–å¾—
 		if ((mii + i)->flag & MF_SEPARATOR) {
 			item_height = option.menu_separator_height;
 		} else if ((mii + i)->flag & MF_OWNERDRAW) {
@@ -845,7 +848,7 @@ static BOOL menu_set_item(const HDC hdc, const HMENU hMenu, MENU_ITEM_INFO *mii,
 		} else {
 			item_height = GetSystemMetrics(SM_CYMENU);
 		}
-		// Ü‚è•Ô‚µİ’è
+		// æŠ˜ã‚Šè¿”ã—è¨­å®š
 		menu_flag = 0;
 		height += item_height;
 		if (option.menu_break == 1 && height >= GetSystemMetrics(SM_CYSCREEN)) {
@@ -856,10 +859,10 @@ static BOOL menu_set_item(const HDC hdc, const HMENU hMenu, MENU_ITEM_INFO *mii,
 		if ((mii + i)->flag & MF_POPUP) {
 			hPopupMenu = CreatePopupMenu();
 			menu_set_item(hdc, hPopupMenu, (mii + i)->mii, (mii + i)->mii_cnt);
-			// ƒƒjƒ…[€–Ú‚Ì’Ç‰Á
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®è¿½åŠ 
 			AppendMenu(hMenu, (mii + i)->flag | menu_flag, (UINT)hPopupMenu, (mii + i)->item);
 		} else {
-			// ƒƒjƒ…[€–Ú‚Ì’Ç‰Á
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®è¿½åŠ 
 			AppendMenu(hMenu, (mii + i)->flag | menu_flag, (mii + i)->id, (mii + i)->item);
 		}
 	}
@@ -867,7 +870,7 @@ static BOOL menu_set_item(const HDC hdc, const HMENU hMenu, MENU_ITEM_INFO *mii,
 }
 
 /*
- * menu_create - ƒƒjƒ…[‚Ìì¬
+ * menu_create - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
  */
 HMENU menu_create(const HWND hWnd, MENU_INFO *menu_info, const int menu_cnt,
 				  DATA_INFO *history_di, DATA_INFO *regist_di)
@@ -877,7 +880,7 @@ HMENU menu_create(const HWND hWnd, MENU_INFO *menu_info, const int menu_cnt,
 	HFONT hFont, hRetFont;
 	int id = 0;
 
-	// ƒƒjƒ…[ì¬
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ä½œæˆ
 	if ((hMenu = CreatePopupMenu()) == NULL) {
 		return NULL;
 	}
@@ -887,10 +890,10 @@ HMENU menu_create(const HWND hWnd, MENU_INFO *menu_info, const int menu_cnt,
 		DestroyMenu(hMenu);
 		return NULL;
 	}
-	// ƒtƒHƒ“ƒgİ’è
+	// ãƒ•ã‚©ãƒ³ãƒˆè¨­å®š
 	hFont = menu_create_font();
 	hRetFont = SelectObject(hdc, hFont);
-	// ƒƒjƒ…[‚É€–Ú‚ğİ’è
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«é …ç›®ã‚’è¨­å®š
 	menu_set_item(hdc, hMenu, menu_item_info, menu_item_cnt);
 	SelectObject(hdc, hRetFont);
 	DeleteObject(hFont);
@@ -899,7 +902,7 @@ HMENU menu_create(const HWND hWnd, MENU_INFO *menu_info, const int menu_cnt,
 }
 
 /*
- * menu_destory - ƒƒjƒ…[‚Ì”jŠü
+ * menu_destory - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ç ´æ£„
  */
 void menu_destory(HMENU hMenu)
 {
@@ -917,7 +920,7 @@ void menu_destory(HMENU hMenu)
 }
 
 /*
- * menu_set_drawitem - ƒƒjƒ…[•`‰æİ’è
+ * menu_set_drawitem - ãƒ¡ãƒ‹ãƒ¥ãƒ¼æç”»è¨­å®š
  */
 BOOL menu_set_drawitem(MEASUREITEMSTRUCT *ms)
 {
@@ -926,7 +929,7 @@ BOOL menu_set_drawitem(MEASUREITEMSTRUCT *ms)
 }
 
 /*
- * menu_draw_bitmap - ƒƒjƒ…[‚Éƒrƒbƒgƒ}ƒbƒv‚ğ•`‰æ
+ * menu_draw_bitmap - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã‚’æç”»
  */
 static int menu_draw_bitmap(const HDC draw_dc, const DATA_INFO *di, const int height)
 {
@@ -963,7 +966,7 @@ static int menu_draw_bitmap(const HDC draw_dc, const DATA_INFO *di, const int he
 }
 
 /*
- * menu_draw_ckeck - ƒƒjƒ…[‚Ìƒ`ƒFƒbƒNƒ}[ƒN‚ğ•`‰æ
+ * menu_draw_ckeck - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒã‚§ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚’æç”»
  */
 static BOOL menu_draw_ckeck(const HDC draw_dc, const int left, const int top, const int right, const int bottom)
 {
@@ -974,7 +977,7 @@ static BOOL menu_draw_ckeck(const HDC draw_dc, const int left, const int top, co
 	HANDLE hBrush;
 	RECT draw_rect;
 
-	// ì‹Æ—pDC‚Ìì¬
+	// ä½œæ¥­ç”¨DCã®ä½œæˆ
 	if ((hdc = CreateCompatibleDC(draw_dc)) == NULL) {
 		return FALSE;
 	}
@@ -1001,12 +1004,12 @@ static BOOL menu_draw_ckeck(const HDC draw_dc, const int left, const int top, co
 
 	SetRect(&draw_rect, 0, 0, right - left, bottom - top);
 	
-	// ƒ}ƒXƒN‚Ì•`‰æ
+	// ãƒã‚¹ã‚¯ã®æç”»
 	DrawFrameControl(hdc, &draw_rect, DFC_MENU, DFCS_MENUCHECK);
 	BitBlt(hdc, 0, 0, right - left, bottom - top, hdc, 0, 0, DSTINVERT);
 	BitBlt(draw_dc, left, top, right, bottom, hdc, 0, 0, SRCPAINT);
 
-	// ƒ`ƒFƒbƒNƒ}[ƒN‚Ì•`‰æ
+	// ãƒã‚§ãƒƒã‚¯ãƒãƒ¼ã‚¯ã®æç”»
 	hBrush = CreateSolidBrush(GetTextColor(draw_dc));
 	FillRect(hdc, &draw_rect, hBrush);
 	DeleteObject(hBrush);
@@ -1024,7 +1027,7 @@ static BOOL menu_draw_ckeck(const HDC draw_dc, const int left, const int top, co
 }
 
 /*
- * menu_drawitem - ƒƒjƒ…[€–Ú‚ğ•`‰æ
+ * menu_drawitem - ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã‚’æç”»
  */
 BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 {
@@ -1065,7 +1068,7 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 	width = ds->rcItem.right - ds->rcItem.left;
 	height = ds->rcItem.bottom - ds->rcItem.top;
 
-	// •`‰æ—pDC‚Ìì¬
+	// æç”»ç”¨DCã®ä½œæˆ
 	if ((draw_dc = CreateCompatibleDC(ds->hDC)) == NULL) {
 		return FALSE;
 	}
@@ -1075,7 +1078,7 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 	}
 	hrBmp = SelectObject(draw_dc, hDrawBmp);
 
-	// ”wŒi
+	// èƒŒæ™¯
 	SetRect(&draw_rect, 0, 0, width, height);
 	if (ds->itemState & ODS_SELECTED) {
 		hBrush = CreateSolidBrush(menu_color_highlight);
@@ -1101,11 +1104,11 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 		left_margin = -1;
 		if (mii->show_bitmap == TRUE &&
 			mii->show_di->menu_bitmap != NULL) {
-			// ƒrƒbƒgƒ}ƒbƒv
+			// ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—
 			left_margin = menu_draw_bitmap(draw_dc, mii->show_di, height);
 		}
 		if (left_margin == -1) {
-			// ƒAƒCƒRƒ“
+			// ã‚¢ã‚¤ã‚³ãƒ³
 			if (mii->icon != NULL) {
 				DrawIconEx(draw_dc, option.menu_icon_margin,
 					height / 2 - option.menu_icon_size / 2, mii->icon,
@@ -1126,7 +1129,7 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 	}
 
 	if (mii->text != NULL) {
-		// ƒeƒLƒXƒg
+		// ãƒ†ã‚­ã‚¹ãƒˆ
 		hFont = menu_create_font();
 		hRetFont = SelectObject(draw_dc, hFont);
 
@@ -1142,7 +1145,7 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 			DrawText(draw_dc,
 				mii->text, lstrlen(mii->text),
 				&draw_rect, DT_VCENTER | DT_SINGLELINE | DT_NOCLIP | DT_WORD_ELLIPSIS);
-			// ƒzƒbƒgƒL[•\¦
+			// ãƒ›ãƒƒãƒˆã‚­ãƒ¼è¡¨ç¤º
 			if (!(ds->itemState & ODS_SELECTED) && mii->show_format == TRUE) {
 				SetTextColor(draw_dc, menu_color_text);
 			}
@@ -1155,7 +1158,7 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 		DeleteObject(hFont);
 
 	} else if (mii->flag & MF_SEPARATOR) {
-		// ‹æØ‚è
+		// åŒºåˆ‡ã‚Š
 		hPen = CreatePen(PS_SOLID, 1, menu_color_3d_shadow);
 		hRetPen = SelectObject(draw_dc, hPen);
 		MoveToEx(draw_dc, option.menu_separator_margin_left,
@@ -1175,7 +1178,7 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 		DeleteObject(hPen);
 	}
 
-	// ƒƒjƒ…[‚É•`‰æ
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æç”»
 	BitBlt(ds->hDC,
 		ds->rcItem.left, ds->rcItem.top,
 		ds->rcItem.right, ds->rcItem.bottom,
@@ -1188,7 +1191,7 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 }
 
 /*
- * menu_get_accelerator - ƒƒjƒ…[‚ÌƒAƒNƒZƒ‰ƒŒ[ƒ^ƒL[‚ğæ“¾
+ * menu_get_accelerator - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ã‚­ãƒ¼ã‚’å–å¾—
  */
 static TCHAR menu_get_accelerator(TCHAR *str)
 {
@@ -1208,7 +1211,7 @@ static TCHAR menu_get_accelerator(TCHAR *str)
 		if (*(p + 1) == TEXT('&')) {
 			p++;
 		} else {
-			// ƒAƒNƒZƒ‰ƒŒ[ƒ^ƒL[
+			// ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ã‚­ãƒ¼
 			ret = *(p + 1);
 		}
 	}
@@ -1216,7 +1219,7 @@ static TCHAR menu_get_accelerator(TCHAR *str)
 }
 
 /*
- * menu_accelerator - ƒƒjƒ…[ƒAƒNƒZƒ‰ƒŒ[ƒ^
+ * menu_accelerator - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿
  */
 LRESULT menu_accelerator(const HMENU hMenu, const TCHAR key)
 {
@@ -1228,7 +1231,7 @@ LRESULT menu_accelerator(const HMENU hMenu, const TCHAR key)
 
 	cnt = GetMenuItemCount(hMenu);
 
-	// ‘I‘ğˆÊ’uæ“¾
+	// é¸æŠä½ç½®å–å¾—
 	for (sel = 0; sel < cnt; sel++) {
 		if (GetMenuState(hMenu, sel, MF_BYPOSITION) & MF_HILITE) {
 			break;
@@ -1238,7 +1241,7 @@ LRESULT menu_accelerator(const HMENU hMenu, const TCHAR key)
 		sel = -1;
 	}
 
-	// ƒAƒNƒZƒ‰ƒŒ[ƒ^ˆÊ’uæ“¾
+	// ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ä½ç½®å–å¾—
 	for (i = sel + 1; i < cnt; i++) {
 		ZeroMemory(&mii, sizeof(mii));
 		mii.cbSize = sizeof(mii);
@@ -1253,7 +1256,7 @@ LRESULT menu_accelerator(const HMENU hMenu, const TCHAR key)
 			continue;
 		}
 		if (ret != -1) {
-			// ‘I‘ğ
+			// é¸æŠ
 			return MAKELRESULT(ret, MNC_SELECT);
 		}
 		ret = i;
@@ -1272,7 +1275,7 @@ LRESULT menu_accelerator(const HMENU hMenu, const TCHAR key)
 			continue;
 		}
 		if (ret != -1) {
-			// ‘I‘ğ
+			// é¸æŠ
 			return MAKELRESULT(ret, MNC_SELECT);
 		}
 		ret = i;
