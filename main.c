@@ -697,7 +697,7 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 			}
 		}
 		else {
-				// launch the application with unexpanded path and parameters
+			// launch the application with unexpanded path and parameters
 			shell_open(mii->mi->path, mii->mi->cmd);
 		}
 
@@ -849,11 +849,12 @@ static BOOL clipboard_to_history(const HWND hWnd)
 		return TRUE;
 	}
 
-	// クリップボードが利用可能かどうかを事前にチェック
 	// 短い遅延を追加して他のアプリケーションのクリップボード操作を待つ
-	// add a short delay to wait for other applications' clipboard operations
+	// Add a short delay to wait for other applications' clipboard operations
 	Sleep(option.main_clipboard_access_delay);
 
+	// クリップボードが利用可能かどうかを事前にチェック
+	// Check if the clipboard is available
 	if (OpenClipboard(hWnd) == FALSE) {
 		// クリップボードが利用可能になるまで待機
 		// wait until the clipboard is available

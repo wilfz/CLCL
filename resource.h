@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ Ç≈ê∂ê¨Ç≥ÇÍÇΩÉCÉìÉNÉãÅ[Éh ÉtÉ@ÉCÉãÅB
-// CLCL.rc Ç≈égóp
+// Microsoft Visual C++ „ÅßÁîüÊàê„Åï„Çå„Åü„Ç§„É≥„ÇØ„É´„Éº„Éâ „Éï„Ç°„Ç§„É´„ÄÇ
+// CLCL.rc „Åß‰ΩøÁî®
 //
 #define IDS_MENU_REGIST                 1
 #define IDS_MENU_CANCEL                 2
@@ -140,6 +140,7 @@
 #define ID_MENU_DGDP_COPY               40064
 #define ID_MENUITEM_HELP_JP             40065
 #define ID_MENUITEM_HELP_EN             40066
+#define ID_MENUITEM_SHOWBINARY          40067
 #define ID_MENUITEM_CLIPBOARD_TB        50000
 #define ID_MENUITEM_PASTE_TB            50001
 #define ID_MENUITEM_REGIST_ADD_TB       50002
@@ -153,7 +154,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        140
-#define _APS_NEXT_COMMAND_VALUE         40067
+#define _APS_NEXT_COMMAND_VALUE         40068
 #define _APS_NEXT_CONTROL_VALUE         1010
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
