@@ -25,23 +25,34 @@ CLCL is a software that records clipboard history.
 ## Installation
 Works on current Windows OS.
 
-To install CLCL launch the downloaded file setup_clcl214.exe. The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
+Download and launch setup_clcl214.exe. 
+The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
 
 If you want to uninstall, do so from the Control Panel __after__ closing CLCL.
 
-Alternatively you can download clcl.zip and unpack into a folder of your choice and start clcl.exe from there.
+Instead of the automatic installer you can also download CLCL214.zip, unpack into a folder of your choice and start clcl.exe from there.
 
-
-Data will be saved in the following folder (for Windows 10/11):
+### Data Storage
+By default data and settings are stored in this folder (for Windows 10/11):
 
 	C:\Users\{username}\AppData\Local\CLCL
 
 ### Portable Mode
-To save data in the same location as CLCL.exe, set clcl_app.ini as follows and then start CLCL.
+To store data and settings in the same location as CLCL.exe, set clcl_app.ini as follows and then start CLCL.
 ```ini
 [GENERAL]
 portable=1
 ```
+
+### Language settings
+The menus and dialogs are in English, Japanese, or German according to your Windows language preferences.
+You can override this by explicitly setting the language in CLCL.ini to "en", "ja", or "de".
+```ini
+[main]
+...
+language="en"
+```
+
 
 ## Startup
 When you start CLCL, a clip icon appears in the task tray (the area with the clock in the corner of the taskbar).
@@ -192,10 +203,13 @@ CLCL can process all clipboard formats, but clipboard formats that are not regis
 Clipboard formats are registered in the options "Format". The registered format at the top takes priority, and the clipboard format with the highest priority among the items is displayed in the menu and viewer.
 
 To register, set the format name, the DLL to be processed, and the function header. If you omit the DLL and press the function header selection button, a list of built-in function headers will be displayed.
+
 For example, if you want to process the CSV clipboard format as text when copying in Excel, set it as follows:
-	Format name: CSV
-	DLL:
-	Function header: text_
+```
+Format name: CSV
+DLL:
+Function header: text_
+```
 The menu and viewer will process it as text.
 
 ### Filter
@@ -207,7 +221,7 @@ If you select "Exclude all formats from history", only clipboard formats set to 
 
 For clipboard formats set to be added in the filter, you can further set the size limit when adding to the history. Data exceeding the limit size will not be added to the history.
 
-If you set the clipboard format set to be added in the filter to "Do not save", it will not be saved to a file when CLCL is closed.
+If you set the clipboard format in the filter to "Do not save", it will not be saved to disk when CLCL is closed.
 For example, you can set it to add text and bitmaps to the history and save only the text.
 
 ## Window settings
@@ -248,21 +262,55 @@ If the copy and paste keys are not set, the default key settings will be used.
 Multiple keys can be set for one window. If multiple keys are set, the keys will be sent in order from the top.
 
 ## Tools (plug-ins)
-The installation package also includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html. These plugins have been reworked to fit current operating systems; especially the plugin DLLs are installed into the same folder as clcl.exe, the plugins' ini files to the same location as clcl.ini.
 
-tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_clip.
+Tools let you process current selection, history or template data before pasting, or extend CLCL's functionality. 
 
-To process history or template item data or add functions to CLCL, add plugin-DLLs in the "Tool" option.
+The installation package includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html. These plugins have been reworked to fit current operating systems; especially the plugin DLLs are installed into the same folder as clcl.exe, the plugins' ini files to the same location as clcl.ini.
 
-When you select the DLL and function name, the tool name and call type will be automatically set.
-The call type "Action Menu" allows you to execute from the "Tools" popup menu.
-The call type "Viewer" allows you to execute from the viewer's tool menu.
+### tool_text
+Text manipulation tools:
+- To Lower - Convert to lowercase
+- To Upper - Convert to UPPERCASE
+- Quotation - Mark as quotation e.g. with a leading '>' or an indention
+- Un Quotation - Remove quotation from selected text
+- Word Wrap - Wrap text at specified column width
+- <TAG></TAG> - Wrap text with custom tags
+- Delete CRLF - Remove line breaks
+- Connection of text - Join clipboard history into one text
+- Edit - Open text in an edit window
 
-The "Send copy and paste" option copies the marked data from the active window, executes the tool on the copied data, and afterwards pastes the modified data back into the active window.
-If this option is not checked, the tool is executed on the most recent history item and sent to the clipboard. In the tool menu that appears when you right-click an item in the action menu, the tool is executed on the selected item and sent to the clipboard.
-If "Paste" is not enabled in the action settings, pasting will not be performed after copying and executing the tool.
+### tool_utl
+Utility tools:
+- Clear History - Delete all history items
+- Clear Clipboard - Clear the clipboard
+- Play Sound - Play a sound when items are added to history
+- Always on Top - Keep viewer window on top
+- Un Top - Remove always on top setting
+- Save of more items - Save multiple selected items to files
 
-Drag and drop a DLL into the tool list window to display a list of tools that can be registered, and you can select multiple tools to register them all at once.
+### tool_clip
+tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_clip. Currently it contains the following features for clipboard items:
+- Replace tabstops and/or sequences of spaces by a character string of choice
+- Replace with regular expressions
+- Export items and template folders to json file
+- Import text items and folders from json file and merge them into template folders
+- Export to and import from android app "Clipper"
+- Convert tab separated data into an html table snippet, ready to insert into an email, OneNote, etc.
+- Send menu item to clipboard
+- Show currently selected item in viewer
+- Save CLCL templates to and load from an ODBC database 
+- To be continued ...
+
+**Configure tools in Options → Tools:**
+
+When you select the DLL and function name, the tool name and call type are  automatically set.
+
+- The call type **Viewer** allows you to execute from the viewer's tool menu.
+- The call type **Action Menu** allows you to execute from the "Tools" popup menu.
+  - The **Send copy and paste** sub-option copies the marked data from the active window, executes the tool on the copied data, and afterwards pastes the modified data back into the active window. 
+Without this option, the tool runs on the newest history item and copies it to the clipboard. For right-click tool menus on items, the tool runs on the selected item and sends the result to the clipboard.
+
+Drag and drop a plug-in DLL into the tool list window to display a list of tools that can be registered, and you can select multiple tools to register them all at once.
 
 ## Command Line
 When starting CLCL, you can specify a command line to specify the operation after startup.
@@ -286,8 +334,12 @@ K.Takata ( http://webs.to/ken/ )
 
 ## Update history
 - Ver 2.1.4 -> HEAD
-	- Added clipboard access delay setting (Koichi-Kobayashi)
-	- Change OS version check to recommended method (Koichi-Kobayashi)
+	- Added clipboard access delay setting (merge  from Koichi-Kobayashi)
+	- OS version check with recommended method (merge from Koichi-Kobayashi)
+	- Display item title of unprintable characters as abbreviation or ASCII-Code (Issue #23)
+	- Added conext menu: show (only current item) as binary
+	- Set language in CLCL.ini
+	- Added german resources
 
 - Ver 2.1.3 -> Ver 2.1.4
 	- MIT license
@@ -324,7 +376,7 @@ K.Takata ( http://webs.to/ken/ )
 	- Fixed typos in the English version settings screen.
 
 - Ver 2.0.1 -> Ver 2.0.2
-	- Support for Unicode in settings files.
+	- Unicode support in settings files.
 	  - Starting once with Ver 2.0.2 will make the settings file Unicode.
 		The files before conversion are backed up with the file names "general.ini.back" and "clcl.ini.back".
 		If you want to revert to an older version, use the above files.
