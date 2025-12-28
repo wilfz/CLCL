@@ -193,6 +193,9 @@
     <ClInclude Include="..\dpi.h">
       <Filter>Header Files\CLCL Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files\CLCLSet Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\ico00002.ico">
