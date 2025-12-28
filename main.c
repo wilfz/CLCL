@@ -1584,6 +1584,7 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			break;
 		}
 		// 履歴に追加（少し遅延を追加してクリップボードのロック競合を回避）
+		// Add to history (adds a short delay to avoid clipboard lock contention)
 		SetTimer(hWnd, ID_HISTORY_TIMER, max(option.history_add_interval, 100), NULL);
 		SetTimer(hWnd, ID_RECHAIN_TIMER, RECHAIN_INTERVAL, NULL);
 		rechain_cnt = 0;
