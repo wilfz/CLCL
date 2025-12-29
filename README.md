@@ -4,7 +4,7 @@ CLCL Ver 2.1.4
 --
 
 ## Introduction
-CLCL is a software that records clipboard history.
+CLCL is a software that records clipboard history and provides tools and templates for various formats.
 
 ## Functions
 - Supports multiple clipboard formats
@@ -475,6 +475,7 @@ The author is not responsible for any problems caused by this program. It is str
 Please contact nakka@nakka.com for bugs, requests, and questions. 
 
 Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/ 
+
 
 
 
