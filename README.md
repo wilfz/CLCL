@@ -339,7 +339,7 @@ K.Takata ( http://webs.to/ken/ )
 	- Display item title of unprintable characters as abbreviation or ASCII-Code (Issue #23)
 	- Added conext menu: show (only current item) as binary
 	- Set language in CLCL.ini
-	- Added german resources
+	- Added german user interface
 
 - Ver 2.1.3 -> Ver 2.1.4
 	- MIT license
@@ -475,5 +475,6 @@ The author is not responsible for any problems caused by this program. It is str
 Please contact nakka@nakka.com for bugs, requests, and questions. 
 
 Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/ 
+
 
 
