@@ -1270,10 +1270,10 @@ void ini_set_language(const TCHAR* locale_name)
 			case 1033: // English (United States)
 			case 1041: // Japanese
 			case 1049: // Russian
+			case 1058: // Ukrainian
 				langid = SetThreadUILanguage(langid);
 				// TODO: error handling
 				break;
-			case 1058: // Ukrainian
 			default:
 				// language specific resources not yet available
 				break;
