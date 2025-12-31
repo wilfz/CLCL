@@ -771,10 +771,10 @@ END
 // Dialog
 //
 
-IDD_DIALOG_SELECT_FOLDER DIALOG 0, 0, 232, 195
+IDD_DIALOG_SELECT_FOLDER DIALOGEX 0, 0, 232, 195
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Вибрати папку"
-FONT 8, "MS Sans Serif"
+FONT 8, "Microsoft Sans Serif", 400, 0, 0xCC
 BEGIN
     LTEXT           "msg",IDC_STATIC_MSG,5,5,220,19
     CONTROL         "Tree1",IDC_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,5,25,220,145
@@ -786,24 +786,24 @@ IDD_DIALOG_SELECT_FORMAT DIALOGEX 0, 0, 227, 105
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_ACCEPTFILES
 CAPTION "Новий елемент"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "Microsoft Sans Serif", 400, 0, 0xCC
 BEGIN
-    LTEXT           "Формат для додавання:",IDC_STATIC,5,5,115,10
+    LTEXT           "Формат для додавання:",IDC_STATIC,5,5,211,10
     COMBOBOX        IDC_COMBO_FORMAT,5,15,215,145,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Завантажити файл",IDC_CHECK_FILE_READ,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,40,185,10
-    LTEXT           "Ім'я файлу:",IDC_STATIC_FILE,5,55,115,9
+    LTEXT           "Ім'я файлу:",IDC_STATIC_FILE,5,55,193,9
     EDITTEXT        IDC_EDIT_FILE,5,65,195,13,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BUTTON_FILE_SELECT,203,65,15,13
     DEFPUSHBUTTON   "OK",IDOK,115,85,50,14
     PUSHBUTTON      "Скасувати",IDCANCEL,171,85,50,14
 END
 
-IDD_DIALOG_SET_HOTKEY DIALOG 0, 0, 125, 72
+IDD_DIALOG_SET_HOTKEY DIALOGEX 0, 0, 125, 72
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Встановити гарячу клавішу"
-FONT 8, "MS Sans Serif"
+FONT 8, "Microsoft Sans Serif", 400, 0, 0xCC
 BEGIN
-    LTEXT           "Гаряча клавіша:",IDC_STATIC,10,5,75,10
+    LTEXT           "Гаряча клавіша:",IDC_STATIC,10,5,104,10
     CONTROL         "HotKey1",IDC_HOTKEY_ITEM,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,10,15,70,15
     CONTROL         "+ Win",IDC_CHECK_WIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,85,17,31,11
     CONTROL         "Вставити",IDC_CHECK_PASTE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,35,75,10
@@ -845,6 +845,27 @@ BEGIN
     END
 END
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG_SELECT_FORMAT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG_SET_HOTKEY AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG_SELECT_FOLDER AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -993,7 +1014,7 @@ IDR_MENU_POPUP MENU
 BEGIN
     POPUP "Zwischenablage"
     BEGIN
-        MENUITEM "Zur &Vorlage hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
+        MENUITEM "Zu &Vorlagen hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
         MENUITEM "Speichern &unter...\tCtrl+S",        ID_MENUITEM_DATA_SAVE
         MENUITEM "Hexadezimal anzeigen",               ID_MENUITEM_SHOWBINARY
         MENUITEM SEPARATOR
@@ -1007,7 +1028,7 @@ BEGIN
     BEGIN
         MENUITEM "An Zwischenablage &senden\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
-        MENUITEM "Zur &Vorlage hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
+        MENUITEM "Zu &Vorlagen hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
         MENUITEM "Hexadezimal anzeigen",               ID_MENUITEM_SHOWBINARY
         MENUITEM "&Werkzeuge",                         ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
@@ -1030,7 +1051,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "An Zwischenablage &senden\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
-        MENUITEM "Zur &Vorlage hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
+        MENUITEM "Zu &Vorlagen hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
         MENUITEM "Hexadezimal anzeigen",               ID_MENUITEM_SHOWBINARY
         MENUITEM "&Werkzeuge",                         ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
@@ -1125,7 +1146,7 @@ BEGIN
     BEGIN
         MENUITEM "An Zwischenablage &senden\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
-        MENUITEM "Zur &Vorlage hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
+        MENUITEM "Zu &Vorlagen hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
         MENUITEM SEPARATOR
         MENUITEM "Nach &oben\tAlt+Up",                 ID_MENUITEM_UP
         MENUITEM "Nach &unten\tAlt+Down",              ID_MENUITEM_DOWN
@@ -1307,7 +1328,7 @@ STRINGTABLE
 BEGIN
     ID_MENUITEM_CLIPBOARD_TB "An Zwischenablage senden"
     ID_MENUITEM_PASTE_TB    "Aus Zwischenablage einfügen"
-    ID_MENUITEM_REGIST_ADD_TB "Zur Vorlage hinzufügen"
+    ID_MENUITEM_REGIST_ADD_TB "Zu Vorlagen hinzufügen"
     ID_MENUITEM_NEW_ITEM_TB "Neu"
     ID_MENUITEM_DELETE_TB   "Löschen"
     ID_MENUITEM_UP_TB       "Nach oben"

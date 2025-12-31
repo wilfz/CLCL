@@ -1253,12 +1253,19 @@ BOOL ini_free(void)
  */
 void ini_set_language(const TCHAR* locale_name)
 {
-#if (defined(_MSC_VER) && _MSC_VER >=  1930)
 	// According to Microsoft documentation 
 	// Ver 5.0 refers to Windows 2000, Ver 5.1 refers to Windows XP
 	// Ver 6.0 refers to Windows Vista
 	// OS version >= Vista?
-	if (IsWindowsVersionOrGreater(6, 0, 0) && IsValidLocaleName(locale_name)) {
+#if (defined(_MSC_VER) && _MSC_VER >=  1930)
+	BOOL bVistaOrGreater = IsWindowsVersionOrGreater(6, 0, 0);
+#else
+	OSVERSIONINFO osvi;
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	GetVersionEx(&osvi);
+	BOOL bVistaOrGreater = (osvi.dwMajorVersion >= 6);
+#endif
+	if (bVistaOrGreater && IsValidLocaleName(locale_name)) {
 		TCHAR language_name[3];
 		lstrcpyn(language_name, locale_name, 3);
 		LCID lcid = LocaleNameToLCID(language_name, 0);
@@ -1280,7 +1287,6 @@ void ini_set_language(const TCHAR* locale_name)
 			}
 		}
 	}
-#endif
 }
 
 /* End of source */
