@@ -181,13 +181,9 @@ BOOL ini_get_option(TCHAR *err_str)
 	option.main_clipboard_access_delay = profile_get_int(TEXT("main"), TEXT("clipboard_access_delay"), 10, ini_path);
 	option.main_show_trayicon = profile_get_int(TEXT("main"), TEXT("show_trayicon"), 1, ini_path);
 	option.main_show_viewer = profile_get_int(TEXT("main"), TEXT("show_viewer"), 0, ini_path);
-
-	// Currently there is no GUI element to set or change the language.
-	// So it need not to be included in OPTION_INFO.
-	TCHAR localename[LOCALE_NAME_MAX_LENGTH];
-	int cnt = profile_get_string(TEXT("main"), TEXT("language"), TEXT(""), localename, LOCALE_NAME_MAX_LENGTH - 1, ini_path);
+	int cnt = profile_get_string(TEXT("main"), TEXT("language"), TEXT(""), option.main_language, LOCALE_NAME_MAX_LENGTH, ini_path);
 	if (cnt > 0) {
-		ini_set_language(localename);
+		ini_set_language(option.main_language);
 	}
 
 	// data
@@ -809,6 +805,7 @@ BOOL ini_put_option(void)
 	profile_write_int(TEXT("main"), TEXT("clipboard_access_delay"), option.main_clipboard_access_delay, ini_path);
 	profile_write_int(TEXT("main"), TEXT("show_trayicon"), option.main_show_trayicon, ini_path);
 	profile_write_int(TEXT("main"), TEXT("show_viewer"), option.main_show_viewer, ini_path);
+	profile_write_string(TEXT("main"), TEXT("language"), option.main_language, ini_path);
 
 	// data
 	profile_write_string(TEXT("data"), TEXT("date_format"), option.data_date_format, ini_path);

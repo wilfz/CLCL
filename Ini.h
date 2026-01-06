@@ -1,4 +1,4 @@
-﻿/*
+/*
  * CLCL
  *
  * Ini.h
@@ -79,6 +79,7 @@ typedef struct _OPTION_INFO {
 	int main_clipboard_access_delay;	// クリップボードアクセス遅延時間(ミリ秒)
 	int main_show_trayicon;				// タスクトレイにアイコンを表示
 	int main_show_viewer;				// 起動時にビューアを表示
+	TCHAR main_language[LOCALE_NAME_MAX_LENGTH+1];  // 言語設定 / Language settings
 
 	// data
 	TCHAR *data_date_format;
