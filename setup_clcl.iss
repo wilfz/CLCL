@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CLCL"
-#define MyAppVersion "2.1.4"
+#define MyAppVersion "2.1.5"
 #define MyAppPublisher "WilfZim"
 #define MyAppURL "https://nakka.com/soft/clcl/index_eng.html"
 #define MyGitHubRepo "https://github.com/wilfz/CLCL"
@@ -39,6 +39,8 @@ WizardStyle=modern
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
+Name: "german"; MessagesFile: "compiler:Languages\German.isl"
+Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -55,23 +57,32 @@ Name: "tool_utl"; Description: "Plugin with other utilities"; Types: full
 Name: "tool_clip"; Description: "Plugin by WilfZim"; Types: full
 Name: "tool_test"; Description: "Example plugin"; Types: full
 Name: "readme"; Description: "ReadMe"; Types: full custom
-Name: "readme\en"; Description: "English"; Flags: exclusive
-Name: "readme\jp"; Description: "Japanese"; Flags: exclusive
+;Name: "readme\en"; Description: "English"; Flags: exclusive
+;Name: "readme\jp"; Description: "Japanese"; Flags: exclusive
 
 [Files]
 Source: "Release\{#MyAppExeName}"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "Release\CLCLSet.exe"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "Release\CLCLHook.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "LICENSE"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "clcl_app.ini"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "CLCLPlugin\tool_test\Release\tool_test.dll"; DestDir: "{app}"; Components: tool_test; Flags: ignoreversion
 Source: "CLCLPlugin\tool_text\Release\tool_text.dll"; DestDir: "{app}"; Components: tool_text; Flags: ignoreversion
 Source: "CLCLPlugin\tool_utl\Release\tool_utl.dll"; DestDir: "{app}"; Components: tool_utl; Flags: ignoreversion
 Source: "CLCLPlugin\tool_clip\Release\tool_clip.dll"; DestDir: "{app}"; Components: tool_clip; Flags: ignoreversion
-Source: "readme_en.txt"; DestDir: "{app}"; Components: readme\en; Flags: ignoreversion isreadme
-Source: "readme_jp.txt"; DestDir: "{app}"; Components: readme\jp main help; Flags: ignoreversion isreadme
+Source: "readme_en.txt"; DestDir: "{app}"; Components: main; Flags: ignoreversion 
+Source: "readme_jp.txt"; DestDir: "{app}"; Components: main help; Flags: ignoreversion
+Source: "readme_en.txt"; DestDir: "{app}"; Components: readme; Languages: english german ukrainian; Flags: ignoreversion isreadme
+Source: "readme_jp.txt"; DestDir: "{app}"; Components: readme; Languages: japanese; Flags: ignoreversion isreadme
 Source: "Release\clcl.html"; DestDir: "{app}"; Components: main help; Flags: ignoreversion
 Source: "CLCLPlugin\tool_clip\Release\tool_clip.html"; DestDir: "{app}"; Components: tool_clip; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+
+[INI]
+;Filename: "{app}\clcl_app.ini"; Section: "GENERAL"; Key: "language"; Languages: english; String: "en";
+;Filename: "{app}\clcl_app.ini"; Section: "GENERAL"; Key: "language"; Languages: japanese; String: "ja";
+;Filename: "{app}\clcl_app.ini"; Section: "GENERAL"; Key: "language"; Languages: german; String: "de";
+;Filename: "{app}\clcl_app.ini"; Section: "GENERAL"; Key: "language"; Languages: ukrainian; String: "uk";
 
 [Icons]
 ; Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

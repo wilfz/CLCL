@@ -65,6 +65,7 @@ jobs:
         mv CLCLPlugin/tool_text/Release/tool_text.dll Setup/ 
         mv CLCLPlugin/tool_utl/Release/tool_utl.dll Setup/ 
         mv Release/clcl.html Setup/ 
+        cp LICENSE Setup/ 
         cp readme_en.txt Setup/ 
         cp readme_jp.txt Setup/ 
         cp clcl_app.ini Setup/ 
