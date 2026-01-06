@@ -1,26 +1,28 @@
-# CLCL
+# CLCL - Clipboard Manager
 
-CLCL Ver 2.1.4
---
+> A powerful Windows clipboard manager with plugin support and customizable hotkeys
 
-## Introduction
-CLCL is a software that records clipboard history and provides tools and templates for various formats.
+**Version:** 2.1.5
 
-## Functions
-- Supports multiple clipboard formats
-- Register frequently used standard phrases as templates in a hierarchical structure
-- Freely customize the menu displayed with hotkeys
-- History items and template items can be selected from menu and automatically pasted into the current window
-- Display thumbprint images in the menu
-- Display tooltips in the menu
-- The format to leave and the format to save can be set up
-- It can be configured for which windows to save or not to save history
-- The paste key can be set up individually for every window
-- History is automatically saved when the program is closed and restored the next time it is started
-- No limit on the maximum number of items that can be saved in the history
-- View and edit history and templates in an Explorer-style viewer
-- Program is extensible by plug-ins
-- Supports Unicode
+## Overview
+CLCL is a software that records clipboard history. It provides quick access to recent clipboard items via a customizable pop-up menu and supports extended clipboard formats including text, images, and files.
+
+## Features
+- **Universal Format Support** - Handles all clipboard formats automatically
+- **Template Registration** - Save frequently used templates for quick access
+- **Hotkey Menu Display** - Quick access pop-up menu via Alt+C (customizable)
+- **Custom Menu Support** - Fully customizable menu organization and appearance
+- **Image Previews** - Thumbnail display of bitmap content in menu
+- **Tooltip Hints** - Hover tooltips for clipboard items and tools
+- **Format Control** - Selective saving of specific clipboard formats
+- **Window Filtering** - Ignore clipboard changes from specific applications
+- **Custom Paste Keys** - Per-window paste key configuration
+- **Plugin Architecture** - Extensible functionality via DLL plugins
+- **History size** - The maximum number of items in the history can be configured
+- **Unicode Support** - Full Unicode support for international text
+- **Multiple Language** - User interface language can be switched between english, japanese, german, and ukrainian
+- **Binary Viewer** - View raw binary clipboard data in hex format
+- **History & Registry** - Persistent and automatically saving clipboard history and templates
 
 ## Installation
 Works on current Windows OS.
@@ -45,28 +47,42 @@ portable=1
 ```
 
 ### Language settings
-The menus and dialogs are in English, Japanese, or German according to your Windows language preferences.
-You can override this by explicitly setting the language in CLCL.ini to "en", "ja", or "de".
+The menus and dialogs are in English, Japanese, German, or Ukrainian, according to your Windows language preferences.
+You can override this by explicitly setting the language in Options on the Menu tab. 
+The selected language is stored in the [mian section of CLCL.ini.
 ```ini
 [main]
 ...
 language="en"
 ```
 
+## Usage
 
-## Startup
-When you start CLCL, a clip icon appears in the task tray (the area with the clock in the corner of the taskbar).
-Clicking on this task tray icon will display a menu.
+### Basic Operation
+
+**Startup:**
+When you start CLCL.exe, a clip icon appears in the task tray (the area with the clock in the corner of the taskbar).
+
+**Display Menu:**
+- Click the clipboard icon in the taskbar to open the menu
+- Press Alt+C (default hotkey) to show menu
+- Select an item to paste it to the active window
+- Right-click menu items for additional options
+
 By default, the menu displays the history in descending order (newest first).
 The menu can be customized in the settings.
 
-Right-clicking on the task tray icon will display the viewer.
-The left side of the viewer is a tree that displays the history and template items.
-The right side of the viewer displays and edits the contents of the history and template items. The edited contents will be reflected in the item when you move the focus. Some formats cannot be edited. The contents of the current clipboard cannot be edited.
+**Viewer Window:**
+- Right-click taskbar icon to open the Viewer
+- Left Panel of the viewer: Shows history and templates in a tree view
+	- Browse clipboard history and templates
+	- Double-click to copy item to clipboard
+	- The "Clipboard" at the top of the tree is the current clipboard content.
+	- The "History" in the tree is a list of the history.
+	- "Templates" in the tree is a list of template items (such as standard phrases).
+- Right Panel: Show and edit content of the selected item
 
-The "Clipboard" at the top of the tree is the current clipboard contents.
-The "History" in the tree is a list of the history.
-"Templates" in the tree is a list of template items (such as standard phrases).
+**Tree structure:**
 
 	┌─■ Clipboard - Current clipboard contents
 	│ ├─□ TEXT - Formats in the current clipboard
@@ -98,49 +114,64 @@ The "History" in the tree is a list of the history.
 The clipboard is an area where different applications can exchange data.
 For example, when you copy text in Notepad and paste it in Word, both applications use the clipboard.
 
-### Clipboard format
-The clipboard can hold multiple formats at once.
+### Clipboard formats:
+The clipboard can hold multiple formats simultaneously.
 For example, if you copy text in Notepad, the following four formats will be stored in the clipboard (Windows 10/11):
 
 	・UNICODE TEXT
 	・LOCALE
 	・TEXT
 	・OEM TEXT
+
 If you copy in Excel or Access, even more formats will be sent to the clipboard.
 
-CLCL's default settings are:
+By default CLCL is configured to preserve:
+- UNICODE TEXT (text)
+- BITMAP (images)
+- DROP FILE LIST (files)
 
-	・UNICODE TEXT - Text
-	・BITMAP - Bitmap
-	・DROP FILE LIST - File
-These formats will be saved in the history.
-You can also save other formats in the history by using the optional "Filter".
+Use the "Filter" option in Settings to customize which formats are to be saved.
 
 ## History
-This is the history of data copied to the clipboard.
-Newly copied data is added to the top of the history.
+Newly copied data is added at the top of the history.
 
-A single history item contains multiple clipboard formats. The clipboard format with the highest priority is displayed in the menu and viewer. Priority is set in the "Format" tab of CLCL Options.
+A single history item contains multiple clipboard formats. 
+Use the "Format" option in Settings to register preferred formats and control priority when displaying items.
+The clipboard format with the highest priority is displayed in the menu and viewer.
 
 The number of history items to keep is set in the "History" tab of CLCL Options.
-The "Filter" tab controls which formats are added to the history.
+
+The "Filter" option in Settings determines which formats are added to the history.
 
 ## Templates
-Templates can be used to register commonly used data such as standard phrases.
+Save frequently used data such as standard phrases, text snippets, URLs as templates.
 You can add folders to organize them into hierarchical structures and give names to items.
 
-To add a template item, open the viewer, select the history item, and select "Add to Templates" from the menu.
-Select the folder you want to add in the tree, and select "Create New" from the menu to create an item by loading the contents of an empty item or file.
+**To Add an Item:**
+1. In Viewer, select the clipboard or an history item
+2. Right-click to get the context menu and choose "Add to Templates"
+3. Optionally choose a subfolder where to store the item.
 
-To add a folder, open the viewer, right-click on the location in the templates where you want to add it, and select "Create Folder."
+**To Add a Folder:**
+1. Right-click in Viewer on Template or a subfolder thereof
+2. Choose "New folder" from the context menu
 
-To rename a folder or item, open the viewer, select the item you want to rename, right-click on it, and select "Rename."
-"Clear Name" erases the name you set and displays the item's contents as the name.
+**To Rename Items/Folders:**
+1. Open Viewer
+2. Select the item
+3. Right-click and choose "Rename"
+
+**To assign a Hotkey for an Item:**
+1. In Viewer right-click on a template item
+2. Choose "Set Hotkey ..." from the context menu
+
+**Clear Name** erases the previous name and displays the item's contents as the name.
 If you name an item "-", it will be displayed as a separator in the menu. The format and data in the item will be ignored.
-If you add & to the name, the character following it will be used as the shortcut key in the menu. If you want to display & itself in the menu, use &&.
 
-Right-click on a template item to display the menu and select "Hotkey Settings" to assign a hotkey to the template item. Pressing that key will send the template item directly to the clipboard without displaying the menu, and will paste it directly if "Paste" is enabled.
-You can check the registered hotkeys in the list display area of the viewer. If you select other template items, they will be displayed in the status bar.
+If you add **&** to the name, the character following it will be used as the shortcut key in the menu. If you want to display & itself in the menu, use &&.
+
+Right-click on a template item to display the menu and select "Hotkey Settings" to assign a hotkey to the template item. Pressing that key sends the template item directly to the clipboard without displaying the menu, and pastes it directly if "Paste" is enabled.
+You can see the registered hotkeys in the list view of the viewer. If you select other template items, they will be displayed in the status bar.
 
 There is no limit to the number of template items or the clipboard format.
 
@@ -212,7 +243,7 @@ Function header: text_
 ```
 The menu and viewer will process it as text.
 
-### Filter
+## Filter
 To select the clipboard format, set it in the "Filter" option.
 
 If you select "Add all formats to history", all clipboard formats except those set to be excluded will be added to the history.
@@ -333,13 +364,14 @@ K.Takata ( http://webs.to/ken/ )
 - ReadMe.html uses github.css Stylesheet,   Copyright (c) 2017 Chris Patuzzo
 
 ## Update history
-- Ver 2.1.4 -> HEAD
-	- Added clipboard access delay setting (merge  from Koichi-Kobayashi)
+- Ver 2.1.4 -> 2.1.5
+	- Added clipboard access delay setting (merge from Koichi-Kobayashi)
 	- OS version check with recommended method (merge from Koichi-Kobayashi)
 	- Display item title of unprintable characters as abbreviation or ASCII-Code (Issue #23)
-	- Added conext menu: show (only current item) as binary
-	- Set language in CLCL.ini
+	- Added context menu: show (only current item) as binary
 	- Added german user interface
+	- Added ukrainian user interface
+	- Switch user interface language in option's menu tab and save in CLCL.ini
 
 - Ver 2.1.3 -> Ver 2.1.4
 	- MIT license
@@ -472,10 +504,8 @@ K.Takata ( http://webs.to/ken/ )
 
 The author is not responsible for any problems caused by this program. It is strongly recommended that you back up important files. 
 
-Please contact nakka@nakka.com for bugs, requests, and questions. 
-
 Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/ 
 
-
+2025 - 2026 MIT License. Sources and Releases under https://github.com/wilfz/CLCL
 
 
