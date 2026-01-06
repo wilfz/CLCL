@@ -193,6 +193,8 @@ BEGIN
     LTEXT           "メニューの最大幅(&W):",IDC_STATIC,10,165,175,8
     EDITTEXT        IDC_EDIT_MAX_WIDTH,10,175,39,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "Spin5",IDC_SPIN_MAX_WIDTH,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,55,175,10,15
+    COMBOBOX        IDC_UI_LANGUAGE,60,190,120,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Language",IDC_STATIC,10,192,44,8
 END
 
 IDD_DIALOG_VIEWER DIALOG 0, 0, 241, 209
@@ -669,8 +671,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,1,4,0
- PRODUCTVERSION 2,1,4,0
+ FILEVERSION 2,1,5,0
+ PRODUCTVERSION 2,1,5,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -686,12 +688,12 @@ BEGIN
         BLOCK "041104b0"
         BEGIN
             VALUE "FileDescription", "CLCLSet"
-            VALUE "FileVersion", "2.1.4.0"
+            VALUE "FileVersion", "2.1.5.0"
             VALUE "InternalName", "CLCLSet.exe"
-            VALUE "LegalCopyright", "Copyright (C) 1996-2025 by Ohno Tomoaki. All rights reserved."
+            VALUE "LegalCopyright", "Copyright (C) 1996-2024 by Ohno Tomoaki. 2024-2026 MIT license."
             VALUE "OriginalFilename", "CLCLSet.exe"
             VALUE "ProductName", "CLCL"
-            VALUE "ProductVersion", "2.1.4.0"
+            VALUE "ProductVersion", "2.1.5.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -874,6 +876,14 @@ BEGIN
     IDS_WINDOW_ERR_INPUT    "「タイトル」と「クラス名」の両方が入力されていません。"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_MENU_JAPANESE       "日本語"
+    IDS_MENU_ENGLISH        "英語"
+    IDS_MENU_GERMAN         "ドイツ語"
+    IDS_MENU_UKRAINIAN      "ウクライナ語"
+END
+
 #endif    // 日本語 (日本) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -1037,6 +1047,8 @@ BEGIN
     LTEXT           "Максимальна &ширина меню:",IDC_STATIC,10,161,175,8
     EDITTEXT        IDC_EDIT_MAX_WIDTH,10,171,40,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "Spin5",IDC_SPIN_MAX_WIDTH,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,60,170,13,15
+    COMBOBOX        IDC_UI_LANGUAGE,60,190,120,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Мова",IDC_STATIC,10,192,44,8
 END
 
 IDD_DIALOG_VIEWER DIALOGEX 0, 0, 273, 228
@@ -1633,6 +1645,14 @@ BEGIN
     IDS_WINDOW_ERR_INPUT    "Ви повинні ввести ""Заголовок"" та ""Ім'я класу""."
 END
 
+STRINGTABLE
+BEGIN
+    IDS_MENU_JAPANESE       "Японська"
+    IDS_MENU_ENGLISH        "Англійська"
+    IDS_MENU_GERMAN         "Німецька"
+    IDS_MENU_UKRAINIAN      "Українська"
+END
+
 #endif    // Ukrainian (Ukraine) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -1671,7 +1691,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,73,240,10
     CONTROL         "Verlauf wird gelöscht, wenn an Zwischenablage gesendet",IDC_CHECK_DELETE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,87,260,10
-    CONTROL         "Aus Vorlage ausnehmen",IDC_CHECK_IGNORE_REGIST_ITEM,
+    CONTROL         "Aus Vorlage ignorieren",IDC_CHECK_IGNORE_REGIST_ITEM,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,101,187,11
     GROUPBOX        "Duplikatsprüfung des Verlaufs",IDC_STATIC,9,119,253,70
     CONTROL         "Keine Prüfung",IDC_RADIO_CHECK_NO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,16,131,218,10
@@ -1749,7 +1769,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,120,185,50,14
     PUSHBUTTON      "Abbrechen",IDCANCEL,175,185,50,14
     EDITTEXT        IDC_EDIT_FILE,5,5,180,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "Durchsuchen...",IDC_BUTTON_BROWS,190,5,35,12
+    PUSHBUTTON      "Suchen...",IDC_BUTTON_BROWS,190,5,35,12
 END
 
 IDD_DIALOG_SELECT_FOLDER DIALOG 0, 0, 232, 195
@@ -1794,6 +1814,8 @@ BEGIN
     LTEXT           "Maximale Breite des Menüs:",IDC_STATIC,10,161,175,8
     EDITTEXT        IDC_EDIT_MAX_WIDTH,10,171,40,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "Spin5",IDC_SPIN_MAX_WIDTH,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,60,170,13,15
+    COMBOBOX        IDC_UI_LANGUAGE,60,190,120,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Sprache",IDC_STATIC,10,192,44,8
 END
 
 IDD_DIALOG_VIEWER DIALOGEX 0, 0, 273, 228
@@ -1804,7 +1826,7 @@ BEGIN
     CONTROL         "Fenster umschalten",IDC_CHECK_TOGGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,145,10
     CONTROL         "Zwischenablage erweitern",IDC_CHECK_CLIP_EXPAND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,23,175,10
     CONTROL         "Verlauf erweitern",IDC_CHECK_HISTORY_EXPAND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,36,175,10
-    CONTROL         "Vorlage erweitern",IDC_CHECK_REGIST_EXPAND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,49,175,10
+    CONTROL         "Vorlagen erweitern",IDC_CHECK_REGIST_EXPAND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,49,175,10
     CONTROL         "Alle Ordner erweitern",IDC_CHECK_FOLDER_EXPAND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,62,175,11
     GROUPBOX        "Angezeigte Elemente und Reihenfolge",IDC_STATIC,10,77,250,68
     LTEXT           "Verfügbare Elemente:",IDC_STATIC,20,88,95,8
@@ -1845,7 +1867,7 @@ BEGIN
     CONTROL         "Format",IDC_BUTTON_FORMAT,"Button",BS_OWNERDRAW | WS_TABSTOP,210,20,15,13
     LTEXT           "DLL:",IDC_STATIC,10,45,150,10
     EDITTEXT        IDC_EDIT_LIB_PATH,10,55,175,13,ES_AUTOHSCROLL
-    PUSHBUTTON      "Durchsuchen...",IDC_BUTTON_FILE_SELECT,190,55,35,13
+    PUSHBUTTON      "Suchen...",IDC_BUTTON_FILE_SELECT,190,55,35,13
     LTEXT           "Funktions-Header:",IDC_STATIC,10,72,150,10
     EDITTEXT        IDC_EDIT_HEADER,10,82,175,13,ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "Auswählen...",IDC_BUTTON_FUNC_SELECT,190,82,35,13
@@ -2025,20 +2047,20 @@ BEGIN
     PUSHBUTTON      "Eigenschaften...",IDC_BUTTON_PROP,216,190,50,14
 END
 
-IDD_DIALOG_TOOL_SET DIALOG 0, 0, 247, 263
+IDD_DIALOG_TOOL_SET DIALOGEX 0, 0, 247, 263
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tool bearbeiten"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     LTEXT           "Titel:",IDC_STATIC,10,5,150,10
-    EDITTEXT        IDC_EDIT_TITLE,10,15,190,13,ES_AUTOHSCROLL
-    LTEXT           "(mit '-' trennen)",IDC_STATIC,204,18,43,10
+    EDITTEXT        IDC_EDIT_TITLE,10,15,176,13,ES_AUTOHSCROLL
+    LTEXT           "(mit '-' trennen)",IDC_STATIC,192,18,55,10
     LTEXT           "DLL:",IDC_STATIC,10,34,150,10
-    EDITTEXT        IDC_EDIT_LIB_PATH,10,44,190,13,ES_AUTOHSCROLL
-    PUSHBUTTON      "Durchsuchen...",IDC_BUTTON_FILE_SELECT,205,44,35,13
+    EDITTEXT        IDC_EDIT_LIB_PATH,10,44,176,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "Suchen...",IDC_BUTTON_FILE_SELECT,192,44,48,13
     LTEXT           "Funktionsname:",IDC_STATIC,10,62,150,10
-    EDITTEXT        IDC_EDIT_HEADER,10,72,190,13,ES_AUTOHSCROLL | ES_READONLY
-    PUSHBUTTON      "Auswählen...",IDC_BUTTON_FUNC_SELECT,205,72,35,13
+    EDITTEXT        IDC_EDIT_HEADER,10,72,176,13,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Auswählen...",IDC_BUTTON_FUNC_SELECT,192,72,48,13
     LTEXT           "Befehlszeile:",IDC_STATIC,10,88,150,10
     EDITTEXT        IDC_EDIT_CMD_LINE,10,98,230,13,ES_AUTOHSCROLL
     GROUPBOX        "Ausführungszeitpunkt",IDC_STATIC,10,115,230,125
@@ -2103,6 +2125,14 @@ BEGIN
     IDD_DIALOG_FILTER_SET, DIALOG
     BEGIN
     END
+
+    IDD_DIALOG_TOOL, DIALOG
+    BEGIN
+    END
+
+    IDD_DIALOG_TOOL_SET, DIALOG
+    BEGIN
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -2122,6 +2152,16 @@ BEGIN
     0
 END
 
+IDD_DIALOG_MENU AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG_TOOL_SET AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2130,13 +2170,13 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_MENU_REGIST         "&Vorlage"
+    IDS_MENU_REGIST         "&Vorlagen"
     IDS_MENU_CANCEL         "&Abbrechen"
     IDS_MENU_EXIT           "&Beenden"
     IDS_MENU_VIEWER         "&Betrachter..."
     IDS_MENU_OPTION         "&Optionen..."
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage &überwachen"
-    IDS_TREEITEM_REGIST     "Vorlage"
+    IDS_TREEITEM_REGIST     "Vorlagen"
 END
 
 STRINGTABLE
@@ -2165,7 +2205,7 @@ STRINGTABLE
 BEGIN
     IDS_VIEWER_CLIPBOARD    "Zwischenablage"
     IDS_VIEWER_HISTORY      "Verlauf"
-    IDS_VIEWER_REGIST       "Vorlage"
+    IDS_VIEWER_REGIST       "Vorlagen"
 END
 
 STRINGTABLE
@@ -2204,8 +2244,8 @@ STRINGTABLE
 BEGIN
     IDS_ACTION_CONTENT_HISTORY "Verlauf (aufsteigend)"
     IDS_ACTION_CONTENT_HISTORY_DESC "Verlauf (absteigend)"
-    IDS_ACTION_CONTENT_REGIST "Vorlage (aufsteigend)"
-    IDS_ACTION_CONTENT_REGIST_DESC "Vorlage (absteigend)"
+    IDS_ACTION_CONTENT_REGIST "Vorlagen (aufsteigend)"
+    IDS_ACTION_CONTENT_REGIST_DESC "Vorlagen (absteigend)"
     IDS_ACTION_CONTENT_POPUP "Popup-Menü"
     IDS_ACTION_CONTENT_VIEWER "Viewer"
     IDS_ACTION_CONTENT_OPTION "Optionen"
@@ -2296,6 +2336,14 @@ BEGIN
     IDS_WINDOW_ERR_INPUT    "Sie müssen ""Titel"" und ""Klassenname"" eingeben."
 END
 
+STRINGTABLE
+BEGIN
+    IDS_MENU_JAPANESE       "Japanisch"
+    IDS_MENU_ENGLISH        "Englisch"
+    IDS_MENU_GERMAN         "Deutsch"
+    IDS_MENU_UKRAINIAN      "Ukrainisch"
+END
+
 #endif    // German (Germany) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -2340,7 +2388,8 @@ BEGIN
     CONTROL         "&No check",IDC_RADIO_CHECK_NO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,16,131,218,10
     CONTROL         "&Only last History will be checked",IDC_RADIO_CHECK_ONE,
                     "Button",BS_AUTORADIOBUTTON,16,144,218,10
-    CONTROL         "&All History will be checked",IDC_RADIO_CHECK_ALL,"Button",BS_AUTORADIOBUTTON,16,157,218,10
+    CONTROL         "&All History will be checked",IDC_RADIO_CHECK_ALL,
+                    "Button",BS_AUTORADIOBUTTON,16,157,218,10
     CONTROL         "All History will be checked and duplicates &deleted",IDC_RADIO_CHECK_ALL_DELETE,
                     "Button",BS_AUTORADIOBUTTON,16,170,218,10
 END
@@ -2458,6 +2507,8 @@ BEGIN
     LTEXT           "Maximum &width of menu:",IDC_STATIC,10,161,175,8
     EDITTEXT        IDC_EDIT_MAX_WIDTH,10,171,40,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "Spin5",IDC_SPIN_MAX_WIDTH,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,60,170,13,15
+    COMBOBOX        IDC_UI_LANGUAGE,60,190,120,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Language",IDC_STATIC,10,192,44,8
 END
 
 IDD_DIALOG_VIEWER DIALOGEX 0, 0, 273, 228
@@ -3112,6 +3163,14 @@ BEGIN
     IDS_WINDOW_LIST_PASTE_ON "Yes"
     IDS_WINDOW_LIST_PASTE_OFF "No"
     IDS_WINDOW_ERR_INPUT    "You must type ""Title"" and ""Class name."""
+END
+
+STRINGTABLE
+BEGIN
+    IDS_MENU_JAPANESE       "Japanese"
+    IDS_MENU_ENGLISH        "English"
+    IDS_MENU_GERMAN         "German"
+    IDS_MENU_UKRAINIAN      "Ukrainian"
 END
 
 #endif    // English (United States) resources

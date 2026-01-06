@@ -152,6 +152,7 @@
 #define IDC_EDIT_FILE                   1128
 #define IDC_EDIT_CLIPBOARD_DELAY        1129
 #define IDC_SPIN_CLIPBOARD_DELAY        1130
+#define IDC_UI_LANGUAGE                 1131
 #define IDS_MENU_FORMAT_1               2001
 #define IDS_MENU_FORMAT_2               2002
 #define IDS_MENU_FORMAT_3               2003
@@ -163,6 +164,10 @@
 #define IDS_MENU_FORMAT_9               2009
 #define IDS_MENU_FORMAT_10              2010
 #define IDS_MENU_FORMAT_11              2011
+#define IDS_MENU_JAPANESE               2049
+#define IDS_MENU_ENGLISH                2050
+#define IDS_MENU_GERMAN                 2051
+#define IDS_MENU_UKRAINIAN              2052
 #define IDS_VIEWER_CLIPBOARD            3000
 #define IDS_VIEWER_HISTORY              3001
 #define IDS_VIEWER_REGIST               3002
@@ -257,7 +262,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        126
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1131
+#define _APS_NEXT_CONTROL_VALUE         1132
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

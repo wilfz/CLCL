@@ -424,8 +424,8 @@ IDR_TOOLBAR48           BITMAP                  "res\\toolbar48.bmp"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,1,4,0
- PRODUCTVERSION 2,1,4,0
+ FILEVERSION 2,1,5,0
+ PRODUCTVERSION 2,1,5,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -441,12 +441,12 @@ BEGIN
         BLOCK "041104b0"
         BEGIN
             VALUE "FileDescription", "CLCL"
-            VALUE "FileVersion", "2.1.4.0"
+            VALUE "FileVersion", "2.1.5.0"
             VALUE "InternalName", "CLCL.exe"
-            VALUE "LegalCopyright", "Copyright (C) 1996-2025 by Ohno Tomoaki. All rights reserved."
+            VALUE "LegalCopyright", "Copyright (C) 1996-2025 by Ohno Tomoaki. 2024-2026 MIT license."
             VALUE "OriginalFilename", "CLCL.exe"
             VALUE "ProductName", "CLCL"
-            VALUE "ProductVersion", "2.1.4.0"
+            VALUE "ProductVersion", "2.1.5.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1266,7 +1266,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_MENU_REGIST         "&Vorlage"
+    IDS_MENU_REGIST         "&Vorlagen"
     IDS_MENU_CANCEL         "&Abbrechen"
     IDS_MENU_EXIT           "&Beenden"
     IDS_MENU_VIEWER         "&Viewer..."
@@ -1274,7 +1274,7 @@ BEGIN
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage-&Überwachung"
     IDS_TREEITEM_CLIPBOARD  "Zwischenablage"
     IDS_TREEITEM_HISTORY    "Verlauf"
-    IDS_TREEITEM_REGIST     "Vorlage"
+    IDS_TREEITEM_REGIST     "Vorlagen"
     IDS_TREEITEM_NEWFOLDER  "Neuer Ordner"
 END
 
