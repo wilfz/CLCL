@@ -91,7 +91,7 @@ Name: "{group}\{#MyAppName} Original Author's Page"; Filename: "{#MyAppURL}"
 Name: "{group}\{#MyAppName} Fork on GitHub"; Filename: "{#MyGitHubRepo}"
 Name: "{group}\{#MyAppName} Help"; Filename: "{app}\clcl.html"; Components: main help
 ;Name: "{group}\ReadMe"; Filename: "{app}\readme_jp.txt"
-Name: "{group}\Tool_Clip"; Filename: "{app}\tool_clip.html"
+Name: "{group}\Tool_Clip Help"; Filename: "{app}\tool_clip.html"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "/v"; Tasks: desktopicon
 
 [Run]

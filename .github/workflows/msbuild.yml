@@ -130,6 +130,7 @@ jobs:
           Setup/*.txt
           Setup/*.html
           Setup/clcl_app.ini
+          Setup/LICENSE
 
         # The desired behavior if no files are found using the provided path.
         # Available Options:
