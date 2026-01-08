@@ -29,11 +29,6 @@
 extern HINSTANCE hInst;
 extern int prop_ret;
 
-TCHAR jpn_locale[] = TEXT("ja");
-TCHAR eng_locale[] = TEXT("en");
-TCHAR ger_locale[] = TEXT("de");
-TCHAR ukr_locale[] = TEXT("uk");
-
 // オプション
 extern OPTION_INFO option;
 
@@ -83,33 +78,6 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		SendMessage(hDlg, WM_COMMAND, IDC_CHECK_SHOW_ICON, 0);
 		SendMessage(hDlg, WM_COMMAND, IDC_CHECK_SHOW_TOOLTIP, 0);
-
-		// fill combobox with languages
-		int index = 0;
-		// at first empty row => do not set language
-		index = (int)SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_ADDSTRING, 0, (LPARAM)TEXT(""));
-		SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_SETITEMDATA, index, (LPARAM)NULL);
-		// now the available languages
-		index = (int)SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_ADDSTRING, 0, (LPARAM)message_get_res(IDS_MENU_JAPANESE));
-		SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_SETITEMDATA, index, (LPARAM)jpn_locale);
-		index = (int)SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_ADDSTRING, 0, (LPARAM)message_get_res(IDS_MENU_ENGLISH));
-		SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_SETITEMDATA, index, (LPARAM)eng_locale);
-		index = (int)SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_ADDSTRING, 0, (LPARAM)message_get_res(IDS_MENU_GERMAN));
-		SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_SETITEMDATA, index, (LPARAM)ger_locale);
-		index = (int)SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_ADDSTRING, 0, (LPARAM)message_get_res(IDS_MENU_UKRAINIAN));
-		SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_SETITEMDATA, index, (LPARAM)ukr_locale);
-
-		// init with no selection
-		SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_SETCURSEL, -1, 0);
-		// select language in the combobox according to option.main_language
-		int count = (int)SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_GETCOUNT, 0, 0);
-		for (int i = 0; i < count; i++) {
-			TCHAR *lang = (TCHAR *)SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_GETITEMDATA, i, 0);
-			if (lang != NULL && lstrcmp(lang, option.main_language) == 0) {
-				SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_SETCURSEL, i, 0);
-				break; // exit for-loop
-			}
-		}
 		break;
 
 	case WM_DESTROY:
@@ -256,18 +224,6 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			option.menu_break = IsDlgButtonChecked(hDlg, IDC_CHECK_BREAK);
 			alloc_get_text(GetDlgItem(hDlg, IDC_EDIT_TEXT_FORMAT), &option.menu_text_format);
 			option.menu_max_width = Scale(GetDlgItemInt(hDlg, IDC_EDIT_MAX_WIDTH, NULL, FALSE));
-
-			// get the currently selected language from combobox
-			int index = (int)SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_GETCURSEL, 0, 0);
-			TCHAR* lang = NULL;
-			if (index >= 0 && (lang = (TCHAR*)SendDlgItemMessage(
-					hDlg, IDC_UI_LANGUAGE, CB_GETITEMDATA, index, 0)) != NULL) {
-				lstrcpyn(option.main_language, lang, LOCALE_NAME_MAX_LENGTH);
-			}
-			else {
-				// nothing found, clear language option
-				option.main_language[0] = '\0';
-			}
 			prop_ret = 1;
 			break;
 
