@@ -8,6 +8,8 @@
 #define MyGitHubRepo "https://github.com/wilfz/CLCL"
 #define MyAppExeName "CLCL.exe"
 
+#define ToolClipGitHubRepo "https://github.com/wilfz/CLCL-tool_clip" 
+
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
@@ -88,10 +90,11 @@ Source: "CLCLPlugin\tool_clip\Release\tool_clip.html"; DestDir: "{app}"; Compone
 ; Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{#MyAppName} - Clipboard Tool"; Filename: "{app}\{#MyAppExeName}"; Parameters: "/v"
 Name: "{group}\{#MyAppName} Original Author's Page"; Filename: "{#MyAppURL}"
-Name: "{group}\{#MyAppName} Fork on GitHub"; Filename: "{#MyGitHubRepo}"
+Name: "{group}\{#MyAppName} on GitHub"; Filename: "{#MyGitHubRepo}"
 Name: "{group}\{#MyAppName} Help"; Filename: "{app}\clcl.html"; Components: main help
 ;Name: "{group}\ReadMe"; Filename: "{app}\readme_jp.txt"
-Name: "{group}\Tool_Clip Help"; Filename: "{app}\tool_clip.html"
+Name: "{group}\Tool_Clip Help"; Filename: "{app}\tool_clip.html"; Components: tool_clip
+Name: "{group}\Tool_Clip on GitHub"; Filename: "{#ToolClipGitHubRepo}"; Components: tool_clip
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "/v"; Tasks: desktopicon
 
 [Run]

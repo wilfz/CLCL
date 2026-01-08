@@ -1,5 +1,5 @@
 
-CLCL Ver 2.1.3
+CLCL Ver 2.1.5
 --
 
 ■ Introduction
@@ -18,7 +18,8 @@ CLCL is a software that records clipboard history.
 	・History is automatically saved when the program is closed and restored the next time it is started
 	・No limit on the maximum number of items that can be saved in the history
 	・View and edit history and templates in an Explorer-style viewer
-	・Program is extensible by plug-ins
+	・Program can be extended by plug-ins
+	・User interface can be switched between different languages
 	・Supports Unicode
 
 ■ Installation
@@ -268,6 +269,15 @@ K.Takata ( http://webs.to/ken/ )
 - ReadMe.html uses github.css Stylesheet,   Copyright (c) 2017 Chris Patuzzo
 
 ■ Update history
+・Ver 2.1.4 -> 2.1.5
+	- Added clipboard access delay setting (merge from Koichi-Kobayashi)
+	- OS version check with recommended method (merge from Koichi-Kobayashi)
+	- Display item title of unprintable characters as abbreviation or ASCII-Code (Issue #23)
+	- Added context menu: Show (only current item) as binary
+	- Added german user interface
+	- Added ukrainian user interface
+	- Switch user interface language in option's menu tab and save in CLCL.ini (works only if Windows version is Vista or newer)
+
 ・Ver 2.1.3 -> Ver 2.1.4
 	- MIT license
 	- Plugins updated to current OS
@@ -400,6 +410,8 @@ K.Takata ( http://webs.to/ken/ )
 
 The author is not responsible for any problems caused by this program. It is strongly recommended that you back up important files. 
 
-Please contact nakka@nakka.com for bugs, requests, and questions. 
-
+Ver 0.2.0 - 2.1.3 
 Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/ 
+
+Ver 2.1.4 - 2.1.5: MIT License.
+https://github.com/wilfz/CLCL

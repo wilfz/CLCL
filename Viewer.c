@@ -2923,12 +2923,12 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 					mem_free(&buf);
 				}
 			}
-			lstrcat(var_msg, TEXT("\n2024 MIT License.\n\n")
+			lstrcat(var_msg, TEXT("\n2024-2026 MIT License.\n")
 				TEXT("https://github.com/wilfz/CLCL\nDownload: https://github.com/wilfz/CLCL/releases/tag/v2.1.5.0 \n\n"));
 
 			lstrcat(var_msg, TEXT("Ver 0.1.0 -> 2.1.3"));
-			lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved.\n\n")
-				TEXT("WEB SITE: https://www.nakka.com/\nE-MAIL: nakka@nakka.com"));
+			lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved.\n")
+				TEXT("WEB SITE: https://www.nakka.com/"));
 			MessageBox(hWnd, var_msg, TEXT("About"), MB_OK | MB_ICONINFORMATION);
 		}
 			break;
