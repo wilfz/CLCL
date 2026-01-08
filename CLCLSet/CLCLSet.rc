@@ -2176,15 +2176,15 @@ BEGIN
     IDS_MENU_CANCEL         "&Abbrechen"
     IDS_MENU_EXIT           "&Beenden"
     IDS_MENU_VIEWER         "An&zeige..."
-    IDS_MENU_OPTION         "&Optionen..."
+    IDS_MENU_OPTION         "&Einstellugen..."
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage &überwachen"
     IDS_TREEITEM_REGIST     "Vorlagen"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_OPTION_TITLE        "CLCL - Optionen"
-    IDS_OPTION_START_ERROR  "Start fehlgeschlagen: Falsche Version von CLCL oder der Optionen."
+    IDS_OPTION_TITLE        "CLCL - Einstellugen"
+    IDS_OPTION_START_ERROR  "Start fehlgeschlagen: Falsche Version von CLCL oder der Einstellugen."
     IDS_OPTION_DELETE       "Möchten Sie diesen Eintrag wirklich löschen?"
 END
 
@@ -2217,7 +2217,7 @@ BEGIN
     IDS_FORMAT_LIST_HEADER  "Funktions-Header"
     IDS_FORMAT_LIST_COMMENT "Kommentar"
     IDS_FORMAT_LIST_FORMAT  "Format"
-    IDS_FORMAT_NON_PROP     "Dieses Element hat keine einstellbaren Optionen."
+    IDS_FORMAT_NON_PROP     "Dieses Element hat keine einstellbaren Einstellugen."
     IDS_FORMAT_COMMENT_TEXT "Textverarbeitung"
     IDS_FORMAT_COMMENT_BITMAP "Bildverarbeitung"
 END
@@ -2228,7 +2228,7 @@ BEGIN
     IDS_ACTION_LIST_HEAD_TYPE "Aufrufart"
     IDS_ACTION_POPUPMEMU    "Menü"
     IDS_ACTION_VIEWER       "Anzeige"
-    IDS_ACTION_OPTION       "Optionen"
+    IDS_ACTION_OPTION       "Einstellugen"
     IDS_ACTION_CLIPBOARD_WATCH "Zwischenablage-Überwachung"
     IDS_ACTION_EXIT         "Beenden"
     IDS_ACTION_TYPE_HOTKEY  "Hotkey"
@@ -2250,7 +2250,7 @@ BEGIN
     IDS_ACTION_CONTENT_REGIST_DESC "Vorlagen (absteigend)"
     IDS_ACTION_CONTENT_POPUP "Popup-Menü"
     IDS_ACTION_CONTENT_VIEWER "Anzeige"
-    IDS_ACTION_CONTENT_OPTION "Optionen"
+    IDS_ACTION_CONTENT_OPTION "Einstellugen"
     IDS_ACTION_CONTENT_CLIPBOARD_WATCH "Zwischenablage-Überwachung"
     IDS_ACTION_CONTENT_TOOL "Tool"
     IDS_ACTION_CONTENT_APP  "Externe Anwendung"
@@ -2322,7 +2322,7 @@ BEGIN
     IDS_TOOL_LIST_HOTKEY    "Hotkey"
     IDS_TOOL_SELECT_TITLE   "Tool auswählen"
     IDS_TOOL_SELECT_MSG     "Bitte wählen Sie ein Tool."
-    IDS_TOOL_NON_PROP       "Dieses Element hat keine einstellbaren Optionen."
+    IDS_TOOL_NON_PROP       "Dieses Element hat keine einstellbaren Einstellugen."
 END
 
 STRINGTABLE

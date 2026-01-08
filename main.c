@@ -1394,19 +1394,23 @@ static BOOL winodw_reset(const HWND hWnd)
 static BOOL winodw_save(const HWND hWnd)
 {
 	// 終了時に実行するツール
+	// Tools to run on exit
 	tool_execute_all(hWnd, CALLTYPE_END, NULL);
 
 	// 登録アイテムの保存
+	// Save templates / registered items
 	if (save_regist(hWnd) == FALSE &&
 		MessageBox(hWnd, message_get_res(IDS_ERROR_END), ERROR_TITLE, MB_ICONQUESTION | MB_YESNO) == IDNO) {
 		return FALSE;
 	}
 	// 履歴の保存
+	// Save history items
 	if (save_history(hWnd, 0) == FALSE &&
 		MessageBox(hWnd, message_get_res(IDS_ERROR_END), ERROR_TITLE, MB_ICONQUESTION | MB_YESNO) == IDNO) {
 		return FALSE;
 	}
 	// 設定の保存
+	// Save the configuration
 	ini_put_option();
 	return TRUE;
 }

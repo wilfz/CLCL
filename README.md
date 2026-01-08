@@ -368,10 +368,10 @@ K.Takata ( http://webs.to/ken/ )
 	- Added clipboard access delay setting (merge from Koichi-Kobayashi)
 	- OS version check with recommended method (merge from Koichi-Kobayashi)
 	- Display item title of unprintable characters as abbreviation or ASCII-Code (Issue #23)
-	- Added context menu: show (only current item) as binary
+	- Added context menu: Show (only current item) as binary
 	- Added german user interface
 	- Added ukrainian user interface
-	- Switch user interface language in option's menu tab and save in CLCL.ini
+	- Switch user interface language in option's Viewer tab and save in CLCL.ini (works only if Windows version is Vista or newer)
 
 - Ver 2.1.3 -> Ver 2.1.4
 	- MIT license
@@ -383,6 +383,7 @@ K.Takata ( http://webs.to/ken/ )
 	- expand environment variables in tool paths
 
 - Ver 2.1.2 -> Ver 2.1.3
+	- Last release published under https://nakka.com/soft/clcl/index_eng.html
 	- Changed the system tray icon when not monitoring the clipboard.
 	- Improved the up and down movement buttons in the settings.
 	- Improved so that the main screen does not appear when displaying the menu.

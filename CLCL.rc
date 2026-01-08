@@ -1018,7 +1018,7 @@ BEGIN
         MENUITEM "Speichern &unter...\tCtrl+S",        ID_MENUITEM_DATA_SAVE
         MENUITEM "Hexadezimal anzeigen",               ID_MENUITEM_SHOWBINARY
         MENUITEM SEPARATOR
-        POPUP "&Optionen"
+        POPUP "&Einstellugen"
         BEGIN
             MENUITEM "&Format...",                     ID_MENUITEM_SET_FORMAT
             MENUITEM "Fi&lter...",                     ID_MENUITEM_SET_FILTER
@@ -1037,7 +1037,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Neu...\tCtrl+N",                    ID_MENUITEM_NEW_ITEM
         MENUITEM "Speichern &unter...\tCtrl+S",        ID_MENUITEM_DATA_SAVE
-        POPUP "&Optionen"
+        POPUP "&Einstellugen"
         BEGIN
             MENUITEM "&Format...",                     ID_MENUITEM_SET_FORMAT
             MENUITEM "Fi&lter...",                     ID_MENUITEM_SET_FILTER
@@ -1077,7 +1077,7 @@ BEGIN
         MENUITEM "Neuer &Ordner",                      ID_MENUITEM_CREATE_FOLDER
         MENUITEM "Speichern &unter...\tCtrl+S",        ID_MENUITEM_DATA_SAVE
         MENUITEM "Hotkey &setzen...",                  ID_MENUITEM_SET_HOTKEY
-        POPUP "&Optionen"
+        POPUP "&Einstellugen"
         BEGIN
             MENUITEM "&Format...",                     ID_MENUITEM_SET_FORMAT
             MENUITEM "Fi&lter...",                     ID_MENUITEM_SET_FILTER
@@ -1163,7 +1163,7 @@ BEGIN
         MENUITEM "&Format",                            ID_MENUITEM_SHOW_FORMAT
         MENUITEM "&Dump",                              ID_MENUITEM_SHOW_BIN
         MENUITEM SEPARATOR
-        MENUITEM "&Optionen...",                       ID_MENUITEM_OPTION
+        MENUITEM "&Einstellugen...",                       ID_MENUITEM_OPTION
     END
     POPUP "&Werkzeuge"
     BEGIN
@@ -1269,8 +1269,8 @@ BEGIN
     IDS_MENU_REGIST         "&Vorlagen"
     IDS_MENU_CANCEL         "&Abbrechen"
     IDS_MENU_EXIT           "&Beenden"
-    IDS_MENU_VIEWER         "&Viewer..."
-    IDS_MENU_OPTION         "&Optionen..."
+    IDS_MENU_VIEWER         "An&zeige..."
+    IDS_MENU_OPTION         "&Einstellugen..."
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage-&Überwachung"
     IDS_TREEITEM_CLIPBOARD  "Zwischenablage"
     IDS_TREEITEM_HISTORY    "Verlauf"
