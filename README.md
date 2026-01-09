@@ -48,8 +48,8 @@ portable=1
 
 ### Language settings
 The menus and dialogs are in English, Japanese, German, or Ukrainian, according to your Windows language preferences.
-You can override this by explicitly setting the language in Options on the Menu tab. 
-The selected language is stored in the [mian section of CLCL.ini.
+You can override this by explicitly setting the language in Options on the Viewer tab. 
+The selected language is stored in the [main] section of CLCL.ini.
 ```ini
 [main]
 ...
@@ -508,5 +508,6 @@ The author is not responsible for any problems caused by this program. It is str
 Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/ 
 
 2025 - 2026 MIT License. Sources and Releases under https://github.com/wilfz/CLCL
+
 
 
