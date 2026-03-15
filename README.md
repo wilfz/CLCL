@@ -20,7 +20,7 @@ CLCL is a software that records clipboard history. It provides quick access to r
 - **Plugin Architecture** - Extensible functionality via DLL plugins
 - **History size** - The maximum number of items in the history can be configured
 - **Unicode Support** - Full Unicode support for international text
-- **Multiple Language** - User interface language can be switched between English, Japanese, German, and Ukrainian
+- **Multiple Language** - User interface language can be switched between English, Japanese, German, Simplified Chinese, and Ukrainian
 - **Binary Viewer** - View raw binary clipboard data in hex format
 - **History & Registry** - Persistent and automatically saving clipboard history and templates
 
@@ -47,7 +47,7 @@ portable=1
 ```
 
 ### Language settings
-The menus and dialogs are in English, Japanese, German, or Ukrainian, according to your Windows language preferences.
+The menus and dialogs are in English, Japanese, German, Simplified Chinese, or Ukrainian, according to your Windows language preferences.
 You can override this by explicitly setting the language in Options on the Viewer tab. 
 The selected language is stored in the [main] section of CLCL.ini.
 ```ini
@@ -69,7 +69,7 @@ When you start CLCL.exe, a clip icon appears in the task tray (the area with the
 - Select an item to paste it to the active window
 - Right-click menu items for additional options
 
-By default, the menu displays the history in descending order (newest first).
+By default, the menu displays the [history](#history) in descending order (newest first).
 The menu can be customized in the settings.
 
 **Viewer Window:**
@@ -78,8 +78,8 @@ The menu can be customized in the settings.
 	- Browse clipboard history and templates
 	- Double-click to copy item to clipboard
 	- The "Clipboard" at the top of the tree is the current clipboard content.
-	- The "History" in the tree is a list of the history.
-	- "Templates" in the tree is a list of template items (such as standard phrases).
+	- The ["History"](#history) in the tree is a list of recent clipboard entries.
+	- ["Templates"](#templates) in the tree is a list of template items (such as standard phrases).
 - Right Panel: Show and edit content of the selected item
 
 **Tree structure:**
@@ -109,41 +109,28 @@ The menu can be customized in the settings.
 	  └─□ http://www... - Template item
 		└─□ TEXT - Format in template item
 
-## Clipboard
-### What is the clipboard?
-The clipboard is an area where different applications can exchange data.
-For example, when you copy text in Notepad and paste it in Word, both applications use the clipboard.
+### Menu
+If you move the mouse over a history or template item in the menu, a tooltip with detailed information will be displayed at the mouse position. If you select an item with the keyboard, a tooltip will be displayed under the menu item.
 
-### Clipboard formats:
-The clipboard can hold multiple formats simultaneously.
-For example, if you copy text in Notepad, the following four formats will be stored in the clipboard (Windows 10/11):
+Right-clicking on a [history](#history) or [template](#templates) item will display the registered tools in a menu, and the selected tool will be executed and sent to the clipboard.
 
-	・UNICODE TEXT
-	・LOCALE
-	・TEXT
-	・OEM TEXT
+To display the tool menu with the keyboard, press Ctrl and Enter and then select a tool.
 
-If you copy in Excel or Access, even more formats will be sent to the clipboard.
+The menu items displayed in the task tray or with hotkey are configured in the ["Action"](#action) option.
+You can customize the menu behavior and how items are shown on the "Menu" tab of the options.
 
-By default CLCL is configured to preserve:
-- UNICODE TEXT (text)
-- BITMAP (images)
-- DROP FILE LIST (files)
-
-Use the "Filter" option in Settings to customize which formats are to be saved.
-
-## History
+### History
 Newly copied data is added at the top of the history.
 
 A single history item contains multiple clipboard formats. 
-Use the "Format" option in Settings to register preferred formats and control priority when displaying items.
+Use the ["Format"](#clipboard-format) option in Settings to register preferred formats and control priority when displaying items.
 The clipboard format with the highest priority is displayed in the menu and viewer.
 
 The number of history items to keep is set in the "History" tab of CLCL Options.
 
-The "Filter" option in Settings determines which formats are added to the history.
+The ["Filter"](#filter) option in Settings determines which formats are added to the history.
 
-## Templates
+### Templates
 Save frequently used data such as standard phrases, text snippets, URLs as templates.
 You can add folders to organize them into hierarchical structures and give names to items.
 
@@ -175,7 +162,7 @@ You can see the registered hotkeys in the list view of the viewer. If you select
 
 There is no limit to the number of template items or the clipboard format.
 
-## Send to Clipboard
+### Send to Clipboard
 There are several ways to send history or template items to the clipboard.
 
 - Click the task tray to bring up a menu.
@@ -187,15 +174,32 @@ If you select a history or template item from the menu, the data will be sent to
 - Select an item in the viewer and bring up a right-click menu.
 If you select "Send to Clipboard", the selected item will be sent to the clipboard.
 
-## Menu
-The menu items displayed in the task tray or hotkey are set in the "Action" option.
-You can customize the menu behavior and display in the "Menu" option.
+## Clipboard
+### What is the clipboard?
+The clipboard is an area where different applications can exchange data.
+For example, when you copy text in Notepad and paste it in Word, both applications use the clipboard.
 
-If you move the mouse over a history or template item in the menu, a tooltip with detailed information will be displayed at the mouse position. If you select an item with the keyboard, a tooltip will be displayed under the menu item.
+### Clipboard formats:
+The clipboard can hold multiple formats simultaneously.
+For example, if you copy text in Notepad, the following four formats will be stored in the clipboard (Windows 10/11):
 
-Right-clicking on a history or template item will display the registered tools in a menu, and the selected tool will be executed and sent to the clipboard.
+	・UNICODE TEXT
+	・LOCALE
+	・TEXT
+	・OEM TEXT
 
-To display the tool menu with the keyboard, press Ctrl and Enter to select an item.
+If you copy in Excel or Access, even more formats will be sent to the clipboard.
+
+By default CLCL is configured to preserve:
+- UNICODE TEXT (text)
+- BITMAP (images)
+- DROP FILE LIST (files)
+
+Use the ["Filter"](#filter) option in Settings to customize which formats are to be saved.
+
+## Options
+
+### Menu
 
 History and template items are shown according to the "Menu text display format" option. The displayed numbers start from 0, but if you want to change the starting value, set the starting number between the % and the character.
 
@@ -206,7 +210,7 @@ Examples:
 	%1n -> 1,2,3...8,9,0,1,2...
 	%10B -> K,L,M,N...
 
-## Action
+### Action
 The action when the hotkey is pressed or the task tray icon is clicked can be set in the "Action" option.
 
 When you specify "Menu" as the action in Edit Action, you can set the menu items to display in the menu settings at the bottom of the screen.
@@ -228,7 +232,7 @@ If you specify Menu as the action and select History as the item, you can set th
 
 If the end number is smaller than the start number, nothing will be displayed. If the end number is larger than the number of items to be left in the history, only the number of items to be left in the history will be displayed.
 
-## Clipboard format
+### Clipboard format
 CLCL can process all clipboard formats, but clipboard formats that are not registered will be displayed as binary dumps in the viewer.
 
 Clipboard formats are registered in the options "Format". The registered format at the top takes priority, and the clipboard format with the highest priority among the items is displayed in the menu and viewer.
@@ -243,7 +247,7 @@ Function header: text_
 ```
 The menu and viewer will process it as text.
 
-## Filter
+### Filter
 To select the clipboard format, set it in the "Filter" option.
 
 If you select "Add all formats to history", all clipboard formats except those set to be excluded will be added to the history.
@@ -255,7 +259,7 @@ For clipboard formats set to be added in the filter, you can further set the siz
 If you set the clipboard format in the filter to "Do not save", it will not be saved to disk when CLCL is closed.
 For example, you can set it to add text and bitmaps to the history and save only the text.
 
-## Window settings
+### Window settings
 If you want to change the behavior of CLCL depending on the application you use, set the window and behavior in the "Window" option.
 
 Specify the window title and class name, and use "*" as any character.
@@ -279,7 +283,7 @@ Either the title or the class name needs to be entered, and if it is not entered
 	When canceling a cancelable tool, the subsequent pasting is usually not performed, but if this option is specified, the pasting will be performed even if it is canceled.
 	If you set the copy key as the cut key in the key settings for each window, specifying this option will prevent the characters from disappearing even if you cancel the tool.
 
-## Key settings for each window
+### Key settings for each window
 Select the history or template item from the hotkey, and the paste action will automatically send the paste key to the window.
 By default, Ctrl + V is sent to all windows, but depending on the window, the paste key may be a different key.
 
@@ -292,7 +296,7 @@ If the copy and paste keys are not set, the default key settings will be used.
 
 Multiple keys can be set for one window. If multiple keys are set, the keys will be sent in order from the top.
 
-## Tools (plug-ins)
+### Tools (plug-ins)
 
 Tools let you process current selection, history or template data before pasting, or extend CLCL's functionality. 
 
@@ -309,7 +313,7 @@ Without this option, the tool runs on the newest history item and copies it to t
 
 Drag and drop a plug-in DLL into the tool list window to display a list of tools that can be registered, and you can select multiple tools to register them all at once.
 
-### tool_text
+#### tool_text
 Text manipulation tools:
 - To Lower - Convert to lowercase
 - To Upper - Convert to UPPERCASE
@@ -321,7 +325,7 @@ Text manipulation tools:
 - Connection of text - Join clipboard history into one text
 - Edit - Open text in an edit window
 
-### tool_utl
+#### tool_utl
 Utility tools:
 - Clear History - Delete all history items
 - Clear Clipboard - Clear the clipboard
@@ -330,7 +334,7 @@ Utility tools:
 - Un Top - Remove always on top setting
 - Save of more items - Save multiple selected items to files
 
-### tool_clip
+#### tool_clip
 tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_clip. Currently it contains the following features for clipboard items:
 - Replace tabstops and/or sequences of spaces by a character string of choice
 - Replace with regular expressions
@@ -338,6 +342,7 @@ tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_cl
 - Import text items and folders from json file and merge them into template folders
 - Export to and import from android app "Clipper"
 - Convert tab separated data into an html table snippet, ready to insert into an email, OneNote, etc.
+- Macros, insert templates with expanded variables
 - Send menu item to clipboard
 - Show currently selected item in viewer
 - Save CLCL templates to and load from an ODBC database 
@@ -345,8 +350,9 @@ tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_cl
 
 ## Command Line
 When starting CLCL, you can specify a command line to specify the operation after startup.
-If CLCL is already running, the command will be sent to the already running CLCL.
-#### Format:
+If CLCL is already running, the command will be sent to the already running CLCL.  
+  
+**Format:**
 
 	CLCL.exe [/vownx]
 		/v Display viewer

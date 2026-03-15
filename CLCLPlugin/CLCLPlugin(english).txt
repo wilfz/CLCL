@@ -197,8 +197,8 @@ WM_ITEM_FREE_DATA
 
 WM_ITEM_CHECK
   wParam - 0
-  lParam - (DATA_INFO *) The item that checks.
-  Returned value - (int) -1 – doesn’t exist, 0 – exists in history, 1 - exists in recorded item.
+  lParam - (DATA_INFO *) The item to be checked.
+  Returned value - (int) -1 – doesn’t exist, 0 – exists in history, 1 - exists in templates.
   Function:
     Checks item existence.
 
