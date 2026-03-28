@@ -48,8 +48,8 @@ portable=1
 
 ### Language settings
 The menus and dialogs are in English, Japanese, German, Simplified Chinese, or Ukrainian, according to your Windows language preferences.
-You can override this by explicitly setting the language in Options on the Viewer tab. 
-The selected language is stored in the [main] section of CLCL.ini.
+You can override this by explicitly setting the language on the Viewer tab in Options.  
+The selected language is stored in the \[main\] section of CLCL.ini.
 ```ini
 [main]
 ...
@@ -64,7 +64,8 @@ language="en"
 When you start CLCL.exe, a clip icon appears in the task tray (the area with the clock in the corner of the taskbar).
 
 **Display Menu:**
-- Click the clipboard icon in the taskbar to open the menu
+- Left-click the clipboard icon in the taskbar to open the menu  
+  or
 - Press Alt+C (default hotkey) to show menu
 - Select an item to paste it to the active window
 - Right-click menu items for additional options
@@ -197,6 +198,50 @@ By default CLCL is configured to preserve:
 
 Use the ["Filter"](#filter) option in Settings to customize which formats are to be saved.
 
+## Tools (plug-ins)
+
+Tools let you process current selection, history or template data before pasting, or extend CLCL's functionality. 
+
+The installation package includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html. These plugins have been reworked to fit current operating systems; especially the plugin DLLs are installed into the same folder as clcl.exe, the plugins' ini files to the same location as clcl.ini.
+
+[**Configure tools in Options → Tool**](#tool-configuration)
+
+### tool_text
+Text manipulation tools:
+- To Lower - Convert to lowercase
+- To Upper - Convert to UPPERCASE
+- Quotation - Mark as quotation e.g. with a leading '>' or an indention
+- Un Quotation - Remove quotation from selected text
+- Word Wrap - Wrap text at specified column width
+- <TAG></TAG> - Wrap text with custom tags
+- Delete CRLF - Remove line breaks
+- Connection of text - Join clipboard history into one text
+- Edit - Open text in an edit window
+
+### tool_utl
+Utility tools:
+- Clear History - Delete all history items
+- Clear Clipboard - Clear the clipboard
+- Play Sound - Play a sound when items are added to history
+- Always on Top - Keep viewer window on top
+- Un Top - Remove always on top setting
+- Save of more items - Save multiple selected items to files
+
+### tool_clip
+tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_clip. Currently it contains the following features for clipboard items:
+- Replace tabstops and/or sequences of spaces by a character string of choice
+- Replace with regular expressions
+- Export items and template folders to json file
+- Import text items and folders from json file and merge them into template folders
+- Export to and import from android app "Clipper"
+- Convert tab separated data into an html table snippet, ready to insert into an email, OneNote, etc.
+- Macros, insert templates with expanded variables
+- Send menu item to clipboard
+- Show currently selected item in viewer
+- Save CLCL templates to and load from an ODBC database 
+- To be continued ...
+
+
 ## Options
 
 ### Menu
@@ -232,7 +277,7 @@ If you specify Menu as the action and select History as the item, you can set th
 
 If the end number is smaller than the start number, nothing will be displayed. If the end number is larger than the number of items to be left in the history, only the number of items to be left in the history will be displayed.
 
-### Clipboard format
+### Format
 CLCL can process all clipboard formats, but clipboard formats that are not registered will be displayed as binary dumps in the viewer.
 
 Clipboard formats are registered in the options "Format". The registered format at the top takes priority, and the clipboard format with the highest priority among the items is displayed in the menu and viewer.
@@ -296,57 +341,18 @@ If the copy and paste keys are not set, the default key settings will be used.
 
 Multiple keys can be set for one window. If multiple keys are set, the keys will be sent in order from the top.
 
-### Tools (plug-ins)
+### Tool configuration
 
-Tools let you process current selection, history or template data before pasting, or extend CLCL's functionality. 
-
-The installation package includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html. These plugins have been reworked to fit current operating systems; especially the plugin DLLs are installed into the same folder as clcl.exe, the plugins' ini files to the same location as clcl.ini.
-
-**Configure tools in Options → Tools:**
-
-When you select the DLL and function name, the tool name and call type are  automatically set.
+When you select a tool DLL and function name, the tool name and call type are  automatically set.
 
 - The call type **Viewer** allows you to execute from the viewer's tool menu.
 - The call type **Action Menu** allows you to execute from the "Tools" popup menu.
-  - The **Send copy and paste** sub-option copies the marked data from the active window, executes the tool on the copied data, and afterwards pastes the modified data back into the active window. 
-Without this option, the tool runs on the newest history item and copies it to the clipboard. For right-click tool menus on items, the tool runs on the selected item and sends the result to the clipboard.
+  - The **Send copy and paste** sub-option copies the marked data from the active window, executes the tool on the copied data, and afterwards pastes the modified data back into the active window.  
+Without this option, the tool runs on the newest history item and copies it to the clipboard.  
+Right-click on an menu item shows a popup menu with the installed tools and the selected tool runs on that item and sends the result to the clipboard.
 
-Drag and drop a plug-in DLL into the tool list window to display a list of tools that can be registered, and you can select multiple tools to register them all at once.
+Drag and drop a plug-in DLL into the tool list window to display a list of tools that can be registered, and you can select multiple tools to register them all at once.  
 
-#### tool_text
-Text manipulation tools:
-- To Lower - Convert to lowercase
-- To Upper - Convert to UPPERCASE
-- Quotation - Mark as quotation e.g. with a leading '>' or an indention
-- Un Quotation - Remove quotation from selected text
-- Word Wrap - Wrap text at specified column width
-- <TAG></TAG> - Wrap text with custom tags
-- Delete CRLF - Remove line breaks
-- Connection of text - Join clipboard history into one text
-- Edit - Open text in an edit window
-
-#### tool_utl
-Utility tools:
-- Clear History - Delete all history items
-- Clear Clipboard - Clear the clipboard
-- Play Sound - Play a sound when items are added to history
-- Always on Top - Keep viewer window on top
-- Un Top - Remove always on top setting
-- Save of more items - Save multiple selected items to files
-
-#### tool_clip
-tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_clip. Currently it contains the following features for clipboard items:
-- Replace tabstops and/or sequences of spaces by a character string of choice
-- Replace with regular expressions
-- Export items and template folders to json file
-- Import text items and folders from json file and merge them into template folders
-- Export to and import from android app "Clipper"
-- Convert tab separated data into an html table snippet, ready to insert into an email, OneNote, etc.
-- Macros, insert templates with expanded variables
-- Send menu item to clipboard
-- Show currently selected item in viewer
-- Save CLCL templates to and load from an ODBC database 
-- To be continued ...
 
 ## Command Line
 When starting CLCL, you can specify a command line to specify the operation after startup.
@@ -360,17 +366,36 @@ If CLCL is already running, the command will be sent to the already running CLCL
 		/n Cancel monitoring clipboard
 		/x Exit
 
-## Special thanks
-K.Takata ( http://webs.to/ken/ )
+
+## Helpful Hints
+
+### More history items and how to organize the popup menu.
+On the *History* tab of the options you can increase the maximium number of history items to keep, e.g. from 30 to 100. But without further configuration the popup menu will look rather crowded.  
+You may organize your history items in submenus:   
+![CLCL tray menu]
+ 
+To do so, switch to the *Action* tab, choose the *Click on left system tray* menu or the *Alt-C* hotkey menu and click on Edit.  
+A new window opens and there you select *History/Ascending*. Most controls are greyed out, but you can specify the *Range of indication* for instance to 0 to 19.  
+OK. So now you have 100 items, but the menu would only show the first 19. In the left half of the *Edit of  Action* tab scroll down to the bottom and click on *(New Content)*. 
+In the *Content* combo box choose "Pop-up Menu" and add "History 20 - 29" as *title*.  Now move the new pop-up menu upwards (with the little triangle below the left half of the window) until it is just below *History/Ascending*.  
+Once again click on *(New Content)*. This time choose "History/Ascending" from the combo box and set the range to 20 to 29. Move the new *History/Ascending* entry upwards until it is just below your newly created pop-up menu and a little indented to the right.
+Continue so with as much pop-up menus as you like. You can even cascade the popups as shown in the screenshots.  
+![Edit of Action](img/edit_of_action.png)
+
 
 ## Credits
 - CLCL main program and plugins tool_text, tool_utl and tool_test are Copyright (C) by [Ohno Tomoaki](https://nakka.com/), who made it open source and put it under MIT license in 2024
+- Special thanks: K.Takata
 - Installer created by WilfZim with [Inno Setup](https://jrsoftware.org/isinfo.php)
 - [Tool_clip plugin](https://github.com/wilfz/CLCL-tool_clip) by WilfZim depends on Niels Lohmann's JSON library ( https://github.com/nlohmann/json ) for import and export of data
 - Translation to Simplified Chinese by HeliusHao
 - ReadMe.html uses github.css Stylesheet,   Copyright (c) 2017 Chris Patuzzo
 
 ## Update history
+- Ver 2.1.5 ->
+	- Replace with regular expressions
+	- Macros, insert templates with expanded variables (tool_clip plugin)
+
 - Ver 2.1.4 -> 2.1.5
 	- Added clipboard access delay setting (merge from Koichi-Kobayashi)
 	- OS version check with recommended method (merge from Koichi-Kobayashi)
