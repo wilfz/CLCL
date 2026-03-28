@@ -371,8 +371,8 @@ If CLCL is already running, the command will be sent to the already running CLCL
 
 ### More history items and how to organize the popup menu.
 On the *History* tab of the options you can increase the maximium number of history items to keep, e.g. from 30 to 100. But without further configuration the popup menu will look rather crowded.  
-You may organize your history items in submenus:   
-![CLCL tray menu]
+It's a good idea to organize your history items in submenus:   
+![CLCL tray menu](img/history_organized.png)
  
 To do so, switch to the *Action* tab, choose the *Click on left system tray* menu or the *Alt-C* hotkey menu and click on Edit.  
 A new window opens and there you select *History/Ascending*. Most controls are greyed out, but you can specify the *Range of indication* for instance to 0 to 19.  
