@@ -135,7 +135,8 @@
     </Manifest>
     <PostBuildEvent>
       <Command>copy README.md "Release\CLCL Documentation.md"
-pandoc --from=gfm --to=html5 "Release\CLCL Documentation.md" --embed-resources --standalone --css=Documentation\github.css --output="Release\clcl.html"
+xcopy img "Release\"
+pandoc --from=gfm --to=html5 "Release\CLCL Documentation.md" --standalone --output="Release\clcl.html"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

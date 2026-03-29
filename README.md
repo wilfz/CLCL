@@ -369,17 +369,23 @@ If CLCL is already running, the command will be sent to the already running CLCL
 
 ## Helpful Hints
 
-### More history items and how to organize the popup menu.
+### More history items and how to organize the popup menu
 On the *History* tab of the options you can increase the maximium number of history items to keep, e.g. from 30 to 100. But without further configuration the popup menu will look rather crowded.  
-It's a good idea to organize your history items in submenus:   
+It's a good idea to organize your history items in submenus:  
+
 ![CLCL tray menu](img/history_organized.png)
  
 To do so, switch to the *Action* tab, choose the *Click on left system tray* menu or the *Alt-C* hotkey menu and click on Edit.  
 A new window opens and there you select *History/Ascending*. Most controls are greyed out, but you can specify the *Range of indication* for instance to 0 to 19.  
-OK. So now you have 100 items, but the menu would only show the first 19. In the left half of the *Edit of  Action* tab scroll down to the bottom and click on *(New Content)*. 
+
+![create submenu for history](img/create_history_submenu.gif)  
+
+OK. So now you have 100 items, but the menu would only show the first 19.  
+In the left half of the *Edit of  Action* tab scroll down to the bottom and click on *(New Content)*.  
 In the *Content* combo box choose "Pop-up Menu" and add "History 20 - 29" as *title*.  Now move the new pop-up menu upwards (with the little triangle below the left half of the window) until it is just below *History/Ascending*.  
-Once again click on *(New Content)*. This time choose "History/Ascending" from the combo box and set the range to 20 to 29. Move the new *History/Ascending* entry upwards until it is just below your newly created pop-up menu and a little indented to the right.
+Once again click on *(New Content)*. This time choose "History/Ascending" from the combo box and set the range to 20 to 29. Move the new *History/Ascending* entry upwards until it is just below your newly created pop-up menu and a little indented to the right.  
 Continue so with as much pop-up menus as you like. You can even cascade the popups as shown in the screenshots.  
+
 ![Edit of Action](img/edit_of_action.png)
 
 
@@ -389,7 +395,7 @@ Continue so with as much pop-up menus as you like. You can even cascade the popu
 - Installer created by WilfZim with [Inno Setup](https://jrsoftware.org/isinfo.php)
 - [Tool_clip plugin](https://github.com/wilfz/CLCL-tool_clip) by WilfZim depends on Niels Lohmann's JSON library ( https://github.com/nlohmann/json ) for import and export of data
 - Translation to Simplified Chinese by HeliusHao
-- ReadMe.html uses github.css Stylesheet,   Copyright (c) 2017 Chris Patuzzo
+
 
 ## Update history
 - Ver 2.1.5 ->
