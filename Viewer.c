@@ -2958,9 +2958,13 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 					break;
 				}
 
+				// Make it conssiten througout solution:
+				// CLCLSet also uses this window hNdle by default
+				HWND hMainWnd = FindWindow(MAIN_WND_CLASS, MAIN_WINDOW_TITLE);
+
 				if (LOWORD(wParam) == ID_MENUITEM_HELP_EN) {
 					lstrcpy(help_path + lstrlen(help_path), TEXT("\\clcl.chm"));
-					HtmlHelp(hWnd, help_path, HH_DISPLAY_TOC, (DWORD_PTR)NULL);
+					HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_DISPLAY_TOC, (DWORD_PTR)NULL);
 					break;
 				}
 				else if (LOWORD(wParam) == ID_MENUITEM_HELP_JP)
