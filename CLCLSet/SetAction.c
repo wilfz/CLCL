@@ -41,7 +41,7 @@ extern HINSTANCE hInst;
 extern int prop_ret;
 extern TCHAR work_path[];
 
-// ƒIƒvƒVƒ‡ƒ“
+// ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 extern OPTION_INFO option;
 
 /* Local Function Prototypes */
@@ -70,7 +70,7 @@ static ACTION_INFO *listview_get_action(const HWND hListView, int *cnt);
 static void listview_free_action(const HWND hListView);
 
 /*
- * select_tool_proc - ƒc[ƒ‹‘I‘ğƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+ * select_tool_proc - ãƒ„ãƒ¼ãƒ«é¸æŠã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
  */
 static BOOL CALLBACK select_tool_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -85,7 +85,7 @@ static BOOL CALLBACK select_tool_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 		SetWindowText(hDlg, message_get_res(IDS_TOOL_SELECT_TITLE));
 		SetWindowText(GetDlgItem(hDlg, IDC_STATIC_MSG), message_get_res(IDS_TOOL_SELECT_MSG));
 
-		// ƒŠƒXƒgƒrƒ…[‚Ìİ’è
+		// ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®è¨­å®š
 		i = 0;
 		lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 
@@ -101,7 +101,7 @@ static BOOL CALLBACK select_tool_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 		lvc.iSubItem = i++;
 		ListView_InsertColumn(GetDlgItem(hDlg, IDC_LIST_HEADER), lvc.iSubItem, &lvc);
 
-		// ƒŠƒXƒgƒrƒ…[‚ÌƒXƒ^ƒCƒ‹‚Ìİ’è
+		// ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¹ã‚¿ã‚¤ãƒ«ã®è¨­å®š
 		SetWindowLong(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE,
 			GetWindowLong(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE) | LVS_SHOWSELALWAYS);
 		SendDlgItemMessage(hDlg, IDC_LIST_HEADER, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
@@ -151,6 +151,11 @@ static BOOL CALLBACK select_tool_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 		}
 		break;
 
+	case WM_HELP:
+		if (show_help(IDD_DIALOG_SELECT_FUNC, (LPHELPINFO)lParam))
+			return TRUE;
+		break;
+
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case IDCANCEL:
@@ -180,7 +185,7 @@ static BOOL CALLBACK select_tool_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 }
 
 /*
- * treeview_set_item - ƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚Ì’Ç‰Á
+ * treeview_set_item - ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®è¿½åŠ 
  */
 static HTREEITEM treeview_set_item(const HWND hTreeView, TCHAR *buf, const HTREEITEM hParent, const HTREEITEM After, LPARAM lParam)
 {
@@ -205,7 +210,7 @@ static HTREEITEM treeview_set_item(const HWND hTreeView, TCHAR *buf, const HTREE
 }
 
 /*
- * treeview_set_text - ƒAƒCƒeƒ€‚ÌƒeƒLƒXƒg‚ğİ’è
+ * treeview_set_text - ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ†ã‚­ã‚¹ãƒˆã‚’è¨­å®š
  */
 static BOOL treeview_set_text(const HWND hTreeView, const HTREEITEM hItem, TCHAR *text)
 {
@@ -222,7 +227,7 @@ static BOOL treeview_set_text(const HWND hTreeView, const HTREEITEM hItem, TCHAR
 }
 
 /*
- * treeview_set_lparam - ƒAƒCƒeƒ€‚Éî•ñ‚ğŠÖ˜A‚Â‚¯‚é
+ * treeview_set_lparam - ã‚¢ã‚¤ãƒ†ãƒ ã«æƒ…å ±ã‚’é–¢é€£ã¤ã‘ã‚‹
  */
 static BOOL treeview_set_lparam(const HWND hTreeView, const HTREEITEM hItem, const LPARAM lParam)
 {
@@ -238,7 +243,7 @@ static BOOL treeview_set_lparam(const HWND hTreeView, const HTREEITEM hItem, con
 }
 
 /*
- * treeview_get_lparam - ƒAƒCƒeƒ€‚ÉŠÖ˜A•t‚¯‚ç‚ê‚½î•ñ‚Ìæ“¾
+ * treeview_get_lparam - ã‚¢ã‚¤ãƒ†ãƒ ã«é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸæƒ…å ±ã®å–å¾—
  */
 static LPARAM treeview_get_lparam(const HWND hTreeView, const HTREEITEM hItem)
 {
@@ -255,7 +260,7 @@ static LPARAM treeview_get_lparam(const HWND hTreeView, const HTREEITEM hItem)
 }
 
 /*
- * treeview_copy_item - ƒcƒŠƒrƒ…[ƒAƒCƒeƒ€‚ÌƒRƒs[‚ğì¬
+ * treeview_copy_item - ãƒ„ãƒªãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚³ãƒ”ãƒ¼ã‚’ä½œæˆ
  */
 static HTREEITEM treeview_copy_item(const HWND hTreeView, const HTREEITEM parent_item, const HTREEITEM hItem, const HTREEITEM After)
 {
@@ -286,7 +291,7 @@ static HTREEITEM treeview_copy_item(const HWND hTreeView, const HTREEITEM parent
 
 	cItem = TreeView_GetChild(hTreeView, hItem);
 	while (cItem != NULL) {
-		// Ä‹A
+		// å†å¸°
 		treeview_copy_item(hTreeView, new_item, cItem, (HTREEITEM)TVI_LAST);
 		cItem = TreeView_GetNextSibling(hTreeView, cItem);
 	}
@@ -295,7 +300,7 @@ static HTREEITEM treeview_copy_item(const HWND hTreeView, const HTREEITEM parent
 }
 
 /*
- * treeview_notify_proc - ƒcƒŠ[ƒrƒ…[ƒCƒxƒ“ƒg
+ * treeview_notify_proc - ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆ
  */
 static LRESULT treeview_notify_proc(const HWND hWnd, LPARAM lParam)
 {
@@ -309,14 +314,14 @@ static LRESULT treeview_notify_proc(const HWND hWnd, LPARAM lParam)
 	}
 
 	switch (tvk->hdr.code) {
-	case TVN_KEYDOWN:			// ƒL[ƒ_ƒEƒ“
+	case TVN_KEYDOWN:			// ã‚­ãƒ¼ãƒ€ã‚¦ãƒ³
 		return SendMessage(hWnd, WM_TV_EVENT, tvk->hdr.code, lParam);
 	}
 	return FALSE;
 }
 
 /*
- * treeview_move_up - ƒAƒCƒeƒ€‚ğã‚ÉˆÚ“®
+ * treeview_move_up - ã‚¢ã‚¤ãƒ†ãƒ ã‚’ä¸Šã«ç§»å‹•
  */
 static HTREEITEM treeview_move_up(const HWND hTreeView)
 {
@@ -335,7 +340,7 @@ static HTREEITEM treeview_move_up(const HWND hTreeView)
 		if (parent_item == root_item) {
 			return NULL;
 		}
-		// ã‚ÌŠK‘w‚ÉˆÚ“®
+		// ä¸Šã®éšå±¤ã«ç§»å‹•
 		prev_item = parent_item;
 		parent_item = TreeView_GetParent(hTreeView, parent_item);
 		if ((prev_item = TreeView_GetPrevSibling(hTreeView, prev_item)) == NULL) {
@@ -346,7 +351,7 @@ static HTREEITEM treeview_move_up(const HWND hTreeView)
 			return NULL;
 		}
 		if (mi->content == MENU_CONTENT_POPUP) {
-			// ‰º‚ÌŠK‘w‚ÉˆÚ“®
+			// ä¸‹ã®éšå±¤ã«ç§»å‹•
 			parent_item = prev_item;
 			prev_item = (HTREEITEM)TVI_LAST;
 		} else {
@@ -355,7 +360,7 @@ static HTREEITEM treeview_move_up(const HWND hTreeView)
 			}
 		}
 	}
-	// ƒAƒCƒeƒ€‚ÌƒRƒs[
+	// ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚³ãƒ”ãƒ¼
 	if ((ret_item = treeview_copy_item(hTreeView, parent_item, hItem, prev_item)) == NULL) {
 		return NULL;
 	}
@@ -365,7 +370,7 @@ static HTREEITEM treeview_move_up(const HWND hTreeView)
 }
 
 /*
- * treeview_move_down - ƒAƒCƒeƒ€‚ğ‰º‚ÉˆÚ“®
+ * treeview_move_down - ã‚¢ã‚¤ãƒ†ãƒ ã‚’ä¸‹ã«ç§»å‹•
  */
 static HTREEITEM treeview_move_down(const HWND hTreeView)
 {
@@ -384,7 +389,7 @@ static HTREEITEM treeview_move_down(const HWND hTreeView)
 		if (parent_item == root_item) {
 			return NULL;
 		}
-		// ã‚ÌŠK‘w‚ÉˆÚ“®
+		// ä¸Šã®éšå±¤ã«ç§»å‹•
 		next_item = parent_item;
 		parent_item = TreeView_GetParent(hTreeView, parent_item);
 	} else {
@@ -392,12 +397,12 @@ static HTREEITEM treeview_move_down(const HWND hTreeView)
 			return NULL;
 		}
 		if (mi->content == MENU_CONTENT_POPUP) {
-			// ‰º‚ÌŠK‘w‚ÉˆÚ“®
+			// ä¸‹ã®éšå±¤ã«ç§»å‹•
 			parent_item = next_item;
 			next_item = (HTREEITEM)TVI_FIRST;
 		}
 	}
-	// ƒAƒCƒeƒ€‚ÌƒRƒs[
+	// ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚³ãƒ”ãƒ¼
 	if ((ret_item = treeview_copy_item(hTreeView, parent_item, hItem, next_item)) == NULL) {
 		return NULL;
 	}
@@ -407,7 +412,7 @@ static HTREEITEM treeview_move_down(const HWND hTreeView)
 }
 
 /*
- * set_enable_control - ƒRƒ“ƒgƒ[ƒ‹‚Ì—LŒøA–³Œø‚ğİ’è
+ * set_enable_control - ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®æœ‰åŠ¹ã€ç„¡åŠ¹ã‚’è¨­å®š
  */
 static void set_enable_control(const HWND hDlg)
 {
@@ -429,7 +434,7 @@ static void set_enable_control(const HWND hDlg)
 		i == ACTION_TYPE_ALT_ALT);
 	EnableWindow(GetDlgItem(hDlg, IDC_CHECK_CARET), enable);
 
-	// ƒƒjƒ…[
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 	EnableWindow(GetDlgItem(hDlg, IDC_TREE_MENU), menu);
 
 	enable = menu && treeview_get_lparam(GetDlgItem(hDlg, IDC_TREE_MENU),
@@ -479,7 +484,7 @@ static void set_enable_control(const HWND hDlg)
 }
 
 /*
- * get_tree_text - ƒcƒŠ[‚É•\¦‚·‚éƒeƒLƒXƒg‚Ìæ“¾
+ * get_tree_text - ãƒ„ãƒªãƒ¼ã«è¡¨ç¤ºã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆã®å–å¾—
  */
 static TCHAR *get_tree_text(const MENU_INFO *menu_info)
 {
@@ -561,7 +566,7 @@ static TCHAR *get_tree_text(const MENU_INFO *menu_info)
 }
 
 /*
- * set_menu_item - ƒƒjƒ…[€–Ú‚Ìİ’è
+ * set_menu_item - ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®è¨­å®š
  */
 static void set_menu_item(const HWND hDlg, const MENU_INFO *menu_info, const int menu_cnt, const HTREEITEM pItem)
 {
@@ -570,7 +575,7 @@ static void set_menu_item(const HWND hDlg, const MENU_INFO *menu_info, const int
 	int i;
 
 	for (i = 0; i < menu_cnt; i++) {
-		// ƒƒjƒ…[î•ñ‚ÌƒRƒs[
+		// ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã®ã‚³ãƒ”ãƒ¼
 		if ((mi = mem_calloc(sizeof(MENU_INFO))) == NULL) {
 			return;
 		}
@@ -591,7 +596,7 @@ static void set_menu_item(const HWND hDlg, const MENU_INFO *menu_info, const int
 }
 
 /*
- * get_menu_item - ƒƒjƒ…[€–Ú‚Ìæ“¾
+ * get_menu_item - ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®å–å¾—
  */
 static MENU_INFO *get_menu_item(const HWND hTreeView, const HTREEITEM pItem, int *cnt)
 {
@@ -600,7 +605,7 @@ static MENU_INFO *get_menu_item(const HWND hTreeView, const HTREEITEM pItem, int
 	MENU_INFO *new_mi;
 	int i;
 
-	// €–Ú”‚Ìæ“¾
+	// é …ç›®æ•°ã®å–å¾—
 	hItem = TreeView_GetChild(hTreeView, pItem);
 	*cnt = 0;
 	while (hItem != NULL) {
@@ -614,7 +619,7 @@ static MENU_INFO *get_menu_item(const HWND hTreeView, const HTREEITEM pItem, int
 		return NULL;
 	}
 
-	// €–Ú‚Ìì¬
+	// é …ç›®ã®ä½œæˆ
 	if ((new_mi = mem_calloc(sizeof(MENU_INFO) * *cnt)) == NULL) {
 		*cnt = 0;
 		return NULL;
@@ -629,7 +634,7 @@ static MENU_INFO *get_menu_item(const HWND hTreeView, const HTREEITEM pItem, int
 			(new_mi + i)->path = alloc_copy(mi->path);
 			(new_mi + i)->cmd = alloc_copy(mi->cmd);
 			(new_mi + i)->mi_cnt = 0;
-			// Ä‹A
+			// å†å¸°
 			(new_mi + i)->mi = get_menu_item(hTreeView, hItem, &(new_mi + i)->mi_cnt);
 			i++;
 		}
@@ -639,7 +644,7 @@ static MENU_INFO *get_menu_item(const HWND hTreeView, const HTREEITEM pItem, int
 }
 
 /*
- * free_menu_item - ƒƒjƒ…[€–Ú‚Ì‰ğ•ú
+ * free_menu_item - ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®è§£æ”¾
  */
 static void free_menu_item(const HWND hTreeView, const HTREEITEM pItem)
 {
@@ -657,14 +662,14 @@ static void free_menu_item(const HWND hTreeView, const HTREEITEM pItem)
 
 	hItem = TreeView_GetChild(hTreeView, pItem);
 	while (hItem != NULL) {
-		// Ä‹A
+		// å†å¸°
 		free_menu_item(hTreeView, hItem);
 		hItem = TreeView_GetNextSibling(hTreeView, hItem);
 	}
 }
 
 /*
- * set_menu_control - €–Ú•\¦
+ * set_menu_control - é …ç›®è¡¨ç¤º
  */
 static void set_menu_control(const HWND hDlg, const HTREEITEM se_item)
 {
@@ -700,7 +705,7 @@ static void set_menu_control(const HWND hDlg, const HTREEITEM se_item)
 }
 
 /*
- * get_menu_control - €–Úæ“¾
+ * get_menu_control - é …ç›®å–å¾—
  */
 static void get_menu_control(const HWND hDlg, const HTREEITEM hItem)
 {
@@ -730,7 +735,7 @@ static void get_menu_control(const HWND hDlg, const HTREEITEM hItem)
 }
 
 /*
- * set_app_title - ŠO•”ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚Ìƒ^ƒCƒgƒ‹‚ğİ’è
+ * set_app_title - å¤–éƒ¨ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®š
  */
 static void set_app_title(const HWND hDlg, TCHAR *buf)
 {
@@ -740,7 +745,7 @@ static void set_app_title(const HWND hDlg, TCHAR *buf)
 	*tmp = TEXT('\0');
 	SendDlgItemMessage(hDlg, IDC_EDIT_TITLE, WM_GETTEXT, BUF_SIZE - 1, (LPARAM)tmp);
 	if (*tmp == TEXT('\0')) {
-		// ƒ^ƒCƒgƒ‹‚Ìİ’è
+		// ã‚¿ã‚¤ãƒˆãƒ«ã®è¨­å®š
 		r = TEXT("");
 		for (p = buf; *p != TEXT('\0'); p++) {
 #ifndef UNICODE
@@ -758,7 +763,7 @@ static void set_app_title(const HWND hDlg, TCHAR *buf)
 }
 
 /*
- * set_action_item_proc - Action‚Ì€–Ú‚ğİ’è
+ * set_action_item_proc - Actionã®é …ç›®ã‚’è¨­å®š
  */
 static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -773,14 +778,14 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 
 	switch (uMsg) {
 	case WM_INITDIALOG:
-		// D&D‚ğó‚¯•t‚¯‚é
+		// D&Dã‚’å—ã‘ä»˜ã‘ã‚‹
 		SetWindowLong(hDlg, GWL_EXSTYLE, GetWindowLong(hDlg, GWL_EXSTYLE) | WS_EX_ACCEPTFILES);
 #ifdef OP_XP_STYLE
 		// XP
 		hThemeUp = open_theme(GetDlgItem(hDlg, IDC_BUTTON_UP), L"SCROLLBAR");
 		hThemeDown = open_theme(GetDlgItem(hDlg, IDC_BUTTON_DOWN), L"SCROLLBAR");
 #endif	// OP_XP_STYLE
-		// ƒXƒsƒ“ƒRƒ“ƒgƒ[ƒ‹‚Ìİ’è
+		// ã‚¹ãƒ”ãƒ³ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®è¨­å®š
 		SendDlgItemMessage(hDlg, IDC_SPIN_ICON_INDEX, UDM_SETRANGE, 0, (LPARAM)MAKELONG(UD_MAXVAL, 0));
 		SendDlgItemMessage(hDlg, IDC_SPIN_MIN, UDM_SETRANGE, 0, (LPARAM)MAKELONG(UD_MAXVAL, 0));
 		SendDlgItemMessage(hDlg, IDC_SPIN_MAX, UDM_SETRANGE, 0, (LPARAM)MAKELONG(UD_MAXVAL, 0));
@@ -816,7 +821,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_EXIT));
 
 		if (lParam == 0) {
-			// V‹K’Ç‰Á
+			// æ–°è¦è¿½åŠ 
 			CheckDlgButton(hDlg, IDC_CHECK_ENABLE, 1);
 			CheckDlgButton(hDlg, IDC_CHECK_PASTE, 1);
 			CheckDlgButton(hDlg, IDC_CHECK_CARET, 1);
@@ -839,7 +844,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		CheckDlgButton(hDlg, IDC_CHECK_PASTE, ai->paste);
 		CheckDlgButton(hDlg, IDC_CHECK_CARET, ai->caret);
 
-		// ƒzƒbƒgƒL[
+		// ãƒ›ãƒƒãƒˆã‚­ãƒ¼
 		i = 0;
 		if (ai->modifiers & MOD_SHIFT) {
 			i |= HOTKEYF_SHIFT;
@@ -857,7 +862,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 			SendDlgItemMessage(hDlg, IDC_HOTKEY, HKM_SETHOTKEY, (WPARAM)MAKEWORD(ai->virtkey, i), 0);
 		}
 
-		// ƒƒjƒ…[€–Ú‚Ìİ’è
+		// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®è¨­å®š
 		root_item = treeview_set_item(GetDlgItem(hDlg, IDC_TREE_MENU),
 			message_get_res(IDS_ACTION_TREE_MENU), (HTREEITEM)TVI_ROOT, (HTREEITEM)TVI_LAST, 0);
 
@@ -913,6 +918,11 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		SetFocus(GetDlgItem(hDlg, IDC_EDIT_PATH));
 		break;
 
+	case WM_HELP:
+		if (show_help(IDD_DIALOG_ACTION_SET, (LPHELPINFO)lParam))
+			return TRUE;
+		break;
+
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case IDC_COMBO_ACTION:
@@ -950,7 +960,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 			break;
 
 		case IDC_BUTTON_DELETE:
-			// €–Úíœ
+			// é …ç›®å‰Šé™¤
 			free_menu_item(GetDlgItem(hDlg, IDC_TREE_MENU), TreeView_GetSelection(GetDlgItem(hDlg, IDC_TREE_MENU)));
 			TreeView_DeleteItem(GetDlgItem(hDlg, IDC_TREE_MENU), TreeView_GetSelection(GetDlgItem(hDlg, IDC_TREE_MENU)));
 			break;
@@ -960,9 +970,9 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				HWND CLCLWnd;
 				TCHAR err_str[BUF_SIZE];
 
-				// ƒƒCƒ“ƒEƒBƒ“ƒhƒEŒŸõ
+				// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¤œç´¢
 				if ((CLCLWnd = FindWindow(MAIN_WND_CLASS, MAIN_WINDOW_TITLE)) != NULL) {
-					// “o˜^ƒAƒCƒeƒ€•Û‘¶—v‹
+					// ç™»éŒ²ã‚¢ã‚¤ãƒ†ãƒ ä¿å­˜è¦æ±‚
 					SendMessage(CLCLWnd, WM_REGIST_SAVE, 0, 0);
 				}
 				wsprintf(buf, TEXT("%s\\%s"), work_path, REGIST_FILENAME);
@@ -971,7 +981,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 					MessageBox(hDlg, err_str, REGIST_FILENAME, MB_ICONERROR);
 					break;
 				}
-				// ƒtƒHƒ‹ƒ_‚Ì‘I‘ğ
+				// ãƒ•ã‚©ãƒ«ãƒ€ã®é¸æŠ
 				*buf = TEXT('\0');
 				SendDlgItemMessage(hDlg, IDC_EDIT_PATH, WM_GETTEXT, BUF_SIZE - 1, (LPARAM)buf);
 				if (select_path(hInst, hDlg, regist_data.child, buf) == TRUE) {
@@ -987,7 +997,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 
 			} else if (SendDlgItemMessage(hDlg, IDC_COMBO_CONTENT, CB_GETCURSEL, 0, 0) == MENU_CONTENT_APP) {
 				SetFocus(GetDlgItem(hDlg, IDC_EDIT_PATH));
-				// ƒtƒ@ƒCƒ‹‘I‘ğ
+				// ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠ
 				if (file_select(hDlg, TEXT("*.*\0*.*\0\0"), 1, buf) == -1) {
 					break;
 				}
@@ -1001,7 +1011,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 			SendDlgItemMessage(hDlg, IDC_EDIT_ICON_FILE, WM_GETTEXT, BUF_SIZE - 1, (LPARAM)buf);
 			i = GetDlgItemInt(hDlg, IDC_EDIT_ICON_INDEX, NULL, FALSE);
 			SetFocus(GetDlgItem(hDlg, IDC_EDIT_ICON_FILE));
-			// ƒAƒCƒRƒ“‘I‘ğ
+			// ã‚¢ã‚¤ã‚³ãƒ³é¸æŠ
 			if ((i = select_icon(hInst, hDlg, buf, i)) == -1) {
 				break;
 			}
@@ -1027,7 +1037,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				ai = mem_calloc(sizeof(ACTION_INFO));
 			}
 			if (ai != NULL) {
-				// İ’èæ“¾
+				// è¨­å®šå–å¾—
 				ai->action = SendDlgItemMessage(hDlg, IDC_COMBO_ACTION, CB_GETCURSEL, 0, 0);
 				ai->type = SendDlgItemMessage(hDlg, IDC_COMBO_TYPE, CB_GETCURSEL, 0, 0);
 				ai->enable = IsDlgButtonChecked(hDlg, IDC_CHECK_ENABLE);
@@ -1047,7 +1057,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 			}
 
 			if (GetWindowLong(hDlg, GWL_USERDATA) == 0) {
-				// V‹K
+				// æ–°è¦
 				HWND pWnd = PropSheet_GetCurrentPageHwnd(GetParent(hDlg));
 				listview_set_action(GetDlgItem(pWnd, IDC_LIST_ACTION), ai, FALSE);
 			}
@@ -1075,14 +1085,14 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		break;
 
 	case WM_NOTIFY:
-		// ƒRƒ“ƒgƒ[ƒ‹’Ê’mƒƒbƒZ[ƒW
+		// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«é€šçŸ¥ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 		if (((NMHDR *)lParam)->hwndFrom == GetDlgItem(hDlg, IDC_TREE_MENU)) {
 			return treeview_notify_proc(hDlg, lParam);
 		}
 		break;
 
 	case WM_DRAWITEM:
-		// •`‰æ‚·‚éƒtƒŒ[ƒ€ƒRƒ“ƒgƒ[ƒ‹ƒXƒ^ƒCƒ‹‚ğİ’è
+		// æç”»ã™ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
 		switch ((UINT)wParam) {
 		case IDC_BUTTON_UP:
 			i = DFCS_SCROLLUP;
@@ -1095,7 +1105,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		default:
 			return FALSE;
 		}
-		// ƒ{ƒ^ƒ“‚Ì•`‰æ
+		// ãƒœã‚¿ãƒ³ã®æç”»
 #ifdef OP_XP_STYLE
 		if (hThemeUp != 0 && hThemeDown != 0) {
 			draw_theme_scroll((LPDRAWITEMSTRUCT)lParam, i, (i == DFCS_SCROLLUP) ? hThemeUp : hThemeDown);
@@ -1109,7 +1119,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 
 #ifdef OP_XP_STYLE
 	case WM_THEMECHANGED:
-		// ƒe[ƒ}‚Ì•ÏX
+		// ãƒ†ãƒ¼ãƒã®å¤‰æ›´
 		if (hThemeUp != 0 && hThemeDown != 0) {
 			close_theme(hThemeUp);
 			close_theme(hThemeDown);
@@ -1127,7 +1137,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 			return TRUE;
 
 		case NM_CUSTOMDRAW:
-			// ƒJƒXƒ^ƒ€ƒhƒ[
+			// ã‚«ã‚¹ã‚¿ãƒ ãƒ‰ãƒ­ãƒ¼
 			switch (((LPNMTVCUSTOMDRAW)lParam)->nmcd.dwDrawStage) {
 			case CDDS_PREPAINT:
 				SetWindowLong(hDlg, DWL_MSGRESULT, CDRF_NOTIFYITEMDRAW);
@@ -1155,7 +1165,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 }
 
 /*
- * copy_menu_info - ƒƒjƒ…[î•ñ‚ÌƒRƒs[‚ğì¬
+ * copy_menu_info - ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã®ã‚³ãƒ”ãƒ¼ã‚’ä½œæˆ
  */
 static MENU_INFO *copy_menu_info(const MENU_INFO *menu_info, const int menu_cnt)
 {
@@ -1168,7 +1178,7 @@ static MENU_INFO *copy_menu_info(const MENU_INFO *menu_info, const int menu_cnt)
 	CopyMemory(mi, menu_info, sizeof(MENU_INFO) * menu_cnt);
 
 	for (i = 0; i < menu_cnt; i++) {
-		// ƒƒjƒ…[î•ñ‚ÌƒRƒs[
+		// ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã®ã‚³ãƒ”ãƒ¼
 		(mi + i)->title = alloc_copy((menu_info + i)->title);
 		(mi + i)->icon_path = alloc_copy((menu_info + i)->icon_path);
 		(mi + i)->path = alloc_copy((menu_info + i)->path);
@@ -1185,7 +1195,7 @@ static MENU_INFO *copy_menu_info(const MENU_INFO *menu_info, const int menu_cnt)
 }
 
 /*
- * copy_action_info - “®ìî•ñ‚ÌƒRƒs[‚ğì¬
+ * copy_action_info - å‹•ä½œæƒ…å ±ã®ã‚³ãƒ”ãƒ¼ã‚’ä½œæˆ
  */
 static ACTION_INFO *copy_action_info(const ACTION_INFO *ai)
 {
@@ -1201,7 +1211,7 @@ static ACTION_INFO *copy_action_info(const ACTION_INFO *ai)
 }
 
 /*
- * listview_set_text - ListView‚ÌƒeƒLƒXƒg‚ğİ’è
+ * listview_set_text - ListViewã®ãƒ†ã‚­ã‚¹ãƒˆã‚’è¨­å®š
  */
 static void listview_set_text(const HWND hListView, const int i)
 {
@@ -1212,7 +1222,7 @@ static void listview_set_text(const HWND hListView, const int i)
 	if ((ai = (ACTION_INFO *)listview_get_lparam(hListView, i)) == NULL) {
 		return;
 	}
-	// “®ì
+	// å‹•ä½œ
 	switch (ai->action) {
 	case ACTION_POPUPMEMU:
 		p = message_get_res(IDS_ACTION_POPUPMEMU);
@@ -1236,7 +1246,7 @@ static void listview_set_text(const HWND hListView, const int i)
 	}
 	ListView_SetItemText(hListView, i, 0, p);
 
-	// ŒÄ‚Ño‚µ•û–@
+	// å‘¼ã³å‡ºã—æ–¹æ³•
 	switch (ai->type) {
 	case ACTION_TYPE_HOTKEY:
 		get_keyname(ai->modifiers, ai->virtkey, buf);
@@ -1275,7 +1285,7 @@ static void listview_set_text(const HWND hListView, const int i)
 }
 
 /*
- * listview_set_action - ListView‚ÉActionî•ñ‚ğ’Ç‰Á‚·‚é
+ * listview_set_action - ListViewã«Actionæƒ…å ±ã‚’è¿½åŠ ã™ã‚‹
  */
 static void listview_set_action(const HWND hListView, ACTION_INFO *ai, const BOOL copy)
 {
@@ -1304,7 +1314,7 @@ static void listview_set_action(const HWND hListView, ACTION_INFO *ai, const BOO
 }
 
 /*
- * listview_get_action - Actionî•ñ‚Ìæ“¾
+ * listview_get_action - Actionæƒ…å ±ã®å–å¾—
  */
 static ACTION_INFO *listview_get_action(const HWND hListView, int *cnt)
 {
@@ -1316,7 +1326,7 @@ static ACTION_INFO *listview_get_action(const HWND hListView, int *cnt)
 		return NULL;
 	}
 
-	// €–Ú‚Ìì¬
+	// é …ç›®ã®ä½œæˆ
 	if ((new_ai = mem_calloc(sizeof(ACTION_INFO) * *cnt)) == NULL) {
 		*cnt = 0;
 		return NULL;
@@ -1334,7 +1344,7 @@ static ACTION_INFO *listview_get_action(const HWND hListView, int *cnt)
 }
 
 /*
- * listview_free_action - Actionî•ñ‚Ì‰ğ•ú
+ * listview_free_action - Actionæƒ…å ±ã®è§£æ”¾
  */
 static void listview_free_action(const HWND hListView)
 {
@@ -1351,7 +1361,7 @@ static void listview_free_action(const HWND hListView)
 }
 
 /*
- * set_action_proc - Actionİ’è‚ÌƒvƒƒV[ƒWƒƒ
+ * set_action_proc - Actionè¨­å®šã®ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
  */
 BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -1370,7 +1380,7 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		hThemeUp = open_theme(GetDlgItem(hDlg, IDC_BUTTON_UP), L"SCROLLBAR");
 		hThemeDown = open_theme(GetDlgItem(hDlg, IDC_BUTTON_DOWN), L"SCROLLBAR");
 #endif	// OP_XP_STYLE
-		// ƒŠƒXƒgƒrƒ…[‚ÌƒJƒ‰ƒ€‚Ìİ’è
+		// ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ©ãƒ ã®è¨­å®š
 		i = 0;
 		lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 
@@ -1386,7 +1396,7 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		lvc.iSubItem = i++;
 		ListView_InsertColumn(GetDlgItem(hDlg, IDC_LIST_ACTION), lvc.iSubItem, &lvc);
 
-		// ƒŠƒXƒgƒrƒ…[‚ÌƒXƒ^ƒCƒ‹‚Ìİ’è
+		// ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¹ã‚¿ã‚¤ãƒ«ã®è¨­å®š
 		SetWindowLong(GetDlgItem(hDlg, IDC_LIST_ACTION), GWL_STYLE,
 			GetWindowLong(GetDlgItem(hDlg, IDC_LIST_ACTION), GWL_STYLE) | LVS_SHOWSELALWAYS);
 		SendDlgItemMessage(hDlg, IDC_LIST_ACTION, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
@@ -1423,7 +1433,7 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		default:
 			return FALSE;
 		}
-		// ƒ{ƒ^ƒ“‚Ì•`‰æ
+		// ãƒœã‚¿ãƒ³ã®æç”»
 #ifdef OP_XP_STYLE
 		if (hThemeUp != 0 && hThemeDown != 0) {
 			draw_theme_scroll((LPDRAWITEMSTRUCT)lParam, i, (i == DFCS_SCROLLUP) ? hThemeUp : hThemeDown);
@@ -1437,7 +1447,7 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 #ifdef OP_XP_STYLE
 	case WM_THEMECHANGED:
-		// ƒe[ƒ}‚Ì•ÏX
+		// ãƒ†ãƒ¼ãƒã®å¤‰æ›´
 		if (hThemeUp != 0 && hThemeDown != 0) {
 			close_theme(hThemeUp);
 			close_theme(hThemeDown);
@@ -1465,7 +1475,7 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			break;
 
 		case NM_CUSTOMDRAW:
-			// ƒJƒXƒ^ƒ€ƒhƒ[
+			// ã‚«ã‚¹ã‚¿ãƒ ãƒ‰ãƒ­ãƒ¼
 			switch (((LPNMLVCUSTOMDRAW)lParam)->nmcd.dwDrawStage) {
 			case CDDS_PREPAINT:
 				SetWindowLong(hDlg, DWL_MSGRESULT, CDRF_NOTIFYITEMDRAW);
@@ -1481,6 +1491,11 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			}
 			break;
 		}
+		break;
+
+	case WM_HELP:
+		if (show_help(IDD_DIALOG_ACTION, (LPHELPINFO)lParam))
+			return TRUE;
 		break;
 
 	case WM_COMMAND:
@@ -1537,7 +1552,7 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			break;
 
 		case IDC_BUTTON_COPY:
-			// ƒRƒs[‚Ìì¬
+			// ã‚³ãƒ”ãƒ¼ã®ä½œæˆ
 			if ((i = ListView_GetNextItem(GetDlgItem(hDlg, IDC_LIST_ACTION), -1, LVNI_SELECTED)) == -1) {
 				break;
 			}
@@ -1554,12 +1569,12 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			break;
 
 		case IDOK:
-			// Action‚Ì‰ğ•ú
+			// Actionã®è§£æ”¾
 			for (i = 0; i < option.action_cnt; i++) {
 				ini_free_menu((option.action_info + i)->menu_info, (option.action_info + i)->menu_cnt);
 			}
 			mem_free(&option.action_info);
-			// ListView‚©‚çAction‚ğæ“¾
+			// ListViewã‹ã‚‰Actionã‚’å–å¾—
 			option.action_info = listview_get_action(GetDlgItem(hDlg, IDC_LIST_ACTION), &option.action_cnt);
 			listview_free_action(GetDlgItem(hDlg, IDC_LIST_ACTION));
 			prop_ret = 1;

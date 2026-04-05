@@ -140,6 +140,11 @@ BOOL CALLBACK set_viewer_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 	case WM_NOTIFY:
 		return OptionNotifyProc(hDlg, uMsg, wParam, lParam);
 
+	case WM_HELP:
+		if (show_help(IDD_DIALOG_VIEWER, (LPHELPINFO)lParam))
+			return TRUE;
+		break;
+
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case IDC_LIST_FROM:

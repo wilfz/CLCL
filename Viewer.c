@@ -15,6 +15,7 @@
 #include <commctrl.h>
 #include <commdlg.h>
 #include <tchar.h>
+#include <HtmlHelp.h>
 
 #pragma comment(lib, "Version.lib")
 
@@ -2957,8 +2958,10 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 					break;
 				}
 
-				if (LOWORD(wParam) == ID_MENUITEM_HELP_EN)
-					lstrcpy(help_path + lstrlen(help_path), TEXT("\\clcl.html"));
+				if (LOWORD(wParam) == ID_MENUITEM_HELP_EN) {
+					lstrcpy(help_path + lstrlen(help_path), TEXT("\\clcl.chm"));
+					HtmlHelp(hWnd, help_path, HH_DISPLAY_TOC, (DWORD_PTR)NULL);
+				}
 				else if (LOWORD(wParam) == ID_MENUITEM_HELP_JP)
 					lstrcpy(help_path + lstrlen(help_path), TEXT("\\readme_jp.txt"));
 				else

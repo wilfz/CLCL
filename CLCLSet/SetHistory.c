@@ -76,6 +76,11 @@ BOOL CALLBACK set_histroy_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 	case WM_NOTIFY:
 		return OptionNotifyProc(hDlg, uMsg, wParam, lParam);
 
+	case WM_HELP:
+		if (show_help(IDD_DIALOG_HISTORY, (LPHELPINFO)lParam))
+			return TRUE;
+		break;
+
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case IDC_CHECK_SAVE:

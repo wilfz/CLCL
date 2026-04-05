@@ -115,6 +115,11 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_NOTIFY:
 		return OptionNotifyProc(hDlg, uMsg, wParam, lParam);
 
+	case WM_HELP:
+		if (show_help(IDD_DIALOG_MENU, (LPHELPINFO)lParam))
+			return TRUE;
+		break;
+
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case IDC_CHECK_SHOW_ICON:
