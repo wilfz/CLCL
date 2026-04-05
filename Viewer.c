@@ -2961,6 +2961,7 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 				if (LOWORD(wParam) == ID_MENUITEM_HELP_EN) {
 					lstrcpy(help_path + lstrlen(help_path), TEXT("\\clcl.chm"));
 					HtmlHelp(hWnd, help_path, HH_DISPLAY_TOC, (DWORD_PTR)NULL);
+					break;
 				}
 				else if (LOWORD(wParam) == ID_MENUITEM_HELP_JP)
 					lstrcpy(help_path + lstrlen(help_path), TEXT("\\readme_jp.txt"));
