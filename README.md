@@ -399,6 +399,7 @@ Continue so with as much pop-up menus as you like. You can even cascade the popu
 
 ## Update history
 - Ver 2.1.5 ->
+	- Integration of MS Help Viewer
 	- Replace with regular expressions
 	- Macros, insert templates with expanded variables (tool_clip plugin)
 

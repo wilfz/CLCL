@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ で生成されたインクルード ファイル。
-// CLCL.rc で使用
+// Microsoft Visual C++ generated include file.
+// Used by CLCL.rc
 //
 #define IDS_MENU_REGIST                 1
 #define IDS_MENU_CANCEL                 2
@@ -95,6 +95,7 @@
 #define IDC_HOTKEY_ITEM                 1007
 #define IDC_CHECK_PASTE                 1008
 #define IDC_CHECK_WIN                   1009
+#define IDH_VIEWER_HELP                 30000
 #define ID_MENUITEM_EXIT                40001
 #define ID_MENUITEM_VIEWER              40002
 #define ID_MENUITEM_OPTION              40003
