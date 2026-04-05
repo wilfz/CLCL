@@ -23,6 +23,9 @@ CVS/
 
 release.md
 
+# intermediate files from generating .chm
+clcl_help/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
