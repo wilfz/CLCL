@@ -131,6 +131,7 @@ jobs:
           Setup/*.dll
           Setup/*.txt
           Setup/*.html
+          Setup/*.chm
           Setup/clcl_app.ini
           Setup/LICENSE
 
