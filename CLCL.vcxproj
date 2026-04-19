@@ -135,7 +135,7 @@
     </Manifest>
     <PostBuildEvent>
       <Command>copy README.md "Release\CLCL Documentation.md"
-xcopy img "Release\"
+xcopy img "Release\" /Y
 pandoc --from=gfm --to=html5 "Release\CLCL Documentation.md" --standalone --output="Release\clcl.html"
 </Command>
     </PostBuildEvent>

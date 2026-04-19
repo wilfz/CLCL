@@ -645,6 +645,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 
 		case MENU_CONTENT_HISTORY:
 			// 履歴 (昇順)
+			// History (ascending order)
 			if (menu_create_datainfo(history_di, mii, j, id, 1, (menu_info + i)->min, (menu_info + i)->max) == TRUE) {
 				for (di = history_di, cnt = 0; di != NULL &&
 					(menu_info + i)->min > 0 && cnt < (menu_info + i)->min - 1; di = di->next, cnt++);
@@ -655,6 +656,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 
 		case MENU_CONTENT_HISTORY_DESC:
 			// 履歴 (降順)
+			// History (descending order)
 			if (menu_create_datainfo(history_di, mii, j, id, -1, (menu_info + i)->min, (menu_info + i)->max) == TRUE) {
 				for (di = history_di, cnt = 0; di != NULL &&
 					(menu_info + i)->min > 0 && cnt < (menu_info + i)->min - 1; di = di->next, cnt++)

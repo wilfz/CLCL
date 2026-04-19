@@ -2936,8 +2936,40 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 			break;
 
 		case ID_MENUITEM_HELP_JP:
+		{
+			// Japanese help currently only available as plain text file readme_jp.txt.
+			TCHAR help_path[MAX_PATH];
+			TCHAR* p, * r;
+			if (GetModuleFileName(NULL, help_path, sizeof(help_path)) > 0) {
+				for (p = r = help_path; *p != TEXT('\0'); p++) {
+#ifndef UNICODE
+					if (IsDBCSLeadByte((BYTE)*p) == TRUE) {
+						p++;
+						continue;
+					}
+#endif	// UNICODE
+					if (*p == TEXT('\\') || *p == TEXT('/')) {
+						r = p;
+					}
+				}
+				*r = TEXT('\0');
+
+				if (lstrlen(help_path) >= MAX_PATH - 15) {
+					break;
+				}
+
+				lstrcpy(help_path + lstrlen(help_path), TEXT("\\readme_jp.txt"));
+
+				if (file_check_file(help_path) && ShellExecute(hWnd, TEXT("open"), help_path, NULL, NULL, SW_SHOWNORMAL) <= (HINSTANCE)32) {
+					break;
+				}
+			}
+		}
+		break;
+
 		case ID_MENUITEM_HELP_EN:
 		{
+			// english help as Compiled Help Module, generated from README.md
 			TCHAR help_path[MAX_PATH];
 			TCHAR* p, * r;
 			if (GetModuleFileName(NULL, help_path, sizeof(help_path)) > 0) {
@@ -2962,17 +2994,15 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 				// CLCLSet also uses this window hNdle by default
 				HWND hMainWnd = FindWindow(MAIN_WND_CLASS, MAIN_WINDOW_TITLE);
 
+				// other languages may follow ...
 				if (LOWORD(wParam) == ID_MENUITEM_HELP_EN) {
 					lstrcpy(help_path + lstrlen(help_path), TEXT("\\clcl.chm"));
-					HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_DISPLAY_TOC, (DWORD_PTR)NULL);
-					break;
 				}
-				else if (LOWORD(wParam) == ID_MENUITEM_HELP_JP)
-					lstrcpy(help_path + lstrlen(help_path), TEXT("\\readme_jp.txt"));
 				else
 					break;
 					
-				if (file_check_file(help_path) && ShellExecute(hWnd, TEXT("open"), help_path, NULL, NULL, SW_SHOWNORMAL) <= (HINSTANCE)32) {
+				if (file_check_file(help_path)) {
+					HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_DISPLAY_TOC, (DWORD_PTR)NULL);
 					//MessageBox(hWnd, message_get_res(IDS_VIEWER_HELP_NOT_FOUND), APP_NAME, MB_OK | MB_ICONEXCLAMATION);
 					break;
 				}

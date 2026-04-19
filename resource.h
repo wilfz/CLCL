@@ -96,6 +96,7 @@
 #define IDC_CHECK_PASTE                 1008
 #define IDC_CHECK_WIN                   1009
 #define IDH_VIEWER_HELP                 30000
+#define IDH_OPTIONS_HELP                30001
 #define ID_MENUITEM_EXIT                40001
 #define ID_MENUITEM_VIEWER              40002
 #define ID_MENUITEM_OPTION              40003

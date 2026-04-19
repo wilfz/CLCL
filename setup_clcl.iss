@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CLCL"
-#define MyAppVersion "2.1.5.3"
+#define MyAppVersion "2.1.6.0"
 #define MyAppPublisher "WilfZim"
-#define MyAppURL "https://nakka.com/soft/clcl/index_eng.html"
+#define MyAppURL "https://www.linguversa.de/clcl/index_eng.html"
 #define MyGitHubRepo "https://github.com/wilfz/CLCL"
 #define MyAppExeName "CLCL.exe"
 
@@ -53,11 +53,12 @@ Name: "custom"; Description: "Custom installation"; Flags: iscustom
 
 [Components]
 Name: "main"; Description: "CLCL main program"; Types: full custom;
-Name: "help"; Description: "HTML Help File"; Types: full
+Name: "help"; Description: "HTML Help Files"; Types: full
 Name: "tool_text"; Description: "Plugin for text manipulation"; Types: full
 Name: "tool_utl"; Description: "Plugin with other utilities"; Types: full
 Name: "tool_clip"; Description: "Plugin by WilfZim"; Types: full
 Name: "tool_test"; Description: "Example plugin"; Types: full
+Name: "fmt_rtf"; Description: "Format plugin for RichTextFormat"; Types: full
 Name: "readme"; Description: "ReadMe"; Types: full custom
 ;Name: "readme\en"; Description: "English"; Flags: exclusive
 ;Name: "readme\jp"; Description: "Japanese"; Flags: exclusive
@@ -73,6 +74,7 @@ Source: "CLCLPlugin\tool_test\Release\tool_test.dll"; DestDir: "{app}"; Componen
 Source: "CLCLPlugin\tool_text\Release\tool_text.dll"; DestDir: "{app}"; Components: tool_text; Flags: ignoreversion
 Source: "CLCLPlugin\tool_utl\Release\tool_utl.dll"; DestDir: "{app}"; Components: tool_utl; Flags: ignoreversion
 Source: "CLCLPlugin\tool_clip\Release\tool_clip.dll"; DestDir: "{app}"; Components: tool_clip; Flags: ignoreversion
+Source: "CLCLPlugin\fmt_rtf\Release\fmt_rtf.dll"; DestDir: "{app}"; Components: fmt_rtf; Flags: ignoreversion
 Source: "readme_en.txt"; DestDir: "{app}"; Components: main; Flags: ignoreversion 
 Source: "readme_jp.txt"; DestDir: "{app}"; Components: main help; Flags: ignoreversion
 Source: "readme_en.txt"; DestDir: "{app}"; Components: readme; Languages: english german ukrainian; Flags: ignoreversion isreadme
@@ -90,9 +92,9 @@ Source: "CLCLPlugin\tool_clip\Release\tool_clip.html"; DestDir: "{app}"; Compone
 [Icons]
 ; Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{#MyAppName} - Clipboard Tool"; Filename: "{app}\{#MyAppExeName}"; Parameters: "/v"
-Name: "{group}\{#MyAppName} Original Author's Page"; Filename: "{#MyAppURL}"
+Name: "{group}\{#MyAppName}'s Homepage"; Filename: "{#MyAppURL}"
 Name: "{group}\{#MyAppName} on GitHub"; Filename: "{#MyGitHubRepo}"
-Name: "{group}\{#MyAppName} Help"; Filename: "{app}\clcl.html"; Components: main help
+Name: "{group}\{#MyAppName} Help"; Filename: "{app}\clcl.chm"; Components: main help
 ;Name: "{group}\ReadMe"; Filename: "{app}\readme_jp.txt"
 Name: "{group}\Tool_Clip Help"; Filename: "{app}\tool_clip.html"; Components: tool_clip
 Name: "{group}\Tool_Clip on GitHub"; Filename: "{#ToolClipGitHubRepo}"; Components: tool_clip

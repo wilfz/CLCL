@@ -696,6 +696,8 @@ HWND show_help(UINT dlgid, LPHELPINFO lphi)
 	// otherwise help on dialog level:
 	if (!hWnd)
 		hWnd = HtmlHelp(main_wnd, help_path, HH_HELP_CONTEXT, dlgid);
+	if (!hWnd)
+		hWnd = HtmlHelp(main_wnd, help_path, HH_HELP_CONTEXT, IDH_OPTIONS_HELP);
 
 	return hWnd;
 }

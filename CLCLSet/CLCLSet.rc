@@ -676,8 +676,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,1,5,3
- PRODUCTVERSION 2,1,5,3
+ FILEVERSION 2,1,6,0
+ PRODUCTVERSION 2,1,6
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -693,12 +693,12 @@ BEGIN
         BLOCK "041104b0"
         BEGIN
             VALUE "FileDescription", "CLCLSet"
-            VALUE "FileVersion", "2.1.5.3"
+            VALUE "FileVersion", "2.1.6.0"
             VALUE "InternalName", "CLCLSet.exe"
             VALUE "LegalCopyright", "Copyright (C) 1996-2024 by Ohno Tomoaki. 2024-2026 MIT license."
             VALUE "OriginalFilename", "CLCLSet.exe"
             VALUE "ProductName", "CLCL"
-            VALUE "ProductVersion", "2.1.5.3"
+            VALUE "ProductVersion", "2.1.6"
         END
     END
     BLOCK "VarFileInfo"
@@ -2941,7 +2941,7 @@ BEGIN
     EDITTEXT        IDC_EDIT_CMD_LINE,10,98,230,13,ES_AUTOHSCROLL
     GROUPBOX        "Ausführungszeitpunkt",IDC_STATIC,10,115,230,125
     CONTROL         "Aktionsmenü",IDC_CHECK_MENU,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,127,110,10
-    CONTROL         "Kopier- und Einfüge- Aktionen senden",IDC_CHECK_COPY_PATE,
+    CONTROL         "Kopier- und Einfüge-Aktionen senden",IDC_CHECK_COPY_PATE,
                     "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,30,136,102,17
     LTEXT           "Hotkey:",IDC_STATIC,135,125,50,10
     CONTROL         "",IDC_HOTKEY_TOOL,"select_key",WS_BORDER | WS_TABSTOP,135,135,95,13

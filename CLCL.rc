@@ -134,7 +134,8 @@ BEGIN
     END
     POPUP "ヘルプ(&H)"
     BEGIN
-        MENUITEM "ヘルプ",                         ID_MENUITEM_HELP_JP
+        MENUITEM "ヘルプ (プレーンテキスト)",          ID_MENUITEM_HELP_JP
+        MENUITEM "ヘルプ (英語)",                      ID_MENUITEM_HELP_EN
         MENUITEM "バージョン情報(&A)...",              ID_MENUITEM_ABOUT
     END
 END
@@ -425,8 +426,8 @@ IDR_TOOLBAR48           BITMAP                  "res\\toolbar48.bmp"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,1,5,3
- PRODUCTVERSION 2,1,5,3
+ FILEVERSION 2,1,6,0
+ PRODUCTVERSION 2,1,6,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -441,13 +442,13 @@ BEGIN
     BEGIN
         BLOCK "041104b0"
         BEGIN
-            VALUE "FileDescription", "CLCL"
-            VALUE "FileVersion", "2.1.5.3"
+            VALUE "FileDescription", "CLCL Clipboard Manager"
+            VALUE "FileVersion", "2.1.6.0"
             VALUE "InternalName", "CLCL.exe"
-            VALUE "LegalCopyright", "Copyright (C) 1996-2025 by Ohno Tomoaki. 2024-2026 MIT license."
+            VALUE "LegalCopyright", "Copyright (C) 1996-2024 by Ohno Tomoaki. 2024-2026 MIT license."
             VALUE "OriginalFilename", "CLCL.exe"
             VALUE "ProductName", "CLCL"
-            VALUE "ProductVersion", "2.1.5.3"
+            VALUE "ProductVersion", "2.1.6"
         END
     END
     BLOCK "VarFileInfo"

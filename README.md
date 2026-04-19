@@ -1,11 +1,11 @@
 # CLCL - Clipboard Manager
 
-> A powerful Windows clipboard manager with plugin support and customizable hotkeys
-
-**Version:** 2.1.5
+**Version:** 2.1.6
 
 ## Overview
-CLCL is a software that records clipboard history. It provides quick access to recent clipboard items via a customizable pop-up menu and supports extended clipboard formats including text, images, and files.
+CLCL is a powerful Windows clipboard manager with plugin support and customizable hotkeys.
+
+It provides quick access to recent clipboard items via a customizable pop-up menu and supports extended clipboard formats including text, images, and files.
 
 ## Features
 - **Universal Format Support** - Handles all clipboard formats automatically
@@ -23,16 +23,17 @@ CLCL is a software that records clipboard history. It provides quick access to r
 - **Multiple Language** - User interface language can be switched between English, Japanese, German, Simplified Chinese, and Ukrainian
 - **Binary Viewer** - View raw binary clipboard data in hex format
 - **History & Registry** - Persistent and automatically saving clipboard history and templates
+- **Free and Open Source** - Under active development on [github.com/wilfz/CLCL](https://github.com/wilfz/CLCL)
 
 ## Installation
 Works on current Windows OS.
 
-Download and launch [setup_clcl_2_1_5.exe](https://github.com/wilfz/CLCL/releases).
+Download and launch [setup_clcl_2_1_6.exe](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta0/setup_clcl_2_1_6.exe).
 The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
 
 If you want to uninstall, do so from the Control Panel __after__ closing CLCL.
 
-Instead of the automatic installer you can also download [CLCL_2_1_5.zip](https://github.com/wilfz/CLCL/releases), unpack into a folder of your choice and start clcl.exe from there.
+Instead of the automatic installer you can also download [CLCL_2_1_6.zip](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta0/clcl_2_1_6.zip), unpack into a folder of your choice and start clcl.exe from there.
 
 ### Data Storage
 By default data and settings are stored in this folder (for Windows 10/11):
@@ -81,7 +82,7 @@ The menu can be customized in the settings.
 	- The "Clipboard" at the top of the tree is the current clipboard content.
 	- The ["History"](#history) in the tree is a list of recent clipboard entries.
 	- ["Templates"](#templates) in the tree is a list of template items (such as standard phrases).
-- Right Panel: Show and edit content of the selected item
+- Right Panel: Show and edit content of the selected item, if a tree node is selected, all sub-items are shown as a list with (the beginning of) their data, modification time and whether and which hot key is attached to the respective sub-items.
 
 **Tree structure:**
 
@@ -118,16 +119,16 @@ Right-clicking on a [history](#history) or [template](#templates) item will disp
 To display the tool menu with the keyboard, press Ctrl and Enter and then select a tool.
 
 The menu items displayed in the task tray or with hotkey are configured in the ["Action"](#action) option.
-You can customize the menu behavior and how items are shown on the "Menu" tab of the options.
+You can customize the menu behavior and how items are shown on the ["Menu"](#menu-settings) tab of the options.
 
 ### History
 Newly copied data is added at the top of the history.
 
 A single history item contains multiple clipboard formats. 
-Use the ["Format"](#clipboard-format) option in Settings to register preferred formats and control priority when displaying items.
+Use the ["Format"](#format) option in Options to register preferred formats and control priority when displaying items.  
 The clipboard format with the highest priority is displayed in the menu and viewer.
 
-The number of history items to keep is set in the "History" tab of CLCL Options.
+The number of history items to keep is set in the ["History"](#history-settings) tab of CLCL Options.
 
 The ["Filter"](#filter) option in Settings determines which formats are added to the history.
 
@@ -176,6 +177,7 @@ If you select a history or template item from the menu, the data will be sent to
 If you select "Send to Clipboard", the selected item will be sent to the clipboard.
 
 ## Clipboard
+
 ### What is the clipboard?
 The clipboard is an area where different applications can exchange data.
 For example, when you copy text in Notepad and paste it in Word, both applications use the clipboard.
@@ -197,6 +199,11 @@ By default CLCL is configured to preserve:
 - DROP FILE LIST (files)
 
 Use the ["Filter"](#filter) option in Settings to customize which formats are to be saved.
+
+While the Viewer displays text data and many image formats automatically, other formats are shown as binary data in hexdump format.  
+
+For some formats there is a format plugin to show the clipbord data in a more user-friendly way.
+CLCL comes with a RichTextFormat plugin which can be activated on the ["Format"](#format) tab of the Options.
 
 ## Tools (plug-ins)
 
@@ -244,9 +251,22 @@ tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_cl
 
 ## Options
 
-### Menu
+Invoke the Options window either by right-clicking on the CLCL clip in the taskbar, or by calling it from the Viewer's main menu with View -> Options.  
+In the various tabs of the Options window you can customize CLCL according to your preferences and needs.
 
-History and template items are shown according to the "Menu text display format" option. The displayed numbers start from 0, but if you want to change the starting value, set the starting number between the % and the character.
+### History settings
+
+On the History tab of the otions you can set how many items to keep, when to save the history, how to handle duplicates, etc.
+
+If you increase the number of history items to keep to a value bigger than the default of 30, it is recommended to organize the menus with submenus. See [here](#helpful-hints).
+
+### Menu settings
+
+This tab controls **how** menu items are shown.  
+CLCL contains several different menu.
+
+History and template items are shown according to the "Display format of menu" option.  
+The displayed numbers start from 0, but if you want to change the starting value, set the starting number between the % and the character.
 
 Examples:
 
@@ -255,10 +275,19 @@ Examples:
 	%1n -> 1,2,3...8,9,0,1,2...
 	%10B -> K,L,M,N...
 
-### Action
-The action when the hotkey is pressed or the task tray icon is clicked can be set in the "Action" option.
 
-When you specify "Menu" as the action in Edit Action, you can set the menu items to display in the menu settings at the bottom of the screen.
+To **add** a menu or configure the **content** of a specific menu, go to the ["Action"](#action) option
+
+### Viewer settings
+
+The Viewer is the main window of CLCL. On the Viewer tab you can determine what to show in this window (Clipboard, History, Tempates) and whether to show the above tree nodes collapsed or expanded.
+
+With the language combo box you select the language of the Viewer and the Options Window.
+
+(If you happen to select a language unknown to you and cannot find the combo box to change it back to your language, you can undo this setting by deleting the language entry in the \[main\] section of clcl.ini.)
+
+### Action
+Actions and menus associated with a hot key or a click on the task tray icon can be configured on the "Action" tab of the options.
 
 Invoking method sets the method for invoking the specified action.
 
@@ -282,7 +311,7 @@ CLCL can process all clipboard formats, but clipboard formats that are not regis
 
 Clipboard formats are registered in the options "Format". The registered format at the top takes priority, and the clipboard format with the highest priority among the items is displayed in the menu and viewer.
 
-To register, set the format name, the DLL to be processed, and the function header. If you omit the DLL and press the function header selection button, a list of built-in function headers will be displayed.
+To register click on "Add", set the format name, the format-plugin DLL to be processed, and the function header. If you omit the DLL and press the function header selection button, a list of built-in function headers will be displayed.
 
 For example, if you want to process the CSV clipboard format as text when copying in Excel, set it as follows:
 ```
@@ -291,6 +320,11 @@ DLL:
 Function header: text_
 ```
 The menu and viewer will process it as text.
+
+Format-plugins are DLLs that enable CLCL to display specific content formats in a user-friendly way.
+
+CLCL comes with the format-plugin *fmt_rtf.dll* for Rich Text Format.  
+This can be activated by clicking on "Add", selecting the DLL and the rtf_ (Rich Text Format) function header.
 
 ### Filter
 To select the clipboard format, set it in the "Filter" option.
@@ -356,6 +390,7 @@ Drag and drop a plug-in DLL into the tool list window to display a list of tools
 
 ## Command Line
 When starting CLCL, you can specify a command line to specify the operation after startup.
+
 If CLCL is already running, the command will be sent to the already running CLCL.  
   
 **Format:**
@@ -371,6 +406,7 @@ If CLCL is already running, the command will be sent to the already running CLCL
 
 ### More history items and how to organize the popup menu
 On the *History* tab of the options you can increase the maximium number of history items to keep, e.g. from 30 to 100. But without further configuration the popup menu will look rather crowded.  
+
 It's a good idea to organize your history items in submenus:  
 
 ![CLCL tray menu](img/history_organized.png)
@@ -398,15 +434,15 @@ Continue so with as much pop-up menus as you like. You can even cascade the popu
 
 
 ## Update history
-- Ver 2.1.5 ->
-	- Integration of MS Help Viewer
-	- Replace with regular expressions
+- Ver 2.1.5 -> 2.1.6
+	- Integration of CHM help (Issue [nakkag#26](https://github.com/nakkag/CLCL/issues/26)) and invocation of MS Help Viewer
+	- Replace with regular expressions (tool_clip plugin)
 	- Macros, insert templates with expanded variables (tool_clip plugin)
 
 - Ver 2.1.4 -> 2.1.5
 	- Added clipboard access delay setting (merge from Koichi-Kobayashi)
 	- OS version check with recommended method (merge from Koichi-Kobayashi)
-	- Display item title of unprintable characters as abbreviation or ASCII-Code (Issue #23)
+	- Display item title of unprintable characters as abbreviation or ASCII-Code (Issue [nakkag#23](https://github.com/nakkag/CLCL/issues/23))
 	- Added context menu: Show (only current item) as binary
 	- Added german user interface
 	- Added ukrainian user interface

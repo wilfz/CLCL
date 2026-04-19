@@ -256,6 +256,8 @@
 #define IDS_TOOL_SELECT_MSG             9006
 #define IDS_TOOL_NON_PROP               9007
 #define IDS_TOOL_ERR_TITLE              9008
+#define IDH_VIEWER_HELP                 30000
+#define IDH_OPTIONS_HELP                30001
 
 // Next default values for new objects
 // 
