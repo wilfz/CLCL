@@ -1,6 +1,5 @@
-
-CLCL Ver 2.1.5
---
+CLCL Clipboard manager Ver 2.1.6
+--------------------------------
 
 ■ Introduction
 CLCL is a software that records clipboard history.

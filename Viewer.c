@@ -2926,7 +2926,7 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 				}
 			}
 			lstrcat(var_msg, TEXT("\n2024-2026 MIT License.\n")
-				TEXT("https://github.com/wilfz/CLCL\nDownload: https://github.com/wilfz/CLCL/releases\n\n"));
+				TEXT("https://linguversa.de/clcl\nDownload: https://github.com/wilfz/CLCL/releases\n\n"));
 
 			lstrcat(var_msg, TEXT("Ver 0.1.0 -> 2.1.3"));
 			lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved.\n")
@@ -3003,7 +3003,6 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 					
 				if (file_check_file(help_path)) {
 					HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_DISPLAY_TOC, (DWORD_PTR)NULL);
-					//MessageBox(hWnd, message_get_res(IDS_VIEWER_HELP_NOT_FOUND), APP_NAME, MB_OK | MB_ICONEXCLAMATION);
 					break;
 				}
 			}

@@ -4,7 +4,7 @@
 #define MyAppName "CLCL"
 #define MyAppVersion "2.1.6.0"
 #define MyAppPublisher "WilfZim"
-#define MyAppURL "https://www.linguversa.de/clcl/index_eng.html"
+#define MyAppURL "https://www.linguversa.de/clcl/index.html"
 #define MyGitHubRepo "https://github.com/wilfz/CLCL"
 #define MyAppExeName "CLCL.exe"
 
@@ -59,7 +59,7 @@ Name: "tool_utl"; Description: "Plugin with other utilities"; Types: full
 Name: "tool_clip"; Description: "Plugin by WilfZim"; Types: full
 Name: "tool_test"; Description: "Example plugin"; Types: full
 Name: "fmt_rtf"; Description: "Format plugin for RichTextFormat"; Types: full
-Name: "readme"; Description: "ReadMe"; Types: full custom
+Name: "readme"; Description: "ReadMe"; Types: full
 ;Name: "readme\en"; Description: "English"; Flags: exclusive
 ;Name: "readme\jp"; Description: "Japanese"; Flags: exclusive
 
@@ -75,11 +75,11 @@ Source: "CLCLPlugin\tool_text\Release\tool_text.dll"; DestDir: "{app}"; Componen
 Source: "CLCLPlugin\tool_utl\Release\tool_utl.dll"; DestDir: "{app}"; Components: tool_utl; Flags: ignoreversion
 Source: "CLCLPlugin\tool_clip\Release\tool_clip.dll"; DestDir: "{app}"; Components: tool_clip; Flags: ignoreversion
 Source: "CLCLPlugin\fmt_rtf\Release\fmt_rtf.dll"; DestDir: "{app}"; Components: fmt_rtf; Flags: ignoreversion
-Source: "readme_en.txt"; DestDir: "{app}"; Components: main; Flags: ignoreversion 
-Source: "readme_jp.txt"; DestDir: "{app}"; Components: main help; Flags: ignoreversion
+Source: "readme_en.txt"; DestDir: "{app}"; Components: readme; Flags: ignoreversion 
+Source: "readme_jp.txt"; DestDir: "{app}"; Components: main help readme; Flags: ignoreversion
 Source: "readme_en.txt"; DestDir: "{app}"; Components: readme; Languages: english german ukrainian; Flags: ignoreversion isreadme
 Source: "readme_jp.txt"; DestDir: "{app}"; Components: readme; Languages: japanese; Flags: ignoreversion isreadme
-Source: "Release\clcl.html"; DestDir: "{app}"; Components: main help; Flags: ignoreversion
+Source: "Release\clcl.html"; DestDir: "{app}"; Components: help; Flags: ignoreversion
 Source: "CLCLPlugin\tool_clip\Release\tool_clip.html"; DestDir: "{app}"; Components: tool_clip; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
@@ -92,7 +92,7 @@ Source: "CLCLPlugin\tool_clip\Release\tool_clip.html"; DestDir: "{app}"; Compone
 [Icons]
 ; Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{#MyAppName} - Clipboard Tool"; Filename: "{app}\{#MyAppExeName}"; Parameters: "/v"
-Name: "{group}\{#MyAppName}'s Homepage"; Filename: "{#MyAppURL}"
+Name: "{group}\{#MyAppName}'s Website"; Filename: "{#MyAppURL}"
 Name: "{group}\{#MyAppName} on GitHub"; Filename: "{#MyGitHubRepo}"
 Name: "{group}\{#MyAppName} Help"; Filename: "{app}\clcl.chm"; Components: main help
 ;Name: "{group}\ReadMe"; Filename: "{app}\readme_jp.txt"

@@ -200,9 +200,9 @@ By default CLCL is configured to preserve:
 
 Use the ["Filter"](#filter) option in Settings to customize which formats are to be saved.
 
-While the Viewer displays text data and many image formats automatically, other formats are shown as binary data in hexdump format.  
+While the Viewer displays text data and many image formats automatically, other formats are shown as binary data in hexdump format.
 
-For some formats there is a format plugin to show the clipbord data in a more user-friendly way.
+For some formats there is a format plugin to show the clipbord data in a more user-friendly way.  
 CLCL comes with a RichTextFormat plugin which can be activated on the ["Format"](#format) tab of the Options.
 
 ## Tools (plug-ins)
@@ -258,7 +258,7 @@ In the various tabs of the Options window you can customize CLCL according to yo
 
 On the History tab of the otions you can set how many items to keep, when to save the history, how to handle duplicates, etc.
 
-If you increase the number of history items to keep to a value bigger than the default of 30, it is recommended to organize the menus with submenus. See [here](#helpful-hints).
+If you increase the number of history items to keep to a value bigger than the default of 30, it is recommended to organize the menus with submenus. See [here](#more-history-items-and-how-to-organize-the-popup-menu).
 
 ### Menu settings
 
@@ -331,7 +331,7 @@ To select the clipboard format, set it in the "Filter" option.
 
 If you select "Add all formats to history", all clipboard formats except those set to be excluded will be added to the history.
 
-If you select "Exclude all formats from history", only clipboard formats set to be added will be added to the history.
+If you select "Exclude all formats from history", only clipboard formats set to be added will be added to the history.  
 
 For clipboard formats set to be added in the filter, you can further set the size limit when adding to the history. Data exceeding the limit size will not be added to the history.
 
@@ -341,13 +341,13 @@ For example, you can set it to add text and bitmaps to the history and save only
 ### Window settings
 If you want to change the behavior of CLCL depending on the application you use, set the window and behavior in the "Window" option.
 
-Specify the window title and class name, and use "*" as any character.
+Specify the window title and class name, and use "*" as any character.  
 For example, for Notepad, set it as follows:
 
 	Title: * - Notepad
 	Class name: Notepad
 
-The behavior of CLCL will change when Notepad is active.
+The behavior of CLCL will change when Notepad is active.  
 Either the title or the class name needs to be entered, and if it is not entered, it is the same as specifying only "*".
 
 - Don't add to history:
@@ -363,7 +363,7 @@ Either the title or the class name needs to be entered, and if it is not entered
 	If you set the copy key as the cut key in the key settings for each window, specifying this option will prevent the characters from disappearing even if you cancel the tool.
 
 ### Key settings for each window
-Select the history or template item from the hotkey, and the paste action will automatically send the paste key to the window.
+Select the history or template item from the hotkey, and the paste action will automatically send the paste key to the window.  
 By default, Ctrl + V is sent to all windows, but depending on the window, the paste key may be a different key.
 
 When the tool is called with a hotkey, the copy key (Ctrl + C) is sent to the window to perform the Copy -> Tool Processing -> Paste action.
@@ -405,14 +405,14 @@ If CLCL is already running, the command will be sent to the already running CLCL
 ## Helpful Hints
 
 ### More history items and how to organize the popup menu
-On the *History* tab of the options you can increase the maximium number of history items to keep, e.g. from 30 to 100. But without further configuration the popup menu will look rather crowded.  
+On the *History* tab of the options you can increase the maximium number of history items to keep, e.g. from 30 to 100. But without further configuration the popup menu will look rather crowded.
 
 It's a good idea to organize your history items in submenus:  
 
 ![CLCL tray menu](img/history_organized.png)
- 
+
 To do so, switch to the *Action* tab, choose the *Click on left system tray* menu or the *Alt-C* hotkey menu and click on Edit.  
-A new window opens and there you select *History/Ascending*. Most controls are greyed out, but you can specify the *Range of indication* for instance to 0 to 19.  
+A new window opens and there you select *History/Ascending*. Most controls are greyed out, but you can specify the *Range of indication* for instance to 0 to 19.
 
 ![create submenu for history](img/create_history_submenu.gif)  
 
@@ -436,6 +436,7 @@ Continue so with as much pop-up menus as you like. You can even cascade the popu
 ## Update history
 - Ver 2.1.5 -> 2.1.6
 	- Integration of CHM help (Issue [nakkag#26](https://github.com/nakkag/CLCL/issues/26)) and invocation of MS Help Viewer
+	- Integration of Ohno Tomoaki's Rich Text Format plugin
 	- Replace with regular expressions (tool_clip plugin)
 	- Macros, insert templates with expanded variables (tool_clip plugin)
 
@@ -446,7 +447,7 @@ Continue so with as much pop-up menus as you like. You can even cascade the popu
 	- Added context menu: Show (only current item) as binary
 	- Added german user interface
 	- Added ukrainian user interface
-	- Added chinese user interface
+	- Added chinese user interface ([Issue #2](https://github.com/wilfz/CLCL/issues/2))
 	- Switch user interface language in option's Viewer tab and save in CLCL.ini (works only if Windows version is Vista or newer)
 
 - Ver 2.1.3 -> Ver 2.1.4
@@ -581,7 +582,7 @@ Continue so with as much pop-up menus as you like. You can even cascade the popu
 
 The author is not responsible for any problems caused by this program. It is strongly recommended that you back up important files. 
 
-2025 - 2026 MIT License. Sources and Releases under https://github.com/wilfz/CLCL
+2025 - 2026 MIT License. Website https://linguversa.de/clcl, Sources and Releases under https://github.com/wilfz/CLCL
 
 Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/ 
 
