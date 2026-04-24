@@ -67,7 +67,8 @@ Name: "readme"; Description: "ReadMe"; Types: full
 Source: "Release\{#MyAppExeName}"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "Release\CLCLSet.exe"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "Release\CLCLHook.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "Documentation\clcl.chm"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "Documentation\clcl.chm"; DestDir: "{app}"; Components: main help; Flags: ignoreversion
+Source: "Documentation\clcl_de.chm"; DestDir: "{app}"; Components: main help; Flags: ignoreversion
 Source: "LICENSE"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "clcl_app.ini"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "CLCLPlugin\tool_test\Release\tool_test.dll"; DestDir: "{app}"; Components: tool_test; Flags: ignoreversion

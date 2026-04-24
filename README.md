@@ -18,7 +18,7 @@ It provides quick access to recent clipboard items via a customizable pop-up men
 - **Window Filtering** - Ignore clipboard changes from specific applications
 - **Custom Paste Keys** - Per-window paste key configuration
 - **Plugin Architecture** - Extensible functionality via DLL plugins
-- **History size** - The maximum number of items in the history can be configured
+- **History Size** - The maximum number of items in the history can be configured
 - **Unicode Support** - Full Unicode support for international text
 - **Multiple Language** - User interface language can be switched between English, Japanese, German, Simplified Chinese, and Ukrainian
 - **Binary Viewer** - View raw binary clipboard data in hex format
@@ -33,24 +33,25 @@ The setup may issue a warning when started. This does not imply a threat, but is
 
 If you want to uninstall, do so from the Control Panel __after__ closing CLCL.
 
-Instead of the automatic installer you can also download [CLCL_2_1_6.zip](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta0/clcl_2_1_6.zip), unpack into a folder of your choice and start clcl.exe from there.
+Instead of the automatic installer, you can also download [CLCL_2_1_6.zip](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta0/clcl_2_1_6.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
 
 ### Data Storage
-By default data and settings are stored in this folder (for Windows 10/11):
+By default, data and settings are stored in this folder (for Windows 10/11):
 
 	C:\Users\{username}\AppData\Local\CLCL
 
 ### Portable Mode
-To store data and settings in the same location as CLCL.exe, set clcl_app.ini as follows and then start CLCL.
+To store data and settings in the same location as `CLCL.exe`, set `clcl_app.ini` as follows and then start CLCL.
 ```ini
 [GENERAL]
 portable=1
 ```
 
-### Language settings
+
+### Language Settings
 The menus and dialogs are in English, Japanese, German, Simplified Chinese, or Ukrainian, according to your Windows language preferences.
 You can override this by explicitly setting the language on the Viewer tab in Options.  
-The selected language is stored in the \[main\] section of CLCL.ini.
+The selected language is stored in the `[main]` section of `CLCL.ini`.
 ```ini
 [main]
 ...
@@ -62,12 +63,12 @@ language="en"
 ### Basic Operation
 
 **Startup:**
-When you start CLCL.exe, a clip icon appears in the task tray (the area with the clock in the corner of the taskbar).
+When you start `CLCL.exe`, a clip icon appears in the task tray (the area with the clock in the corner of the taskbar).
 
 **Display Menu:**
 - Left-click the clipboard icon in the taskbar to open the menu  
   or
-- Press Alt+C (default hotkey) to show menu
+- Press Alt+C (default hotkey) to show the menu
 - Select an item to paste it to the active window
 - Right-click menu items for additional options
 
@@ -75,16 +76,16 @@ By default, the menu displays the [history](#history) in descending order (newes
 The menu can be customized in the settings.
 
 **Viewer Window:**
-- Right-click taskbar icon to open the Viewer
+- Right-click the taskbar icon to open the Viewer
 - Left Panel of the viewer: Shows history and templates in a tree view
 	- Browse clipboard history and templates
-	- Double-click to copy item to clipboard
+	- Double-click to copy an item to the clipboard
 	- The "Clipboard" at the top of the tree is the current clipboard content.
 	- The ["History"](#history) in the tree is a list of recent clipboard entries.
 	- ["Templates"](#templates) in the tree is a list of template items (such as standard phrases).
-- Right Panel: Show and edit content of the selected item, if a tree node is selected, all sub-items are shown as a list with (the beginning of) their data, modification time and whether and which hot key is attached to the respective sub-items.
+- Right Panel: Show and edit content of the selected item; if a tree node is selected, all sub-items are shown as a list with (the beginning of) their data, modification time, and whether and which hotkey is attached to the respective sub-items.
 
-**Tree structure:**
+**Tree Structure:**
 
 	┌─■ Clipboard - Current clipboard contents
 	│ ├─□ TEXT - Formats in the current clipboard
@@ -137,7 +138,7 @@ Save frequently used data such as standard phrases, text snippets, URLs as templ
 You can add folders to organize them into hierarchical structures and give names to items.
 
 **To Add an Item:**
-1. In Viewer, select the clipboard or an history item
+1. In Viewer, select the clipboard or a history item
 2. Right-click to get the context menu and choose "Add to Templates"
 3. Optionally choose a subfolder where to store the item.
 
@@ -193,7 +194,7 @@ For example, if you copy text in Notepad, the following four formats will be sto
 
 If you copy in Excel or Access, even more formats will be sent to the clipboard.
 
-By default CLCL is configured to preserve:
+By default, CLCL is configured to preserve:
 - UNICODE TEXT (text)
 - BITMAP (images)
 - DROP FILE LIST (files)
@@ -202,14 +203,14 @@ Use the ["Filter"](#filter) option in Settings to customize which formats are to
 
 While the Viewer displays text data and many image formats automatically, other formats are shown as binary data in hexdump format.
 
-For some formats there is a format plugin to show the clipbord data in a more user-friendly way.  
+For some formats, there is a format plugin to show the clipboard data in a more user-friendly way.  
 CLCL comes with a RichTextFormat plugin which can be activated on the ["Format"](#format) tab of the Options.
 
 ## Tools (plug-ins)
 
 Tools let you process current selection, history or template data before pasting, or extend CLCL's functionality. 
 
-The installation package includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html. These plugins have been reworked to fit current operating systems; especially the plugin DLLs are installed into the same folder as clcl.exe, the plugins' ini files to the same location as clcl.ini.
+The installation package includes binaries of some useful plugins from https://nakka.com/soft/clcl/index_eng.html. These plugins have been reworked to fit current operating systems; especially the plugin DLLs are installed into the same folder as `clcl.exe`, the plugins' ini files to the same location as `clcl.ini`.
 
 [**Configure tools in Options → Tool**](#tool-configuration)
 
@@ -235,13 +236,13 @@ Utility tools:
 - Save of more items - Save multiple selected items to files
 
 ### tool_clip
-tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_clip. Currently it contains the following features for clipboard items:
+`tool_clip.dll` is an additional plugin from https://github.com/wilfz/CLCL-tool_clip. Currently it contains the following features for clipboard items:
 - Replace tabstops and/or sequences of spaces by a character string of choice
 - Replace with regular expressions
-- Export items and template folders to json file
-- Import text items and folders from json file and merge them into template folders
-- Export to and import from android app "Clipper"
-- Convert tab separated data into an html table snippet, ready to insert into an email, OneNote, etc.
+- Export items and template folders to JSON file
+- Import text items and folders from JSON file and merge them into template folders
+- Export to and import from the Android app "Clipper"
+- Convert tab-separated data into an HTML table snippet, ready to insert into an email, OneNote, etc.
 - Macros, insert templates with expanded variables
 - Send menu item to clipboard
 - Show currently selected item in viewer
@@ -252,18 +253,18 @@ tool_clip.dll is an additional plugin from https://github.com/wilfz/CLCL-tool_cl
 ## Options
 
 Invoke the Options window either by right-clicking on the CLCL clip in the taskbar, or by calling it from the Viewer's main menu with View -> Options.  
-In the various tabs of the Options window you can customize CLCL according to your preferences and needs.
+In the various tabs of the Options window, you can customize CLCL according to your preferences and needs.
 
-### History settings
+### History Settings
 
-On the History tab of the otions you can set how many items to keep, when to save the history, how to handle duplicates, etc.
+On the History tab of the options, you can set how many items to keep, when to save the history, how to handle duplicates, etc.
 
 If you increase the number of history items to keep to a value bigger than the default of 30, it is recommended to organize the menus with submenus. See [here](#more-history-items-and-how-to-organize-the-popup-menu).
 
-### Menu settings
+### Menu Settings
 
 This tab controls **how** menu items are shown.  
-CLCL contains several different menu.
+CLCL contains several different menus.
 
 History and template items are shown according to the "Display format of menu" option.  
 The displayed numbers start from 0, but if you want to change the starting value, set the starting number between the % and the character.
@@ -276,18 +277,18 @@ Examples:
 	%10B -> K,L,M,N...
 
 
-To **add** a menu or configure the **content** of a specific menu, go to the ["Action"](#action) option
+To **add** a menu or configure the **content** of a specific menu, go to the ["Action"](#action) option.
 
-### Viewer settings
+### Viewer Settings
 
-The Viewer is the main window of CLCL. On the Viewer tab you can determine what to show in this window (Clipboard, History, Tempates) and whether to show the above tree nodes collapsed or expanded.
+The Viewer is the main window of CLCL. On the Viewer tab, you can determine what to show in this window (Clipboard, History, Templates) and whether to show the above tree nodes collapsed or expanded.
 
-With the language combo box you select the language of the Viewer and the Options Window.
+With the language combo box, you select the language of the Viewer and the Options Window.
 
-(If you happen to select a language unknown to you and cannot find the combo box to change it back to your language, you can undo this setting by deleting the language entry in the \[main\] section of clcl.ini.)
+(If you happen to select a language unknown to you and cannot find the combo box to change it back to your language, you can undo this setting by deleting the language entry in the `[main]` section of `clcl.ini`.)
 
 ### Action
-Actions and menus associated with a hot key or a click on the task tray icon can be configured on the "Action" tab of the options.
+Actions and menus associated with a hotkey or a click on the task tray icon can be configured on the "Action" tab of the options.
 
 Invoking method sets the method for invoking the specified action.
 
@@ -338,7 +339,7 @@ For clipboard formats set to be added in the filter, you can further set the siz
 If you set the clipboard format in the filter to "Do not save", it will not be saved to disk when CLCL is closed.
 For example, you can set it to add text and bitmaps to the history and save only the text.
 
-### Window settings
+### Window Settings
 If you want to change the behavior of CLCL depending on the application you use, set the window and behavior in the "Window" option.
 
 Specify the window title and class name, and use "*" as any character.  
@@ -362,7 +363,7 @@ Either the title or the class name needs to be entered, and if it is not entered
 	When canceling a cancelable tool, the subsequent pasting is usually not performed, but if this option is specified, the pasting will be performed even if it is canceled.
 	If you set the copy key as the cut key in the key settings for each window, specifying this option will prevent the characters from disappearing even if you cancel the tool.
 
-### Key settings for each window
+### Key Settings for Each Window
 Select the history or template item from the hotkey, and the paste action will automatically send the paste key to the window.  
 By default, Ctrl + V is sent to all windows, but depending on the window, the paste key may be a different key.
 
@@ -375,15 +376,15 @@ If the copy and paste keys are not set, the default key settings will be used.
 
 Multiple keys can be set for one window. If multiple keys are set, the keys will be sent in order from the top.
 
-### Tool configuration
+### Tool Configuration
 
-When you select a tool DLL and function name, the tool name and call type are  automatically set.
+When you select a tool DLL and function name, the tool name and call type are automatically set.
 
 - The call type **Viewer** allows you to execute from the viewer's tool menu.
 - The call type **Action Menu** allows you to execute from the "Tools" popup menu.
   - The **Send copy and paste** sub-option copies the marked data from the active window, executes the tool on the copied data, and afterwards pastes the modified data back into the active window.  
 Without this option, the tool runs on the newest history item and copies it to the clipboard.  
-Right-click on an menu item shows a popup menu with the installed tools and the selected tool runs on that item and sends the result to the clipboard.
+Right-click on a menu item shows a popup menu with the installed tools and the selected tool runs on that item and sends the result to the clipboard.
 
 Drag and drop a plug-in DLL into the tool list window to display a list of tools that can be registered, and you can select multiple tools to register them all at once.  
 
@@ -404,15 +405,15 @@ If CLCL is already running, the command will be sent to the already running CLCL
 
 ## Helpful Hints
 
-### More history items and how to organize the popup menu
-On the *History* tab of the options you can increase the maximium number of history items to keep, e.g. from 30 to 100. But without further configuration the popup menu will look rather crowded.
+### More History Items and How to Organize the Popup Menu
+On the *History* tab of the options, you can increase the maximum number of history items to keep, e.g., from 30 to 100. But without further configuration, the popup menu will look rather crowded.
 
 It's a good idea to organize your history items in submenus:  
 
 ![CLCL tray menu](img/history_organized.png)
 
 To do so, switch to the *Action* tab, choose the *Click on left system tray* menu or the *Alt-C* hotkey menu and click on Edit.  
-A new window opens and there you select *History/Ascending*. Most controls are greyed out, but you can specify the *Range of indication* for instance to 0 to 19.
+A new window opens, and there you select *History/Ascending*. Most controls are greyed out, but you can specify the *Range of indication* for instance to 0 to 19.
 
 ![create submenu for history](img/create_history_submenu.gif)  
 
@@ -420,7 +421,7 @@ OK. So now you have 100 items, but the menu would only show the first 19.
 In the left half of the *Edit of  Action* tab scroll down to the bottom and click on *(New Content)*.  
 In the *Content* combo box choose "Pop-up Menu" and add "History 20 - 29" as *title*.  Now move the new pop-up menu upwards (with the little triangle below the left half of the window) until it is just below *History/Ascending*.  
 Once again click on *(New Content)*. This time choose "History/Ascending" from the combo box and set the range to 20 to 29. Move the new *History/Ascending* entry upwards until it is just below your newly created pop-up menu and a little indented to the right.  
-Continue so with as much pop-up menus as you like. You can even cascade the popups as shown in the screenshots.  
+Continue so with as many pop-up menus as you like. You can even cascade the popups as shown in the screenshots.  
 
 ![Edit of Action](img/edit_of_action.png)
 
@@ -433,7 +434,7 @@ Continue so with as much pop-up menus as you like. You can even cascade the popu
 - Translation to Simplified Chinese by HeliusHao
 
 
-## Update history
+## Update History
 - Ver 2.1.5 -> 2.1.6
 	- Integration of CHM help (Issue [nakkag#26](https://github.com/nakkag/CLCL/issues/26)) and invocation of MS Help Viewer
 	- Integration of Ohno Tomoaki's Rich Text Format plugin
@@ -445,9 +446,9 @@ Continue so with as much pop-up menus as you like. You can even cascade the popu
 	- OS version check with recommended method (merge from Koichi-Kobayashi)
 	- Display item title of unprintable characters as abbreviation or ASCII-Code (Issue [nakkag#23](https://github.com/nakkag/CLCL/issues/23))
 	- Added context menu: Show (only current item) as binary
-	- Added german user interface
-	- Added ukrainian user interface
-	- Added chinese user interface ([Issue #2](https://github.com/wilfz/CLCL/issues/2))
+	- Added German user interface
+	- Added Ukrainian user interface
+	- Added Chinese user interface ([Issue #2](https://github.com/wilfz/CLCL/issues/2))
 	- Switch user interface language in option's Viewer tab and save in CLCL.ini (works only if Windows version is Vista or newer)
 
 - Ver 2.1.3 -> Ver 2.1.4
@@ -457,7 +458,7 @@ Continue so with as much pop-up menus as you like. You can even cascade the popu
 	- Installer with optional plugins
 	- English documentation
 	- HTML Help in Viewer menu
-	- expand environment variables in tool paths
+	- Expand environment variables in tool paths
 
 - Ver 2.1.2 -> Ver 2.1.3
 	- Last release published under https://nakka.com/soft/clcl/index_eng.html
@@ -584,5 +585,5 @@ The author is not responsible for any problems caused by this program. It is str
 
 2025 - 2026 MIT License. Website https://linguversa.de/clcl, Sources and Releases under https://github.com/wilfz/CLCL
 
-Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/ 
+Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/
 

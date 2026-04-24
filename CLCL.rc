@@ -1586,8 +1586,8 @@ BEGIN
     END
     POPUP "&Hilfe"
     BEGIN
-        MENUITEM "Hilfe",                              ID_MENUITEM_HELP_EN
-        MENUITEM "&Über...",                           ID_MENUITEM_ABOUT
+        MENUITEM "Hilfe",                       ID_MENUITEM_HELP_DE
+        MENUITEM "&Über...",                    ID_MENUITEM_ABOUT
     END
 END
 

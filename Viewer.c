@@ -2968,6 +2968,7 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 		break;
 
 		case ID_MENUITEM_HELP_EN:
+		case ID_MENUITEM_HELP_DE:
 		{
 			// english help as Compiled Help Module, generated from README.md
 			TCHAR help_path[MAX_PATH];
@@ -2990,19 +2991,38 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 					break;
 				}
 
-				// Make it conssiten througout solution:
+				TCHAR help_path_locale[MAX_PATH];
+				lstrcpy(help_path_locale, help_path);
+				// TODO: Rather use option.main_language, append it to "clcl_" and use it 
+				// as suffix for help file name, e.g.clcl_de.chm for german locale.
+				// If the help file for current locale doesn't exist, fallback to english help file clcl.chm.
+				// But option.main_language may not be set at all. 
+				// If so, use GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_NAME_USER_DEFAULT,...) 
+				// to get the language code and use it as suffix for help file name.
+
+				// Make it consistent througout solution:
 				// CLCLSet also uses this window hNdle by default
 				HWND hMainWnd = FindWindow(MAIN_WND_CLASS, MAIN_WINDOW_TITLE);
 
 				// other languages may follow ...
-				if (LOWORD(wParam) == ID_MENUITEM_HELP_EN) {
-					lstrcpy(help_path + lstrlen(help_path), TEXT("\\clcl.chm"));
+				switch (LOWORD(wParam)) {
+					case ID_MENUITEM_HELP_DE:
+						lstrcpy(help_path_locale + lstrlen(help_path_locale), TEXT("\\clcl_de.chm"));
+						if (file_check_file(help_path_locale) == TRUE) {
+							lstrcpy(help_path, help_path_locale);
+							break;
+						}
+						// otherwise fallback to english help
+					case ID_MENUITEM_HELP_EN:
+						lstrcpy(help_path + lstrlen(help_path), TEXT("\\clcl.chm"));
+						break;
+					default:
+						break;
 				}
-				else
-					break;
 					
 				if (file_check_file(help_path)) {
-					HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_DISPLAY_TOC, (DWORD_PTR)NULL);
+					//HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_DISPLAY_TOC, (DWORD_PTR)NULL);
+					HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_HELP_CONTEXT, IDH_VIEWER_HELP);
 					break;
 				}
 			}

@@ -6,7 +6,7 @@ IDH_VIEWER_HELP=01_01_Overview.html
 IDH_OPTIONS_HELP=01_07_Options.html
 IDD_DIALOG_HISTORY=01_07_01_History_settings.html
 IDD_DIALOG_MENU=01_07_02_Menu_settings.html
-IDD_DIALOG_VIEWER= 01_07_03_Viewer_settings.html
+IDD_DIALOG_VIEWER=01_07_03_Viewer_settings.html
 IDD_DIALOG_ACTION=01_07_04_Action.html
 IDD_DIALOG_ACTION_SET=01_07_04_Action.html
 ;IDD_DIALOG_SELECT_ICON          104
