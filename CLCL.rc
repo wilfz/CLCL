@@ -135,7 +135,7 @@ BEGIN
     POPUP "ヘルプ(&H)"
     BEGIN
         MENUITEM "ヘルプ (プレーンテキスト)",          ID_MENUITEM_HELP_JP
-        MENUITEM "ヘルプ (英語)",                      ID_MENUITEM_HELP_EN
+        MENUITEM "ヘルプ (英語)",                      ID_MENUITEM_HELP
         MENUITEM "バージョン情報(&A)...",              ID_MENUITEM_ABOUT
     END
 END
@@ -284,7 +284,7 @@ BEGIN
     VK_ESCAPE,      ID_MENUITEM_CLOSE,      VIRTKEY, NOINVERT
     VK_TAB,         ID_ACCEL_CTRL_TAB,      VIRTKEY, CONTROL, NOINVERT
     VK_UP,          ID_MENUITEM_UP,         VIRTKEY, ALT, NOINVERT
-    VK_F1,          ID_MENUITEM_HELP_EN,    VIRTKEY, NOINVERT
+    VK_F1,          ID_MENUITEM_HELP,       VIRTKEY, NOINVERT
 END
 
 
@@ -762,7 +762,7 @@ BEGIN
     END
     POPUP "帮助(&H)"
     BEGIN
-        MENUITEM "帮助",                          ID_MENUITEM_HELP_EN
+        MENUITEM "帮助",                          ID_MENUITEM_HELP
         MENUITEM "关于(&A)...",                   ID_MENUITEM_ABOUT
     END
 END
@@ -880,7 +880,7 @@ BEGIN
     IDS_MENU_REGIST         "模板(&T)"
     IDS_MENU_CANCEL         "取消(&C)"
     IDS_MENU_EXIT           "退出程序(&x)"
-    IDS_MENU_VIEWER         "主窗口(&V)..." 
+    IDS_MENU_VIEWER         "主窗口(&V)..."
     IDS_MENU_OPTION         "选项(&O)..."
     IDS_MENU_CLIPBOARD_WATCH "监视剪贴板(&W)"
     IDS_TREEITEM_CLIPBOARD  "剪贴板"
@@ -1174,7 +1174,7 @@ BEGIN
     END
     POPUP "Довідка"
     BEGIN
-        MENUITEM "Довідка",                     ID_MENUITEM_HELP_EN
+        MENUITEM "Довідка",                     ID_MENUITEM_HELP
         MENUITEM "Про програму...",             ID_MENUITEM_ABOUT
     END
 END
@@ -1586,7 +1586,7 @@ BEGIN
     END
     POPUP "&Hilfe"
     BEGIN
-        MENUITEM "Hilfe",                       ID_MENUITEM_HELP_DE
+        MENUITEM "Hilfe",                       ID_MENUITEM_HELP
         MENUITEM "&Über...",                    ID_MENUITEM_ABOUT
     END
 END
@@ -1977,7 +1977,7 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "Help",                        ID_MENUITEM_HELP_EN
+        MENUITEM "Help",                        ID_MENUITEM_HELP
         MENUITEM "&About...",                   ID_MENUITEM_ABOUT
     END
 END

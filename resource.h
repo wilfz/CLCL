@@ -141,9 +141,8 @@
 #define ID_MENU_DGDP_MOVE               40063
 #define ID_MENU_DGDP_COPY               40064
 #define ID_MENUITEM_HELP_JP             40065
-#define ID_MENUITEM_HELP_EN             40066
+#define ID_MENUITEM_HELP                40066
 #define ID_MENUITEM_SHOWBINARY          40067
-#define ID_MENUITEM_HELP_DE             40068
 #define ID_MENUITEM_CLIPBOARD_TB        50000
 #define ID_MENUITEM_PASTE_TB            50001
 #define ID_MENUITEM_REGIST_ADD_TB       50002
@@ -157,7 +156,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        140
-#define _APS_NEXT_COMMAND_VALUE         40069
+#define _APS_NEXT_COMMAND_VALUE         40068
 #define _APS_NEXT_CONTROL_VALUE         1010
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

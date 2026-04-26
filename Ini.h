@@ -254,6 +254,7 @@ BOOL ini_put_option(void);
 void ini_free_format_name(FORMAT_NAME *fn, const int fn_cnt);
 void ini_free_menu(MENU_INFO *mi, const int mcnt);
 BOOL ini_free(void);
+void ini_help_path();
 
 #endif
 /* End of source */

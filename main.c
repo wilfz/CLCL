@@ -80,7 +80,7 @@
 
 /* Global Variables */
 HINSTANCE hInst;
-static TCHAR app_path[MAX_PATH];
+TCHAR app_path[MAX_PATH];
 TCHAR work_path[MAX_PATH];
 
 static HWND hViewerWnd;

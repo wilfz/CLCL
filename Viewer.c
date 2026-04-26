@@ -96,6 +96,7 @@ static BOOL DnD_mode;
 extern HINSTANCE hInst;
 extern DATA_INFO history_data;
 extern DATA_INFO regist_data;
+extern TCHAR help_path[];
 
 // オプション
 extern OPTION_INFO option;
@@ -2938,6 +2939,9 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 		case ID_MENUITEM_HELP_JP:
 		{
 			// Japanese help currently only available as plain text file readme_jp.txt.
+
+			// local variable help_path overrides external global variable help_path, 
+			// but it's only used in this case block, so it should be fine.
 			TCHAR help_path[MAX_PATH];
 			TCHAR* p, * r;
 			if (GetModuleFileName(NULL, help_path, sizeof(help_path)) > 0) {
@@ -2967,64 +2971,20 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 		}
 		break;
 
-		case ID_MENUITEM_HELP_EN:
-		case ID_MENUITEM_HELP_DE:
+		case ID_MENUITEM_HELP:
 		{
 			// english help as Compiled Help Module, generated from README.md
-			TCHAR help_path[MAX_PATH];
-			TCHAR* p, * r;
-			if (GetModuleFileName(NULL, help_path, sizeof(help_path)) > 0) {
-				for (p = r = help_path; *p != TEXT('\0'); p++) {
-#ifndef UNICODE
-					if (IsDBCSLeadByte((BYTE)*p) == TRUE) {
-						p++;
-						continue;
-					}
-#endif	// UNICODE
-					if (*p == TEXT('\\') || *p == TEXT('/')) {
-						r = p;
-					}
-				}
-				*r = TEXT('\0');
 
-				if (lstrlen(help_path) >= MAX_PATH - 15) {
-					break;
-				}
+			// Make it consistent througout solution:
+			// CLCLSet also uses this window handle by default
+			HWND hMainWnd = FindWindow(MAIN_WND_CLASS, MAIN_WINDOW_TITLE);
 
-				TCHAR help_path_locale[MAX_PATH];
-				lstrcpy(help_path_locale, help_path);
-				// TODO: Rather use option.main_language, append it to "clcl_" and use it 
-				// as suffix for help file name, e.g.clcl_de.chm for german locale.
-				// If the help file for current locale doesn't exist, fallback to english help file clcl.chm.
-				// But option.main_language may not be set at all. 
-				// If so, use GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_NAME_USER_DEFAULT,...) 
-				// to get the language code and use it as suffix for help file name.
-
-				// Make it consistent througout solution:
-				// CLCLSet also uses this window hNdle by default
-				HWND hMainWnd = FindWindow(MAIN_WND_CLASS, MAIN_WINDOW_TITLE);
-
-				// other languages may follow ...
-				switch (LOWORD(wParam)) {
-					case ID_MENUITEM_HELP_DE:
-						lstrcpy(help_path_locale + lstrlen(help_path_locale), TEXT("\\clcl_de.chm"));
-						if (file_check_file(help_path_locale) == TRUE) {
-							lstrcpy(help_path, help_path_locale);
-							break;
-						}
-						// otherwise fallback to english help
-					case ID_MENUITEM_HELP_EN:
-						lstrcpy(help_path + lstrlen(help_path), TEXT("\\clcl.chm"));
-						break;
-					default:
-						break;
-				}
-					
-				if (file_check_file(help_path)) {
-					//HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_DISPLAY_TOC, (DWORD_PTR)NULL);
-					HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_HELP_CONTEXT, IDH_VIEWER_HELP);
-					break;
-				}
+			// the external global variable help_path has already been initialized
+			// by ini_help_path()
+			if (lstrlen(help_path) > 0 && file_check_file(help_path)) {
+				//HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_DISPLAY_TOC, (DWORD_PTR)NULL);
+				HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_HELP_CONTEXT, IDH_VIEWER_HELP);
+				break;
 			}
 		}
 		break;

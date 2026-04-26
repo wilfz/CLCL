@@ -221,7 +221,7 @@ Text manipulation tools:
 - Quotation - Mark as quotation e.g. with a leading '>' or an indention
 - Un Quotation - Remove quotation from selected text
 - Word Wrap - Wrap text at specified column width
-- <TAG></TAG> - Wrap text with custom tags
+- &lt;TAG&gt;&lt;/TAG&gt; - Wrap text with custom tags
 - Delete CRLF - Remove line breaks
 - Connection of text - Join clipboard history into one text
 - Edit - Open text in an edit window
@@ -290,7 +290,7 @@ With the language combo box, you select the language of the Viewer and the Optio
 ### Action
 Actions and menus associated with a hotkey or a click on the task tray icon can be configured on the "Action" tab of the options.
 
-Invoking method sets the method for invoking the specified action.
+"Call type" defines how to invoke the specified action.
 
 When you specify "Hotkey", set the key to invoke.
 "Ctrl + Ctrl", "Shift + Shift", and "Alt + Alt" invoke the specified action when you press the key twice.

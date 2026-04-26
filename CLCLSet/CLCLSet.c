@@ -55,7 +55,6 @@
 HINSTANCE hInst;
 TCHAR app_path[MAX_PATH];
 TCHAR work_path[MAX_PATH];
-TCHAR help_path[MAX_PATH];
 int prop_ret;
 
 TCHAR cmd_format[BUF_SIZE];
@@ -69,6 +68,7 @@ static HMODULE hModThemes;
 
 // オプション
 extern OPTION_INFO option;
+extern TCHAR help_path[];
 
 /* Local Function Prototypes */
 #ifdef OP_XP_STYLE
@@ -657,11 +657,6 @@ static void get_work_path(const HINSTANCE hInstance)
 		portable = profile_get_int(TEXT("GENERAL"), TEXT("portable"), 0, app_ini_path);
 		profile_free();
 	}
-	lstrcpy(help_path, app_path);
-	lstrcat(help_path, TEXT("\\clcl.chm"));
-	if (PathFileExists(help_path) != TRUE) {
-		help_path[0] = TEXT('\0');
-	}
 	if (portable == 1) {
 		lstrcpy(work_path, app_path);
 	}
@@ -685,7 +680,7 @@ HWND show_help(UINT dlgid, LPHELPINFO lphi)
 	}
 
 	// no parent window, no help path => just exit
-	if (main_wnd == NULL || lstrlen(help_path) <= 8)
+	if (main_wnd == NULL || lstrlen(help_path) < 8)
 		return (HWND)NULL;
 
 	HWND hWnd = NULL;

@@ -36,8 +36,10 @@
 
 /* Global Variables */
 OPTION_INFO option;
+TCHAR help_path[MAX_PATH];
 
 extern TCHAR work_path[];
+extern TCHAR app_path[];
 
 /* Local Function Prototypes */
 static FORMAT_NAME *ini_get_format_name(TCHAR *format_name, int *cnt);
@@ -185,6 +187,7 @@ BOOL ini_get_option(TCHAR *err_str)
 	if (cnt > 0) {
 		ini_set_language(option.main_language);
 	}
+	ini_help_path();
 
 	// data
 	option.data_date_format = profile_alloc_string(TEXT("data"), TEXT("date_format"), TEXT(""), ini_path);
@@ -1284,6 +1287,63 @@ void ini_set_language(const TCHAR* locale_name)
 				break;
 			}
 		}
+	}
+}
+
+/*
+ * ini_help_path - build and storelocalized help file name
+ */
+void ini_help_path()
+{
+	if (app_path[0] == TEXT('\0') || lstrlen(app_path) + 15 > MAX_PATH) {
+		// app path is not set, cannot determine help file path
+		help_path[0] = TEXT('\0');
+		return;
+	}
+
+	if (lstrlen(option.main_language) >= 2) {
+		option.main_language[2] = TEXT('\0');
+		lstrcpy(help_path, app_path);
+		if (lstrcmp(option.main_language, TEXT("en")) == 0) {
+			// for english, use the default help file name
+			lstrcat(help_path, TEXT("\\clcl.chm"));
+		}
+		else {
+			// for other languages, try the language specific help file name
+			lstrcat(help_path, TEXT("\\clcl_"));
+			lstrcat(help_path, option.main_language);
+			lstrcat(help_path, TEXT(".chm"));
+		}
+		if (file_check_file(help_path) == TRUE)
+			return;
+	}
+
+	// If language setting is empty, get the OS language and reflect it in the help file name
+	TCHAR os_language[LOCALE_NAME_MAX_LENGTH + 1];
+	if (GetUserDefaultLocaleName(os_language, LOCALE_NAME_MAX_LENGTH) >= 2) {
+		os_language[2] = TEXT('\0');
+		lstrcpy(help_path, app_path);
+		if (lstrcmp(os_language, TEXT("en")) == 0) {
+			// for english, use the default help file name
+			lstrcat(help_path, TEXT("\\clcl.chm"));
+		}
+		else {
+			// for other languages, try the language specific help file name
+			lstrcat(help_path, TEXT("\\clcl_"));
+			lstrcat(help_path, os_language);
+			lstrcat(help_path, TEXT(".chm"));
+		}
+		if (file_check_file(help_path) == TRUE)
+			return;
+	}
+
+	// fall back to english help file
+	lstrcpy(help_path, app_path);
+	lstrcat(help_path, TEXT("\\clcl.chm"));
+	if (file_check_file(help_path) != TRUE)
+	{
+		// no help file available
+		help_path[0] = TEXT('\0');
 	}
 }
 

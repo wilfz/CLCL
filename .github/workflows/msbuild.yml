@@ -67,6 +67,7 @@ jobs:
         mv CLCLPlugin/fmt_rtf/Release/fmt_rtf.dll Setup/ 
         mv Release/clcl.html Setup/ 
         cp Documentation/clcl.chm Setup/ 
+        cp Documentation/clcl_de.chm Setup/ 
         cp LICENSE Setup/ 
         cp readme_en.txt Setup/ 
         cp readme_jp.txt Setup/ 
