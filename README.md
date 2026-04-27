@@ -28,12 +28,12 @@ It provides quick access to recent clipboard items via a customizable pop-up men
 ## Installation
 Works on current Windows OS.
 
-Download and launch [setup_clcl_2_1_6.exe](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta0/setup_clcl_2_1_6.exe).
+Download and launch [setup_clcl_2_1_6_beta2.exe](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta2/setup_clcl_2_1_6_beta2.exe).
 The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
 
 If you want to uninstall, do so from the Control Panel __after__ closing CLCL.
 
-Instead of the automatic installer, you can also download [CLCL_2_1_6.zip](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta0/clcl_2_1_6.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
+Instead of the automatic installer, you can also download [CLCL_2_1_6_beta2.zip](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta2/CLCL_2_1_6_beta2.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
 
 ### Data Storage
 By default, data and settings are stored in this folder (for Windows 10/11):
@@ -241,7 +241,7 @@ Utility tools:
 - Replace with regular expressions
 - Export items and template folders to JSON file
 - Import text items and folders from JSON file and merge them into template folders
-- Export to and import from the Android app "Clipper"
+- Export to and import from the Android app [Clipper](https://play.google.com/store/apps/details?id=org.rojekti.clipper) / [Clipper+](https://play.google.com/store/apps/details?id=fi.rojekti.clipper)
 - Convert tab-separated data into an HTML table snippet, ready to insert into an email, OneNote, etc.
 - Macros, insert templates with expanded variables
 - Send menu item to clipboard
