@@ -99,9 +99,9 @@ static BOOL dll_initialize(void)
 
 	UINT portable = 0;
 	TCHAR clcl_ini_path[MAX_PATH];
-	swprintf_s(clcl_ini_path, MAX_PATH, TEXT("%s\\%s"), exe_path, TEXT("clcl.ini"));
+	swprintf_s(clcl_ini_path, MAX_PATH, TEXT("%s\\%s"), exe_path, TEXT("clcl_app.ini"));
 	if (PathFileExists(clcl_ini_path)) {
-		portable = GetPrivateProfileInt(TEXT("GENERAL"), TEXT("GENERAL"), 0, clcl_ini_path);
+		portable = GetPrivateProfileInt(TEXT("GENERAL"), TEXT("portable"), 0, clcl_ini_path);
 	}
 
 	// get the dll folder
