@@ -440,6 +440,8 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 	- Integration of Ohno Tomoaki's Rich Text Format plugin
 	- Replace with regular expressions (tool_clip plugin)
 	- Macros, insert templates with expanded variables (tool_clip plugin)
+	- Bugfix: The parameter `portable` in clcl_app.ini is now evaluated correctly:  
+    The plugins's ini-files are stored in the same folder as the plugin dll for portable mode.
 
 - Ver 2.1.4 -> 2.1.5
 	- Added clipboard access delay setting (merge from Koichi-Kobayashi)
