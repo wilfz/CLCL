@@ -28,12 +28,12 @@ It provides quick access to recent clipboard items via a customizable pop-up men
 ## Installation
 Works on current Windows OS.
 
-Download and launch [setup_clcl_2_1_6_beta2.exe](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta2/setup_clcl_2_1_6_beta2.exe).
+Download and launch [setup_clcl_2_1_6_beta3.exe](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta3/setup_clcl_2_1_6_beta3.exe).
 The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
 
 If you want to uninstall, do so from the Control Panel __after__ closing CLCL.
 
-Instead of the automatic installer, you can also download [CLCL_2_1_6_beta2.zip](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta2/CLCL_2_1_6_beta2.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
+Instead of the automatic installer, you can also download [CLCL_2_1_6_beta3.zip](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta3/CLCL_2_1_6_beta3.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
 
 ### Data Storage
 By default, data and settings are stored in this folder (for Windows 10/11):
