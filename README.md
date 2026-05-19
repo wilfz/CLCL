@@ -28,12 +28,12 @@ It provides quick access to recent clipboard items via a customizable pop-up men
 ## Installation
 Works on current Windows OS.
 
-Download and launch [setup_clcl_2_1_6_beta3.exe](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta3/setup_clcl_2_1_6_beta3.exe).
+Download and launch [setup_clcl_2_1_6.exe](https://github.com/wilfz/CLCL/releases/download/v2.1.6/setup_clcl_2_1_6.exe).
 The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
 
 If you want to uninstall, do so from the Control Panel __after__ closing CLCL.
 
-Instead of the automatic installer, you can also download [CLCL_2_1_6_beta3.zip](https://github.com/wilfz/CLCL/releases/download/v2.1.6_beta3/CLCL_2_1_6_beta3.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
+Instead of the automatic installer, you can also download [CLCL_2_1_6.zip](https://github.com/wilfz/CLCL/releases/download/v2.1.6/CLCL_2_1_6.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
 
 ### Data Storage
 By default, data and settings are stored in this folder (for Windows 10/11):
@@ -418,8 +418,8 @@ A new window opens, and there you select *History/Ascending*. Most controls are 
 ![create submenu for history](img/create_history_submenu.gif)  
 
 OK. So now you have 100 items, but the menu would only show the first 19.  
-In the left half of the *Edit of  Action* tab scroll down to the bottom and click on *(New Content)*.  
-In the *Content* combo box choose "Pop-up Menu" and add "History 20 - 29" as *title*.  Now move the new pop-up menu upwards (with the little triangle below the left half of the window) until it is just below *History/Ascending*.  
+In the left half of the *Edit of  Action* tab, scroll down to the bottom and click on *(New Content)*.  
+In the *Content* combo box, choose "Pop-up Menu" and add "History 20 - 29" as *title*.  Now move the new pop-up menu upwards (with the little triangle below the left half of the window) until it is just below *History/Ascending*.  
 Once again click on *(New Content)*. This time choose "History/Ascending" from the combo box and set the range to 20 to 29. Move the new *History/Ascending* entry upwards until it is just below your newly created pop-up menu and a little indented to the right.  
 Continue so with as many pop-up menus as you like. You can even cascade the popups as shown in the screenshots.  
 
