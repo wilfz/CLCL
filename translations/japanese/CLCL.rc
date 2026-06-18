@@ -426,8 +426,8 @@ IDR_TOOLBAR48           BITMAP                  "res\\toolbar48.bmp"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,1,6,0
- PRODUCTVERSION 2,1,6,0
+ FILEVERSION 2,1,7,0
+ PRODUCTVERSION 2,1,7,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -443,12 +443,12 @@ BEGIN
         BLOCK "041104b0"
         BEGIN
             VALUE "FileDescription", "CLCL Clipboard Manager"
-            VALUE "FileVersion", "2.1.6.0"
+            VALUE "FileVersion", "2.1.7.0"
             VALUE "InternalName", "CLCL.exe"
             VALUE "LegalCopyright", "Copyright (C) 1996-2024 by Ohno Tomoaki. 2024-2026 MIT license."
             VALUE "OriginalFilename", "CLCL.exe"
             VALUE "ProductName", "CLCL"
-            VALUE "ProductVersion", "2.1.6"
+            VALUE "ProductVersion", "2.1.7"
         END
     END
     BLOCK "VarFileInfo"

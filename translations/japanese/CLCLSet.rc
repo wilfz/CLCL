@@ -422,10 +422,10 @@ BEGIN
     PUSHBUTTON      "プロパティ(&P)...",IDC_BUTTON_PROP,185,190,50,14
 END
 
-IDD_DIALOG_TOOL_SET DIALOG 0, 0, 219, 263
+IDD_DIALOG_TOOL_SET DIALOGEX 0, 0, 219, 263
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "ツールの編集"
-FONT 9, "MS Shell Dlg"
+FONT 9, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     LTEXT           "タイトル(&T):",IDC_STATIC,10,5,150,10
     EDITTEXT        IDC_EDIT_TITLE,10,15,162,13,ES_AUTOHSCROLL
@@ -448,8 +448,10 @@ BEGIN
     CONTROL         "ビューアを閉じる時(&L)",IDC_CHECK_VIEWER_CLOSE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,176,157,10
     CONTROL         "履歴にデータが追加された時(&I)",IDC_CHECK_HISTORY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,188,165,10
     CONTROL         "データをクリップボードに送る時(&C)",IDC_CHECK_CLIPBOARD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,200,165,10
-    CONTROL         "起動時(&R)",IDC_CHECK_START,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,212,165,10
-    CONTROL         "終了時(&X)",IDC_CHECK_END,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,224,165,10
+    CONTROL         "起動時(&R)",IDC_CHECK_START,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,212,90,10
+    CONTROL         "終了時(&X)",IDC_CHECK_END,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,224,88,10
+    CONTROL         "When connect to Session",IDC_CHECK_ENTER_SESSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,114,212,90,10
+    CONTROL         "When disconnect Session",IDC_CHECK_LEAVE_SESSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,114,224,87,10
     DEFPUSHBUTTON   "OK",IDOK,105,245,50,14
     PUSHBUTTON      "キャンセル",IDCANCEL,161,245,50,14
     CONTROL         "old",IDC_CHECK_OLD,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,10,245,45,10
@@ -669,6 +671,11 @@ BEGIN
     0
 END
 
+IDD_DIALOG_TOOL_SET AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -676,8 +683,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,1,6,0
- PRODUCTVERSION 2,1,6
+ FILEVERSION 2,1,7,0
+ PRODUCTVERSION 2,1,7,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -693,12 +700,12 @@ BEGIN
         BLOCK "041104b0"
         BEGIN
             VALUE "FileDescription", "CLCLSet"
-            VALUE "FileVersion", "2.1.6.0"
+            VALUE "FileVersion", "2.1.7.0"
             VALUE "InternalName", "CLCLSet.exe"
             VALUE "LegalCopyright", "Copyright (C) 1996-2024 by Ohno Tomoaki. 2024-2026 MIT license."
             VALUE "OriginalFilename", "CLCLSet.exe"
             VALUE "ProductName", "CLCL"
-            VALUE "ProductVersion", "2.1.6"
+            VALUE "ProductVersion", "2.1.7"
         END
     END
     BLOCK "VarFileInfo"
