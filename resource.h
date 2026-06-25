@@ -8,6 +8,7 @@
 #define IDS_MENU_VIEWER                 4
 #define IDS_MENU_OPTION                 5
 #define IDS_MENU_CLIPBOARD_WATCH        6
+#define IDS_MENU_HELP                   7
 #define IDS_TREEITEM_CLIPBOARD          10
 #define IDS_TREEITEM_HISTORY            11
 #define IDS_TREEITEM_REGIST             12

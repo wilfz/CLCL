@@ -282,7 +282,7 @@ BOOL ini_get_option(TCHAR *err_str)
 	option.action_show_hotkey_error = profile_get_int(TEXT("action"), TEXT("show_hotkey_error"), 1, ini_path);
 	option.action_cnt = profile_get_int(TEXT("action"), TEXT("cnt"), -1, ini_path);
 	if (option.action_cnt < 0) {
-		// Default
+		// Default settings for actions, not yet saved in INI file
 		option.action_cnt = 4;
 		if ((option.action_info = mem_calloc(sizeof(ACTION_INFO) * option.action_cnt)) == NULL) {
 			message_get_error(GetLastError(), err_str);
@@ -308,7 +308,7 @@ BOOL ini_get_option(TCHAR *err_str)
 		(option.action_info + i)->virtkey = 0;
 		(option.action_info + i)->paste = 1;
 
-		(option.action_info + i)->menu_cnt = 8;
+		(option.action_info + i)->menu_cnt = 9; // number of items in ACTION_TYPE_TRAY_LEFT menu
 		(option.action_info + i)->menu_info = mem_calloc(sizeof(MENU_INFO) * (option.action_info + i)->menu_cnt);
 		if ((option.action_info + i)->menu_info == NULL) {
 			message_get_error(GetLastError(), err_str);
@@ -332,8 +332,9 @@ BOOL ini_get_option(TCHAR *err_str)
 		((option.action_info + i)->menu_info + 3)->content = MENU_CONTENT_SEPARATOR;
 		((option.action_info + i)->menu_info + 4)->content = MENU_CONTENT_VIEWER;
 		((option.action_info + i)->menu_info + 5)->content = MENU_CONTENT_OPTION;
-		((option.action_info + i)->menu_info + 6)->content = MENU_CONTENT_SEPARATOR;
-		((option.action_info + i)->menu_info + 7)->content = MENU_CONTENT_EXIT;
+		((option.action_info + i)->menu_info + 6)->content = MENU_CONTENT_HELP;
+		((option.action_info + i)->menu_info + 7)->content = MENU_CONTENT_SEPARATOR;
+		((option.action_info + i)->menu_info + 8)->content = MENU_CONTENT_EXIT;
 
 		// hotkey (Alt + C)
 		i++;
@@ -345,7 +346,7 @@ BOOL ini_get_option(TCHAR *err_str)
 		(option.action_info + i)->modifiers = MOD_ALT;
 		(option.action_info + i)->virtkey = 'C';
 		(option.action_info + i)->paste = 1;
-		(option.action_info + i)->menu_cnt = 5;
+		(option.action_info + i)->menu_cnt = 5; // number of items in Alt + C hotkey menu
 		(option.action_info + i)->menu_info = mem_calloc(sizeof(MENU_INFO) * (option.action_info + i)->menu_cnt);
 		if ((option.action_info + i)->menu_info == NULL) {
 			message_get_error(GetLastError(), err_str);
@@ -379,7 +380,7 @@ BOOL ini_get_option(TCHAR *err_str)
 		(option.action_info + i)->modifiers = MOD_ALT;
 		(option.action_info + i)->virtkey = 'T';
 		(option.action_info + i)->paste = 1;
-		(option.action_info + i)->menu_cnt = 3;
+		(option.action_info + i)->menu_cnt = 3; // number of items in Alt + T hotkey menu
 		(option.action_info + i)->menu_info = mem_calloc(sizeof(MENU_INFO) * (option.action_info + i)->menu_cnt);
 		if ((option.action_info + i)->menu_info == NULL) {
 			message_get_error(GetLastError(), err_str);
@@ -389,6 +390,7 @@ BOOL ini_get_option(TCHAR *err_str)
 		((option.action_info + i)->menu_info + 1)->content = MENU_CONTENT_SEPARATOR;
 		((option.action_info + i)->menu_info + 2)->content = MENU_CONTENT_CANCEL;
 	} else {
+		// Load settings for actions from INI file
 		if ((option.action_info = mem_calloc(sizeof(ACTION_INFO) * option.action_cnt)) == NULL) {
 			message_get_error(GetLastError(), err_str);
 			return FALSE;

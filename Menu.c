@@ -590,6 +590,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 		case MENU_CONTENT_OPTION:
 		case MENU_CONTENT_CLIPBOARD_WATCH:
 		case MENU_CONTENT_APP:
+		case MENU_CONTENT_HELP:
 		case MENU_CONTENT_CANCEL:
 		case MENU_CONTENT_EXIT:
 			(*ret_cnt)++;
@@ -794,6 +795,17 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			(mii + j)->free_icon = TRUE;
 			// メニュー情報を設定
 			(mii + j)->mi = menu_info + i;
+			j++;
+			break;
+
+		case MENU_CONTENT_HELP:
+			(mii + j)->id = ID_MENUITEM_HELP;
+			(mii + j)->flag = MF_OWNERDRAW;
+			(mii + j)->item = (LPCTSTR)(mii + j);
+			(mii + j)->text = alloc_copy(((menu_info + i)->title == NULL || *(menu_info + i)->title == TEXT('\0')) ?
+				message_get_res(IDS_MENU_HELP) : (menu_info + i)->title);
+			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, option.menu_icon_size);
+			(mii + j)->free_icon = TRUE;
 			j++;
 			break;
 

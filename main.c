@@ -20,6 +20,8 @@
 #include <tchar.h>
 #include <shlobj.h>
 #include <shlwapi.h>
+#include <wtsapi32.h>
+#include <HtmlHelp.h>
 
 #pragma comment(lib, "shlwapi.lib")
 
@@ -44,7 +46,6 @@
 #include "BinView.h"
 #include "ToolTip.h"
 #include "dpi.h"
-#include "wtsapi32.h"
 
 #include "resource.h"
 
@@ -129,6 +130,7 @@ static FOCUS_INFO focus_info;
 // オプション
 // option information
 extern OPTION_INFO option;
+extern TCHAR help_path[];
 
 /* Local Function Prototypes */
 static void get_focus_info(FOCUS_INFO *fi);
@@ -1636,6 +1638,25 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			// クリップボード監視切り替え
 			SendMessage(hWnd, WM_SET_CLIPBOARD_WATCH, !option.main_clipboard_watch, 0);
 			break;
+
+		case ID_MENUITEM_HELP:
+		{
+			// english help as Compiled Help Module, generated from README.md
+
+			// Make it consistent througout solution:
+			// CLCLSet also uses this window handle by default
+			HWND hMainWnd = FindWindow(MAIN_WND_CLASS, MAIN_WINDOW_TITLE);
+
+			// the external global variable help_path has already been initialized
+			// by ini_help_path()
+			if (lstrlen(help_path) > 0 && file_check_file(help_path)) {
+				//HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_DISPLAY_TOC, (DWORD_PTR)NULL);
+				HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_HELP_CONTEXT, IDH_VIEWER_HELP);
+				break;
+			}
+			break;
+		}
+
 		}
 		break;
 

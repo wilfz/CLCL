@@ -196,7 +196,7 @@ BEGIN
 END
 
 IDD_DIALOG_VIEWER DIALOGEX 0, 0, 241, 248
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "ビューア"
 FONT 9, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
@@ -666,6 +666,11 @@ BEGIN
     0
 END
 
+IDD_DIALOG_MENU AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
 IDD_DIALOG_VIEWER AFX_DIALOG_LAYOUT
 BEGIN
     0
@@ -728,6 +733,7 @@ BEGIN
     IDS_MENU_VIEWER         "ビューア(&V)..."
     IDS_MENU_OPTION         "オプション(&O)..."
     IDS_MENU_CLIPBOARD_WATCH "クリップボード監視(&W)"
+    IDS_MENU_HELP           "ヘルプ(&H)"
     IDS_TREEITEM_REGIST     "登録アイテム"
 END
 
@@ -851,6 +857,7 @@ BEGIN
     IDS_ACTION_TOOL_ALL     "(すべてのツール)"
     IDS_ACTION_TITLE_PATH   "パス(&H):"
     IDS_ACTION_TITLE_TOOL   "ツール(&H):"
+    IDS_ACTION_CONTENT_HELP "ヘルプ"
 END
 
 STRINGTABLE
@@ -937,7 +944,8 @@ BEGIN
     CONTROL         "不检查重复(&N)",IDC_RADIO_CHECK_NO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,16,131,218,10
     CONTROL         "仅检查最后一条历史记录(&O)",IDC_RADIO_CHECK_ONE,"Button",BS_AUTORADIOBUTTON,16,144,218,10
     CONTROL         "检查全部历史记录(&A)",IDC_RADIO_CHECK_ALL,"Button",BS_AUTORADIOBUTTON,16,157,218,10
-    CONTROL         "检查全部历史记录，并自动删除重复项(&d)",IDC_RADIO_CHECK_ALL_DELETE,"Button",BS_AUTORADIOBUTTON,16,170,218,10
+    CONTROL         "检查全部历史记录，并自动删除重复项(&d)",IDC_RADIO_CHECK_ALL_DELETE,
+                    "Button",BS_AUTORADIOBUTTON,16,170,218,10
 END
 
 IDD_DIALOG_ACTION DIALOGEX 0, 0, 273, 228
@@ -1594,6 +1602,7 @@ BEGIN
     IDS_MENU_VIEWER         "视图(&V)..."
     IDS_MENU_OPTION         "选项(&O)..."
     IDS_MENU_CLIPBOARD_WATCH "监视剪贴板(&W)"
+    IDS_MENU_HELP           "帮助(&H)"
     IDS_TREEITEM_REGIST     "模板"
 END
 
@@ -1717,6 +1726,7 @@ BEGIN
     IDS_ACTION_TOOL_ALL     "(全部工具)"
     IDS_ACTION_TITLE_PATH   "路径(&h):"
     IDS_ACTION_TITLE_TOOL   "工具(&l):"
+    IDS_ACTION_CONTENT_HELP "帮助"
 END
 
 STRINGTABLE
@@ -2370,6 +2380,7 @@ BEGIN
     IDS_MENU_VIEWER         "Переглядач..."
     IDS_MENU_OPTION         "Параметри..."
     IDS_MENU_CLIPBOARD_WATCH "Спостереження за буфером"
+    IDS_MENU_HELP           "Довідка"
     IDS_TREEITEM_REGIST     "Шаблон"
 END
 
@@ -2494,6 +2505,7 @@ BEGIN
     IDS_ACTION_TOOL_ALL     "(Всі інструменти)"
     IDS_ACTION_TITLE_PATH   "Па&ть:"
     IDS_ACTION_TITLE_TOOL   "Ін&струмент:"
+    IDS_ACTION_CONTENT_HELP "Довідка"
 END
 
 STRINGTABLE
@@ -2937,7 +2949,7 @@ END
 IDD_DIALOG_TOOL_SET DIALOGEX 0, 0, 247, 263
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tool bearbeiten"
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
     LTEXT           "Titel:",IDC_STATIC,10,5,150,10
     EDITTEXT        IDC_EDIT_TITLE,10,15,176,13,ES_AUTOHSCROLL
@@ -3073,6 +3085,7 @@ BEGIN
     IDS_MENU_VIEWER         "An&zeige..."
     IDS_MENU_OPTION         "&Einstellugen..."
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage &überwachen"
+    IDS_MENU_HELP           "&Hilfe"
     IDS_TREEITEM_REGIST     "Vorlagen"
 END
 
@@ -3196,6 +3209,7 @@ BEGIN
     IDS_ACTION_TOOL_ALL     "(Alle Tools)"
     IDS_ACTION_TITLE_PATH   "Pfad:"
     IDS_ACTION_TITLE_TOOL   "Tool:"
+    IDS_ACTION_CONTENT_HELP "Hilfe"
 END
 
 STRINGTABLE
@@ -3891,6 +3905,11 @@ BEGIN
     0
 END
 
+IDD_DIALOG_TOOL_SET AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -3905,6 +3924,7 @@ BEGIN
     IDS_MENU_VIEWER         "&Viewer..."
     IDS_MENU_OPTION         "&Options..."
     IDS_MENU_CLIPBOARD_WATCH "Clipboard &Watch"
+    IDS_MENU_HELP           "&Help"
     IDS_TREEITEM_REGIST     "Template"
 END
 
@@ -4028,6 +4048,7 @@ BEGIN
     IDS_ACTION_TOOL_ALL     "(All tools)"
     IDS_ACTION_TITLE_PATH   "Pat&h:"
     IDS_ACTION_TITLE_TOOL   "Too&l:"
+    IDS_ACTION_CONTENT_HELP "Help"
 END
 
 STRINGTABLE

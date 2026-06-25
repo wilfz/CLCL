@@ -455,6 +455,7 @@ static void set_enable_control(const HWND hDlg)
 		i == MENU_CONTENT_CLIPBOARD_WATCH ||
 		i == MENU_CONTENT_TOOL ||
 		i == MENU_CONTENT_APP ||
+		i == MENU_CONTENT_HELP ||
 		i == MENU_CONTENT_CANCEL ||
 		i == MENU_CONTENT_EXIT);
 	EnableWindow(GetDlgItem(hDlg, IDC_EDIT_TITLE), enable);
@@ -546,6 +547,11 @@ static TCHAR *get_tree_text(const MENU_INFO *menu_info)
 	case MENU_CONTENT_APP:
 		ret = (menu_info->title == NULL || *menu_info->title == TEXT('\0')) ?
 			message_get_res(IDS_ACTION_CONTENT_APP) : menu_info->title;
+		break;
+
+	case MENU_CONTENT_HELP:
+		ret = (menu_info->title == NULL || *menu_info->title == TEXT('\0')) ?
+			message_get_res(IDS_MENU_HELP) : menu_info->title;
 		break;
 
 	case MENU_CONTENT_CANCEL:
@@ -806,6 +812,10 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		SET_COMBO_ITEM(IDC_COMBO_TYPE, message_get_res(IDS_ACTION_TYPE_TRAY_RIGHT));
 		SET_COMBO_ITEM(IDC_COMBO_TYPE, message_get_res(IDS_ACTION_TYPE_TRAY_RIGHT_DBLCLK));
 
+		// The order of these combo box items corresponds to the values of MENU_CONTENT_XXX.
+		// Furthermore the values of MENU_CONTENT_XXX are part of the configuration in clcl.ini.
+		// Therefore the values an the item order of the comobo box 
+		// MUST NOT be changed!
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_SEPARATOR));
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_HISTORY));
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_HISTORY_DESC));
@@ -819,6 +829,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_APP));
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_CANCEL));
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_EXIT));
+		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_HELP));
 
 		if (lParam == 0) {
 			// 新規追加
