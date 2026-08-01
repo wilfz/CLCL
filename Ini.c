@@ -308,7 +308,7 @@ BOOL ini_get_option(TCHAR *err_str)
 		(option.action_info + i)->virtkey = 0;
 		(option.action_info + i)->paste = 1;
 
-		(option.action_info + i)->menu_cnt = 9; // number of items in ACTION_TYPE_TRAY_LEFT menu
+		(option.action_info + i)->menu_cnt = 11; // number of items in ACTION_TYPE_TRAY_LEFT menu
 		(option.action_info + i)->menu_info = mem_calloc(sizeof(MENU_INFO) * (option.action_info + i)->menu_cnt);
 		if ((option.action_info + i)->menu_info == NULL) {
 			message_get_error(GetLastError(), err_str);
@@ -335,6 +335,8 @@ BOOL ini_get_option(TCHAR *err_str)
 		((option.action_info + i)->menu_info + 6)->content = MENU_CONTENT_HELP;
 		((option.action_info + i)->menu_info + 7)->content = MENU_CONTENT_SEPARATOR;
 		((option.action_info + i)->menu_info + 8)->content = MENU_CONTENT_EXIT;
+		((option.action_info + i)->menu_info + 9)->content = MENU_CONTENT_SEPARATOR;
+		((option.action_info + i)->menu_info + 10)->content = MENU_CONTENT_QUICKSEARCH;
 
 		// hotkey (Alt + C)
 		i++;

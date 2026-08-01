@@ -48,6 +48,8 @@
 #include "OleDragDrop.h"
 #include "ViewerOLEDnD.h"
 #include "ViewerDnD.h"
+#include "search.h"
+#include "quicksearch.h"
 
 #include "resource.h"
 
@@ -3096,6 +3098,45 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 
 		case ID_MENUITEM_SHOWBINARY:
 			toggle_item_binary(hWnd, (HTREEITEM)lParam);
+			break;
+
+		case ID_MENUITEM_SEARCH:
+		{
+			HWND hTreeView = GetDlgItem(hWnd, ID_TREE);
+			HTREEITEM hItem = (HTREEITEM)lParam;
+			DATA_INFO* di = NULL;
+
+			if (hItem == NULL) {
+				hItem = TreeView_GetSelection(hTreeView);
+			}
+
+			if (hItem && treeview_get_rootitem(hTreeView, hItem) == clip_treeitem) {
+				break;
+			}
+
+			if (hItem == history_treeitem) {
+				di = &history_data;
+			}
+			else if (hItem == regist_treeitem) {
+				di = &regist_data;
+			}
+			else {
+				di = (DATA_INFO*)treeview_get_lparam(hTreeView, hItem);
+			}
+
+			search_item_dlg(hWnd, di);
+			break;
+		}
+
+		case ID_MENUITEM_QUICKSEARCH:
+		{
+			quicksearch(hWnd);
+			break;
+		}
+
+		case ID_MENUITEM_FINDNEXT:
+			// 次を検索
+			search_next(hWnd);
 			break;
 
 		case ID_MENUITEM_SET_FORMAT:

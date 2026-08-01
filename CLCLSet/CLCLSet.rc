@@ -162,10 +162,10 @@ BEGIN
     PUSHBUTTON      "キャンセル",IDCANCEL,155,175,50,14
 END
 
-IDD_DIALOG_MENU DIALOG 0, 0, 241, 209
+IDD_DIALOG_MENU DIALOGEX 0, 0, 241, 209
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "メニュー"
-FONT 9, "MS Shell Dlg"
+FONT 9, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     CONTROL         "アイコンを表示する(&I)",IDC_CHECK_SHOW_ICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,180,10
     LTEXT           "アイコンのサイズ(&C):",IDC_STATIC,21,24,80,11
@@ -734,6 +734,7 @@ BEGIN
     IDS_MENU_OPTION         "オプション(&O)..."
     IDS_MENU_CLIPBOARD_WATCH "クリップボード監視(&W)"
     IDS_MENU_HELP           "ヘルプ(&H)"
+    IDS_MENU_QUICKSEARCH    "Quick Search (&Q)"
     IDS_TREEITEM_REGIST     "登録アイテム"
 END
 
@@ -858,6 +859,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "パス(&H):"
     IDS_ACTION_TITLE_TOOL   "ツール(&H):"
     IDS_ACTION_CONTENT_HELP "ヘルプ"
+    IDS_ACTION_CONTENT_QUICKSEARCH "Quick Search"
 END
 
 STRINGTABLE
@@ -1603,6 +1605,7 @@ BEGIN
     IDS_MENU_OPTION         "选项(&O)..."
     IDS_MENU_CLIPBOARD_WATCH "监视剪贴板(&W)"
     IDS_MENU_HELP           "帮助(&H)"
+    IDS_MENU_QUICKSEARCH    "Quick Search (&Q)"
     IDS_TREEITEM_REGIST     "模板"
 END
 
@@ -1727,6 +1730,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "路径(&h):"
     IDS_ACTION_TITLE_TOOL   "工具(&l):"
     IDS_ACTION_CONTENT_HELP "帮助"
+    IDS_ACTION_CONTENT_QUICKSEARCH "Quick Search"
 END
 
 STRINGTABLE
@@ -2381,6 +2385,7 @@ BEGIN
     IDS_MENU_OPTION         "Параметри..."
     IDS_MENU_CLIPBOARD_WATCH "Спостереження за буфером"
     IDS_MENU_HELP           "Довідка"
+    IDS_MENU_QUICKSEARCH    "Quick Search"
     IDS_TREEITEM_REGIST     "Шаблон"
 END
 
@@ -2506,6 +2511,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "Па&ть:"
     IDS_ACTION_TITLE_TOOL   "Ін&струмент:"
     IDS_ACTION_CONTENT_HELP "Довідка"
+    IDS_ACTION_CONTENT_QUICKSEARCH "Quick Search"
 END
 
 STRINGTABLE
@@ -3086,6 +3092,7 @@ BEGIN
     IDS_MENU_OPTION         "&Einstellugen..."
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage &überwachen"
     IDS_MENU_HELP           "&Hilfe"
+    IDS_MENU_QUICKSEARCH    "Schnellsuche"
     IDS_TREEITEM_REGIST     "Vorlagen"
 END
 
@@ -3210,6 +3217,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "Pfad:"
     IDS_ACTION_TITLE_TOOL   "Tool:"
     IDS_ACTION_CONTENT_HELP "Hilfe"
+    IDS_ACTION_CONTENT_QUICKSEARCH "Schnellsuche"
 END
 
 STRINGTABLE
@@ -3925,6 +3933,7 @@ BEGIN
     IDS_MENU_OPTION         "&Options..."
     IDS_MENU_CLIPBOARD_WATCH "Clipboard &Watch"
     IDS_MENU_HELP           "&Help"
+    IDS_MENU_QUICKSEARCH    "&Quick Search"
     IDS_TREEITEM_REGIST     "Template"
 END
 
@@ -4049,6 +4058,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "Pat&h:"
     IDS_ACTION_TITLE_TOOL   "Too&l:"
     IDS_ACTION_CONTENT_HELP "Help"
+    IDS_ACTION_CONTENT_QUICKSEARCH "Quick Search"
 END
 
 STRINGTABLE

@@ -162,6 +162,8 @@ BOOL data_delete(DATA_INFO **root, DATA_INFO *del_di, const BOOL free_item)
 	if (root == NULL || *root == NULL || del_di == NULL) {
 		return FALSE;
 	}
+	// prevent use of invalid del_di in searches
+	search_del(del_di);
 	if (*root == del_di) {
 		*root = del_di->next;
 		del_di->next = NULL;

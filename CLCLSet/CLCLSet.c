@@ -698,6 +698,13 @@ HWND show_help(UINT dlgid, LPHELPINFO lphi)
 }
 
 /*
+ * search_del()
+ * is a dummy function in scope of CLCLSet, 
+ * because it is only used in CLCL Viewer
+ */
+void search_del(DATA_INFO* del_di) {}
+
+/*
  * WinMain - メイン
  */
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)

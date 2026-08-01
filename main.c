@@ -46,6 +46,8 @@
 #include "BinView.h"
 #include "ToolTip.h"
 #include "dpi.h"
+#include "search.h"
+#include "quicksearch.h"
 
 #include "resource.h"
 
@@ -1434,6 +1436,7 @@ static BOOL winodw_end(const HWND hWnd)
 	}
 
 	BOOL b = WTSUnRegisterSessionNotification(hWnd);
+	search_free();
 
 	// クリップボード監視解除
 	KillTimer(hWnd, ID_RECHAIN_TIMER);
@@ -1654,6 +1657,12 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 				HtmlHelp(hMainWnd ? hMainWnd : hWnd, help_path, HH_HELP_CONTEXT, IDH_VIEWER_HELP);
 				break;
 			}
+			break;
+		}
+
+		case ID_MENUITEM_QUICKSEARCH:
+		{
+			quicksearch(hWnd);
 			break;
 		}
 

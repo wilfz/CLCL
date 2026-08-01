@@ -285,6 +285,7 @@ BEGIN
     VK_TAB,         ID_ACCEL_CTRL_TAB,      VIRTKEY, CONTROL, NOINVERT
     VK_UP,          ID_MENUITEM_UP,         VIRTKEY, ALT, NOINVERT
     VK_F1,          ID_MENUITEM_HELP,       VIRTKEY, NOINVERT
+    VK_F3,          ID_MENUITEM_FINDNEXT,   VIRTKEY, NOINVERT
 END
 
 
@@ -511,6 +512,7 @@ BEGIN
     IDS_MENU_OPTION         "オプション(&O)..."
     IDS_MENU_CLIPBOARD_WATCH "クリップボード監視(&W)"
     IDS_MENU_HELP           "ヘルプ(&H)"
+    IDS_MENU_QUICKSEARCH    "Quick Search"
     IDS_TREEITEM_CLIPBOARD  "クリップボード"
     IDS_TREEITEM_HISTORY    "履歴"
     IDS_TREEITEM_REGIST     "登録アイテム"
@@ -625,7 +627,7 @@ BEGIN
     IDS_DIALOG_EXPORT       "エクスポートするフォルダを選択してください。"
 END
 
-#endif    // 日本語 (日本) resources
+#endif    // Japanese (Japan) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -957,6 +959,7 @@ BEGIN
     IDS_MENU_OPTION         "选项(&O)..."
     IDS_MENU_CLIPBOARD_WATCH "监视剪贴板(&W)"
     IDS_MENU_HELP           "帮助(&H)"
+    IDS_MENU_QUICKSEARCH    "Quick Search"
     IDS_TREEITEM_CLIPBOARD  "剪贴板"
     IDS_TREEITEM_HISTORY    "历史"
     IDS_TREEITEM_REGIST     "模板"
@@ -1403,6 +1406,7 @@ BEGIN
     IDS_MENU_OPTION         "Параметри..."
     IDS_MENU_CLIPBOARD_WATCH "Спостереження за буфером"
     IDS_MENU_HELP           "Довідка"
+    IDS_MENU_QUICKSEARCH    "Quick Search"
     IDS_TREEITEM_CLIPBOARD  "Буфер обміну"
     IDS_TREEITEM_HISTORY    "Історія"
     IDS_TREEITEM_REGIST     "Шаблон"
@@ -1551,6 +1555,7 @@ BEGIN
         MENUITEM "An Zwischenablage &senden\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
         MENUITEM "Zu &Vorlagen hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
+        MENUITEM "Eintrag suchen",              ID_MENUITEM_SEARCH
         MENUITEM "Hexadezimal anzeigen",               ID_MENUITEM_SHOWBINARY
         MENUITEM "&Werkzeuge",                         ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
@@ -1574,6 +1579,7 @@ BEGIN
         MENUITEM "An Zwischenablage &senden\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
         MENUITEM "Zu &Vorlagen hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
+        MENUITEM "Eintrag suchen",              ID_MENUITEM_SEARCH
         MENUITEM "Hexadezimal anzeigen",               ID_MENUITEM_SHOWBINARY
         MENUITEM "&Werkzeuge",                         ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
@@ -1589,6 +1595,7 @@ BEGIN
     BEGIN
         MENUITEM "An Zwischenablage &senden\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
+        MENUITEM "Eintrag suchen",              ID_MENUITEM_SEARCH
         MENUITEM "Hexadezimal anzeigen",               ID_MENUITEM_SHOWBINARY
         MENUITEM "&Werkzeuge",                         ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
@@ -1619,6 +1626,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "An Zwischenablage &senden\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
+        MENUITEM "Eintrag suchen",              ID_MENUITEM_SEARCH
         MENUITEM "Hexadezimal anzeigen",               ID_MENUITEM_SHOWBINARY
         MENUITEM "&Werkzeuge",                         ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
@@ -1669,6 +1677,7 @@ BEGIN
         MENUITEM "An Zwischenablage &senden\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
         MENUITEM "Zu &Vorlagen hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
+        MENUITEM "Schnellsuche",                ID_MENUITEM_QUICKSEARCH
         MENUITEM SEPARATOR
         MENUITEM "Nach &oben\tAlt+Up",                 ID_MENUITEM_UP
         MENUITEM "Nach &unten\tAlt+Down",              ID_MENUITEM_DOWN
@@ -1834,6 +1843,7 @@ BEGIN
     IDS_MENU_OPTION         "&Einstellugen..."
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage-&Überwachung"
     IDS_MENU_HELP           "&Hilfe"
+    IDS_MENU_QUICKSEARCH    "Schnellsuche"
     IDS_TREEITEM_CLIPBOARD  "Zwischenablage"
     IDS_TREEITEM_HISTORY    "Verlauf"
     IDS_TREEITEM_REGIST     "Vorlagen"
@@ -1982,6 +1992,7 @@ BEGIN
         MENUITEM "Send to &Clipboard\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Paste from Clipboard\tCtrl+V", ID_MENUITEM_PASTE
         MENUITEM "&Add to Template...\tCtrl+R", ID_MENUITEM_REGIST_ADD
+        MENUITEM "Search for Item",             ID_MENUITEM_SEARCH
         MENUITEM "Show as Binary",              ID_MENUITEM_SHOWBINARY
         MENUITEM "&Tools",                      ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
@@ -2005,6 +2016,7 @@ BEGIN
         MENUITEM "Send to &Clipboard\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Paste from Clipboard\tCtrl+V", ID_MENUITEM_PASTE
         MENUITEM "&Add to Template...\tCtrl+R", ID_MENUITEM_REGIST_ADD
+        MENUITEM "Search for Item",             ID_MENUITEM_SEARCH
         MENUITEM "Show as Binary",              ID_MENUITEM_SHOWBINARY
         MENUITEM "&Tools",                      ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
@@ -2020,6 +2032,7 @@ BEGIN
     BEGIN
         MENUITEM "Send to &Clipboard\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Paste from Clipboard\tCtrl+V", ID_MENUITEM_PASTE
+        MENUITEM "Search for Item",             ID_MENUITEM_SEARCH
         MENUITEM "Show as Binary",              ID_MENUITEM_SHOWBINARY
         MENUITEM "&Tools",                      ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
@@ -2050,6 +2063,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Send to &Clipboard\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Paste from Clipboard\tCtrl+V", ID_MENUITEM_PASTE
+        MENUITEM "Search for Item",             ID_MENUITEM_SEARCH
         MENUITEM "Show as Binary",              ID_MENUITEM_SHOWBINARY
         MENUITEM "&Tools",                      ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
@@ -2100,6 +2114,7 @@ BEGIN
         MENUITEM "Send to &Clipboard\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Paste from Clipboard\tCtrl+V", ID_MENUITEM_PASTE
         MENUITEM "Add to &Template...\tCtrl+R", ID_MENUITEM_REGIST_ADD
+        MENUITEM "Quick Search",                ID_MENUITEM_QUICKSEARCH
         MENUITEM SEPARATOR
         MENUITEM "Move &Up\tAlt+Up",            ID_MENUITEM_UP
         MENUITEM "Move Do&wn\tAlt+Down",        ID_MENUITEM_DOWN
@@ -2280,6 +2295,7 @@ BEGIN
     IDS_MENU_OPTION         "&Options..."
     IDS_MENU_CLIPBOARD_WATCH "Clipboard &Watch"
     IDS_MENU_HELP           "&Help"
+    IDS_MENU_QUICKSEARCH    "Quick Search"
     IDS_TREEITEM_CLIPBOARD  "Clipboard"
     IDS_TREEITEM_HISTORY    "History"
     IDS_TREEITEM_REGIST     "Template"
