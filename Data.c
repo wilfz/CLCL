@@ -21,6 +21,7 @@
 #include "Message.h"
 #include "ClipBoard.h"
 #include "Format.h"
+#include "search.h"
 
 /* Define */
 

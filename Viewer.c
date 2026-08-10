@@ -3130,7 +3130,7 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 
 		case ID_MENUITEM_QUICKSEARCH:
 		{
-			quicksearch(hWnd);
+			//quicksearch(hWnd);
 			break;
 		}
 

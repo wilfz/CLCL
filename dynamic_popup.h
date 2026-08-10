@@ -1,3 +1,13 @@
+/*
+ * CLCL
+ *
+ * dynamic_popup.h
+ *
+ * Copyright (C) 2026 by Wilf Zimmermann. MIT License.
+ *		https://linguversa.de/clcl
+ *		https://github.com/wilfz/clcl
+ */
+
 #pragma once
 
 #ifndef DYNAMIC_POPUP_H
@@ -35,19 +45,49 @@ typedef void (*OnPopupPopulateCallback)(const TCHAR* editText, HWND hwndListBox,
  * @param x                 X-Koordinate auf dem Bildschirm (Bildschirmkoordinaten).
  * @param y                 Y-Koordinate auf dem Bildschirm.
  * @param width             Breite des Popups.
- * @param hImageList        Optionale ImageList für die Icons.
- * @param populateCallback  Funktion, die die Listbox basierend auf dem Text befüllt.
- * @param selectCallback    Funktion, die aufgerufen wird, wenn der User ein Element wählt.
- * @param tooltipCallback   Funktion, die aufgerufen wird, um einen Tooltip beim Hovern zu erhalten (kann NULL sein).
- * @param pUserData         Beliebiger Datenzeiger (wird an alle Callbacks durchgereicht).
  * @return HWND             Das Handle des erstellten Edit-Popups.
  */
-HWND CreateDynamicPopupMenu(HWND hwndOwner, int x, int y, int width,
-    HIMAGELIST hImageList, // Optionale ImageList für die Icons
-    OnPopupPopulateCallback populateCallback,
-    OnPopupSelectCallback selectCallback,
-    OnPopupTooltipCallback tooltipCallback,
-    void* pUserData);
+HWND CreateDynamicPopupMenu(HWND hwndOwner, int x, int y, int width);
+
+void SetPopulateCallback(HWND hwndFrame, OnPopupPopulateCallback populateCallback);
+
+void SetSelectCallback(HWND hwndFrame, OnPopupSelectCallback selectCallback);
+
+void SetTooltipCallback(HWND hwndFrame, OnPopupTooltipCallback tooltipCallback);
+
+void SetImageList(HWND hwndFrame, HIMAGELIST hImageList, int icon_size);
+
+void SetIconSize(HWND hwndFrame, int icon_size);
+
+void SetIconMargin(HWND hwndFrame, int icon_margin);
+
+void SetTextMargin(HWND hwndFrame, int text_margin);
+
+void SetMaxVisibleItems(HWND hwndFrame, unsigned int max_visible_items);
+
+void SetUserData(HWND hwndFrame, void* pUserData);
+
+void ActivateDynamicPopup(HWND hwndFrame);
+
+/**
+ * Zeigt ein Popup-Menü modal an und wartet auf eine Auswahl oder Abbruch.
+ * Diese Funktion blockiert, bis der Benutzer eine Auswahl trifft oder das Popup verlässt.
+ * 
+ * Der Workflow:
+ * 1. Rufe CreateDynamicPopupMenu() auf, um das Popup zu erstellen
+ * 2. Verwende SetImageList(), SetIconSize(), SetIconMargin() etc. zum Konfigurieren
+ * 3. Rufe TrackDynamicPopup() auf, um modal auf eine Auswahl zu warten
+ *
+ * @param hwndFrame         Das von CreateDynamicPopupMenu() zurückgegebene Fenster-Handle.
+ * @return UINT_PTR         Die itemData der ausgewählten Zeile oder 0 bei Abbruch.
+ *
+ * Beispiel:
+ *   HWND hwndPopup = CreateDynamicPopupMenu(hWnd, x, y, width);
+ *   SetImageList(hwndPopup, hImageList, 16);
+ *   SetIconSize(hwndPopup, 16);
+ *   UINT_PTR result = TrackDynamicPopup(hwndPopup);
+ */
+UINT_PTR TrackDynamicPopup(HWND hwndFrame);
 
 /**
  * Hilfsfunktion: Fügt der Owner-Draw Listbox einen Eintrag hinzu.

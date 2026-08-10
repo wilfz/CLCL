@@ -79,6 +79,8 @@
 #define WM_ITEM_GET_TITLE				(WM_APP + 413)
 #define WM_ITEM_GET_OPEN_INFO			(WM_APP + 414)
 #define WM_ITEM_GET_SAVE_INFO			(WM_APP + 415)
+// paste unformatted
+#define WM_PASTE_UNFORMATTED			(WM_APP + 480)
 // viewer
 #define WM_VIEWER_SHOW					(WM_APP + 500)
 #define WM_VIEWER_GET_HWND				(WM_APP + 501)

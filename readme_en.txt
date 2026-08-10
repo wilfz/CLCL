@@ -5,21 +5,21 @@ CLCL Clipboard manager Ver 2.1.6
 CLCL is a software that records clipboard history.
 
 ■ Functions
-	・Supports multiple clipboard formats
-	・Frequently used standard phrases can be registered as templates in a hierarchical structure
-	・Freely customize the menu displayed with hotkeys
-	・History items and template items can be selected from menu and automatically pasted into the current window
-	・Display thumbprint images in the menu
-	・Display tooltips in the menu
-	・The format to leave and the format to save can be set up
-	・It can be configured for which windows to save or not to save history
-	・The paste key can be set up individually for every window
-	・History is automatically saved when the program is closed and restored the next time it is started
-	・No limit on the maximum number of items that can be saved in the history
-	・View and edit history and templates in an Explorer-style viewer
-	・Program can be extended by plug-ins
-	・User interface can be switched between different languages
-	・Supports Unicode
+- Supports multiple clipboard formats
+- Register frequently used standard phrases as templates in a hierarchical structure
+- Freely customize the menu displayed with hotkeys
+- History items and template items can be selected from menu and automatically pasted into the current window
+- Display thumbprint images in the menu
+- Display tooltips in the menu
+- The format to leave and the format to save can be set up
+- It can be configured for which windows to save or not to save history
+- The paste key can be set up individually for every window
+- History is automatically saved when the program is closed and restored the next time it is started
+- No limit on the maximum number of items that can be saved in the history
+- View and edit history and templates in an Explorer-style viewer
+- Program can be extended by plug-ins
+- User interface can be switched between different languages
+- Supports Unicode
 
 ■ Installation
 Works on Windows XP and later OS.

@@ -808,6 +808,8 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		SET_COMBO_ITEM(IDC_COMBO_ACTION, message_get_res(IDS_ACTION_OPTION));
 		SET_COMBO_ITEM(IDC_COMBO_ACTION, message_get_res(IDS_ACTION_CLIPBOARD_WATCH));
 		SET_COMBO_ITEM(IDC_COMBO_ACTION, message_get_res(IDS_ACTION_EXIT));
+		SET_COMBO_ITEM(IDC_COMBO_ACTION, message_get_res(IDS_ACTION_QUICKSEARCH));
+		SET_COMBO_ITEM(IDC_COMBO_ACTION, message_get_res(IDS_ACTION_PASTE_UNFORMATTED));
 
 		SET_COMBO_ITEM(IDC_COMBO_TYPE, message_get_res(IDS_ACTION_TYPE_HOTKEY));
 		SET_COMBO_ITEM(IDC_COMBO_TYPE, message_get_res(IDS_ACTION_TYPE_CTRL_CTRL));
@@ -836,8 +838,8 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_CANCEL));
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_EXIT));
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_HELP));
-		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_QUICKSEARCH));
-
+		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_QUICKSEARCH));
+		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_PASTE_UNFORMATTED));
 
 		if (lParam == 0) {
 			// 新規追加
@@ -1261,6 +1263,14 @@ static void listview_set_text(const HWND hListView, const int i)
 
 	case ACTION_EXIT:
 		p = message_get_res(IDS_ACTION_EXIT);
+		break;
+
+	case ACTION_QUICKSEARCH:
+		p = message_get_res(IDS_ACTION_QUICKSEARCH);
+		break;
+
+	case ACTION_PASTE_UNFORMATTED:
+		p = message_get_res(IDS_ACTION_PASTE_UNFORMATTED);
 		break;
 	}
 	ListView_SetItemText(hListView, i, 0, p);

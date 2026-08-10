@@ -26,6 +26,8 @@
 #define ACTION_OPTION					2
 #define ACTION_CLIPBOARD_WATCH			3
 #define ACTION_EXIT						4
+#define ACTION_QUICKSEARCH              5
+#define ACTION_PASTE_UNFORMATTED        6
 
 #define ACTION_TYPE_HOTKEY				0
 #define ACTION_TYPE_CTRL_CTRL			1

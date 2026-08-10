@@ -1,10 +1,20 @@
+/*
+ * CLCL
+ *
+ * dynamic_popup.c
+ *
+ * Copyright (C) 2026 by Wilf Zimmermann. MIT License.
+ *		https://linguversa.de/clcl
+ *		https://github.com/wilfz/clcl
+ */
+
+/* Include Files */
 #include "dynamic_popup.h"
 #include <tchar.h>
 #include <stdio.h>
-#include "dpi.h"
 
 #define SUBCLASS_ID_POPUP 202
-#define ITEM_HEIGHT 16
+#define ITEM_HEIGHT 20
 #define MAX_VISIBLE_ITEMS 10
 #define TOOLTIP_DELAY_MS 800
 #ifndef IDC_TOOLTIP_WINDOW
@@ -18,15 +28,19 @@ typedef struct {
     HWND hwndList;            // Das Listbox Control (als Child)
     HWND hwndTooltip;         // Tooltip-Fenster
     HWND hwndOwner;
+    HFONT hFont;
     OnPopupPopulateCallback populateCallback;
     OnPopupSelectCallback selectCallback;
     OnPopupTooltipCallback tooltipCallback;  // Neuer Callback für Multiline-Tooltips
+    unsigned int max_visible_items;
     void* pUserData;
     BOOL isClosing;
     BOOL listAboveEdit;
     RECT monitorRect;
     HIMAGELIST hImageList;    // Gespeicherte ImageList für das Zeichnen der Icons
     int icon_size;
+    int icon_margin;
+    int text_margin;
     int item_height;
     int lastHoveredItem;      // Verfolgung des zuletzt angezeigten Tooltip-Elements
     UINT_PTR uiTooltipTimer;  // Timer-ID für Tooltip-Verzögerung
@@ -293,9 +307,9 @@ static void RepositionListbox(DynamicPopupData* pData, int editHeight)
     int listHeight = 0;
 	int maxListHeight = ITEM_HEIGHT * MAX_VISIBLE_ITEMS;
     if (visibleItems > 0 && pData && pData->item_height > 0) {
-		listHeight = pData->item_height * visibleItems;
+        listHeight = pData->item_height * visibleItems;
 		maxListHeight = pData->item_height * MAX_VISIBLE_ITEMS;
-	}
+    }
     
     // Get screen coordinates of the frame window
     RECT frameRect;
@@ -378,13 +392,8 @@ static void UpdateListContent(DynamicPopupData* pData)
     RepositionListbox(pData, 26);
 }
 
-HWND CreateDynamicPopupMenu(HWND hwndOwner, int x, int y, int width,
-    HIMAGELIST hImageList, // Optionale ImageList für die Icons
-    OnPopupPopulateCallback populateCallback,
-    OnPopupSelectCallback selectCallback,
-    OnPopupTooltipCallback tooltipCallback,
-    void* pUserData)
-{
+HWND CreateDynamicPopupMenu(HWND hwndOwner, int x, int y, int width)
+ {
     HINSTANCE hInstance = (HINSTANCE)GetWindowLongPtr(hwndOwner, GWLP_HINSTANCE);
     const TCHAR* szClassName = TEXT("HCP_PopupMenuFrameClass");
 
@@ -414,10 +423,10 @@ HWND CreateDynamicPopupMenu(HWND hwndOwner, int x, int y, int width,
     int initialListHeight = 0; //ITEM_HEIGHT * 3;
     int totalHeight = editHeight + initialListHeight;
 
-	// center the popup horizontally around the x coordinate
-	x -= width / 2;
-	// show the popup above the y coordinate
-	y -= editHeight;
+    // center the popup horizontally around the x coordinate
+    x -= width / 2;
+    // show the popup above the y coordinate
+    y -= editHeight;
 
     // 1. Das übergeordnete POPUP-Fenster erstellen
     HWND hwndFrame = CreateWindowEx(
@@ -459,51 +468,156 @@ HWND CreateDynamicPopupMenu(HWND hwndOwner, int x, int y, int width,
         return NULL;
     }
 
-    // Modernere System-Schriftart zuweisen
-    HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
-    SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
-    SendMessage(hwndList, WM_SETFONT, (WPARAM)hFont, TRUE);
-
-    int cx = 0, cy = 0;
-    int icon_size = 16;
-    if (pData && hImageList && ImageList_GetIconSize(hImageList, &cx, &cy))
-        icon_size = (cy >= 16) ? cy : 16;
-
-    int item_height = icon_size + 6;
-    SendMessage(hwndList, LB_SETITEMHEIGHT, 0, (LPARAM)item_height);
+    // Zeiger auf Datenstruktur im Frame-Fenster hinterlegen
+    SetWindowLongPtr(hwndFrame, GWLP_USERDATA, (LONG_PTR)pData);
 
     pData->hwndFrame = hwndFrame;
     pData->hwndEdit = hwndEdit;
     pData->hwndList = hwndList;
     pData->hwndTooltip = NULL;
     pData->hwndOwner = hwndOwner;
-    pData->populateCallback = populateCallback;
-    pData->selectCallback = selectCallback;
-    pData->tooltipCallback = tooltipCallback;
+    pData->hFont = (HFONT)NULL;
     pData->isClosing = FALSE;
     pData->listAboveEdit = FALSE;
     pData->monitorRect = miInfo.rcWork;
-    pData->hImageList = hImageList;
-    pData->icon_size = icon_size;
-	pData->item_height = item_height;
+    pData->populateCallback = NULL;
+    pData->selectCallback = NULL;
+    pData->tooltipCallback = NULL;
+    pData->max_visible_items = MAX_VISIBLE_ITEMS;
+    pData->hImageList = (HIMAGELIST) NULL;
+    pData->icon_size = 0;
+    pData->item_height = ITEM_HEIGHT;
+    pData->text_margin = 4;
+	pData->pUserData = NULL;
     pData->lastHoveredItem = -1;
     pData->uiTooltipTimer = 0;
     pData->currentTooltipText = NULL;
 
-    // Zeiger auf Datenstruktur im Frame-Fenster hinterlegen
-    SetWindowLongPtr(hwndFrame, GWLP_USERDATA, (LONG_PTR)pData);
-
     // Subclassing für Controls aktivieren
-    SetWindowSubclass(hwndEdit, DynamicEditSubclass, SUBCLASS_ID_POPUP, (DWORD_PTR)pData);
-    SetWindowSubclass(hwndList, DynamicListSubclass, SUBCLASS_ID_POPUP, (DWORD_PTR)pData);
+    SetWindowSubclass(pData->hwndEdit, DynamicEditSubclass, SUBCLASS_ID_POPUP, (DWORD_PTR)pData);
+    SetWindowSubclass(pData->hwndList, DynamicListSubclass, SUBCLASS_ID_POPUP, (DWORD_PTR)pData);
+
+    return hwndFrame;
+}
+
+void SetPopulateCallback(HWND hwndFrame, OnPopupPopulateCallback populateCallback)
+{
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+    if (pData) {
+        pData->populateCallback = populateCallback;
+    }
+}
+
+void SetSelectCallback(HWND hwndFrame, OnPopupSelectCallback selectCallback)
+{
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+    if (pData) {
+        pData->selectCallback = selectCallback;
+    }
+}
+
+void SetTooltipCallback(HWND hwndFrame, OnPopupTooltipCallback tooltipCallback)
+{
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+    if (pData) {
+        pData->tooltipCallback = tooltipCallback;
+    }
+}
+
+void SetImageList(HWND hwndFrame, HIMAGELIST hImageList, int icon_size)
+{
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+    if (!pData)
+        return;
+
+        pData->hImageList = hImageList;
+        pData->icon_size = icon_size;
+
+    if (icon_size == 0) {
+        int cx = 0, cy = 0;
+        if (pData && pData->hImageList && ImageList_GetIconSize(pData->hImageList, &cx, &cy))
+            icon_size = (cy > 0) ? cy : 16;
+    }
+
+    pData->hImageList = hImageList;
+    pData->icon_size = icon_size;
+}
+
+void SetIconSize(HWND hwndFrame, int icon_size)
+{
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+    if (pData)
+        pData->icon_size = icon_size;
+}
+
+void SetIconMargin(HWND hwndFrame, int icon_margin)
+{
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+    if (pData)
+        pData->icon_margin = icon_margin;
+}
+
+void SetItemHeight(HWND hwndFrame, int item_height) 
+{
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+    if (pData)
+        pData->item_height = item_height;
+}
+
+void SetTextMargin(HWND hwndFrame, int text_margin)
+{
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+    if (pData)
+        pData->text_margin = text_margin;
+}
+
+void SetMaxVisibleItems(HWND hwndFrame, unsigned int max_visible_items)
+{
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+    if (pData)
+        pData->max_visible_items = max_visible_items;
+}
+
+void SetMenuFont(HWND hwndFrame, HFONT hFont)
+{
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+    if (pData) {
+        pData->hFont = hFont;
+    }
+}
+
+void SetUserData(HWND hwndFrame, void* pUserData) 
+{
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+    if (pData) {
+        pData->pUserData = pUserData;
+    }
+}
+
+void ActivateDynamicPopup(HWND hwndFrame) 
+{
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+	if (pData == NULL)
+        return;
+
+    // Modernere System-Schriftart zuweisen
+    HFONT hFont = pData->hFont ? pData->hFont : (HFONT)GetStockObject(DEFAULT_GUI_FONT);
+    SendMessage(pData->hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
+    SendMessage(pData->hwndList, WM_SETFONT, (WPARAM)hFont, TRUE);
+
+    if (pData->item_height < pData->icon_margin + pData->icon_size + pData->icon_margin) {
+        // Höhe des Listbox-Items basierend auf Icon-Größe
+        pData->item_height = pData->icon_margin + pData->icon_size + pData->icon_margin;
+        }
+    SendMessage(pData->hwndList, LB_SETITEMHEIGHT, 0, (LPARAM)pData->item_height);
 
     // Initial befüllen
     UpdateListContent(pData);
 
-    ShowWindow(hwndFrame, SW_SHOW);
-    SetFocus(hwndEdit);
+    ShowWindow(pData->hwndFrame, SW_SHOW);
+    SetFocus(pData->hwndEdit);
 
-    return hwndEdit;
+    return;
 }
 
 // Fensterprozedur für das äußere Frame-Fenster
@@ -535,20 +649,19 @@ LRESULT CALLBACK PopupFrameWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
                 FillRect(hdc, &rc, hBg);
 
                 // 2. Icon zeichnen (falls ImageList und gültiger Index vorhanden)
-                int iconOffset = 24;
-                if (pData && pData->hImageList && pItem->iIconIndex >= 0) {
+                if (pData && pData->hImageList && pItem->iIconIndex >= 0 && pData->icon_size > 0) {
                     // Vertikal zentrieren
                     int cy = rc.top + (rc.bottom - rc.top - pData->icon_size) / 2;
-                    ImageList_Draw(pData->hImageList, pItem->iIconIndex, hdc, rc.left + 2, cy, ILD_TRANSPARENT);
-                    iconOffset = pData->icon_size + 8; // Text nach rechts verschieben
+                    ImageList_Draw(pData->hImageList, pItem->iIconIndex, hdc, rc.left + pData->icon_margin, cy, ILD_TRANSPARENT);
                 }
+                int iconOffset = (pData && pData->icon_size > 0) ? pData->icon_margin + pData->icon_size + pData->icon_margin : 0;
 
                 // 3. Text zeichnen
                 COLORREF oldTextCol = SetTextColor(hdc, GetSysColor(isSelected ? COLOR_HIGHLIGHTTEXT : COLOR_MENUTEXT));
                 int oldBkMode = SetBkMode(hdc, TRANSPARENT);
 
                 RECT rcText = rc;
-                rcText.left += iconOffset;
+                rcText.left += iconOffset + (pData ? pData->text_margin : 2);
 
                 HFONT hFont = (HFONT)SendMessage(pdis->hwndItem, WM_GETFONT, 0, 0);
                 HFONT oldFont = hFont ? (HFONT)SelectObject(hdc, hFont) : NULL;
@@ -634,7 +747,7 @@ LRESULT CALLBACK DynamicListSubclass(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 
     switch (uMsg) {
     case WM_MOUSEMOVE: {
-		int sel = (int)SendMessage(hWnd, LB_GETCURSEL, 0, 0);
+        int sel = (int)SendMessage(hWnd, LB_GETCURSEL, 0, 0);
         int index = (int)SendMessage(hWnd, LB_ITEMFROMPOINT, 0, lParam);
         if (index != LB_ERR && index != sel) {
             SendMessage(hWnd, LB_SETCURSEL, index, 0);
@@ -647,7 +760,7 @@ LRESULT CALLBACK DynamicListSubclass(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
             ShowTooltipForItem(pData, index, pt);
         }
         break;
-	}
+    }
 
     case WM_MOUSELEAVE: {
         HideTooltip(pData);
@@ -676,4 +789,68 @@ LRESULT CALLBACK DynamicListSubclass(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
     }
     }
     return DefSubclassProc(hWnd, uMsg, wParam, lParam);
+}
+
+typedef struct {
+    UINT_PTR selectedItemData;
+    BOOL selectionMade;
+} ModalPopupState;
+
+static void TrackDynamicPopup_InternalSelectCallback(const PopupItemData* pSelectedItem, void* pUserData)
+{
+    ModalPopupState* pState = (ModalPopupState*)pUserData;
+    if (pState && pSelectedItem) {
+        pState->selectedItemData = pSelectedItem->itemData;
+        pState->selectionMade = TRUE;
+    }
+}
+
+UINT_PTR TrackDynamicPopup(HWND hwndFrame)
+{
+    if (!IsWindow(hwndFrame)) {
+        return 0;
+    }
+
+    DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hwndFrame, GWLP_USERDATA);
+    if (!pData) {
+        return 0;
+    }
+
+    ModalPopupState modalState = { 0 };
+    modalState.selectedItemData = 0;
+    modalState.selectionMade = FALSE;
+
+    OnPopupSelectCallback pOriginalSelectCallback = pData->selectCallback;
+    pData->selectCallback = TrackDynamicPopup_InternalSelectCallback;
+    
+    void* pOriginalUserData = pData->pUserData;
+    pData->pUserData = (void*)&modalState;
+
+    ActivateDynamicPopup(hwndFrame);
+
+    MSG msg = { 0 };
+    BOOL bContinue = TRUE;
+
+    while (bContinue && GetMessage(&msg, NULL, 0, 0)) {
+        if (!IsWindow(hwndFrame)) {
+            bContinue = FALSE;
+            break;
+        }
+
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+
+        if (modalState.selectionMade) {
+            bContinue = FALSE;
+            break;
+        }
+    }
+
+    if (IsWindow(hwndFrame)) {
+        DestroyWindow(hwndFrame);
+    }
+
+    UINT_PTR result = modalState.selectedItemData;
+        
+    return result;
 }

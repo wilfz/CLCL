@@ -688,8 +688,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,1,7,0
- PRODUCTVERSION 2,1,7,0
+ FILEVERSION 2,2,0,0
+ PRODUCTVERSION 2,2,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -705,12 +705,12 @@ BEGIN
         BLOCK "041104b0"
         BEGIN
             VALUE "FileDescription", "CLCLSet"
-            VALUE "FileVersion", "2.1.7.0"
+            VALUE "FileVersion", "2.2.0.0"
             VALUE "InternalName", "CLCLSet.exe"
             VALUE "LegalCopyright", "Copyright (C) 1996-2024 by Ohno Tomoaki. 2024-2026 MIT license."
             VALUE "OriginalFilename", "CLCLSet.exe"
             VALUE "ProductName", "CLCL"
-            VALUE "ProductVersion", "2.1.7"
+            VALUE "ProductVersion", "2.2.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -859,7 +859,8 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "パス(&H):"
     IDS_ACTION_TITLE_TOOL   "ツール(&H):"
     IDS_ACTION_CONTENT_HELP "ヘルプ"
-    IDS_ACTION_CONTENT_QUICKSEARCH "Quick Search"
+    IDS_ACTION_QUICKSEARCH  "Quick Search"
+    IDS_ACTION_PASTE_UNFORMATTED "Paste (unformatted)"
 END
 
 STRINGTABLE
@@ -1730,7 +1731,8 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "路径(&h):"
     IDS_ACTION_TITLE_TOOL   "工具(&l):"
     IDS_ACTION_CONTENT_HELP "帮助"
-    IDS_ACTION_CONTENT_QUICKSEARCH "Quick Search"
+    IDS_ACTION_QUICKSEARCH  "Quick Search"
+    IDS_ACTION_PASTE_UNFORMATTED "Paste (unformatted)"
 END
 
 STRINGTABLE
@@ -2511,7 +2513,8 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "Па&ть:"
     IDS_ACTION_TITLE_TOOL   "Ін&струмент:"
     IDS_ACTION_CONTENT_HELP "Довідка"
-    IDS_ACTION_CONTENT_QUICKSEARCH "Quick Search"
+    IDS_ACTION_QUICKSEARCH  "Quick Search"
+    IDS_ACTION_PASTE_UNFORMATTED "Paste (unformatted)"
 END
 
 STRINGTABLE
@@ -3217,7 +3220,8 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "Pfad:"
     IDS_ACTION_TITLE_TOOL   "Tool:"
     IDS_ACTION_CONTENT_HELP "Hilfe"
-    IDS_ACTION_CONTENT_QUICKSEARCH "Schnellsuche"
+    IDS_ACTION_QUICKSEARCH  "Schnellsuche"
+    IDS_ACTION_PASTE_UNFORMATTED "Unformatiert einfügen"
 END
 
 STRINGTABLE
@@ -4058,7 +4062,8 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "Pat&h:"
     IDS_ACTION_TITLE_TOOL   "Too&l:"
     IDS_ACTION_CONTENT_HELP "Help"
-    IDS_ACTION_CONTENT_QUICKSEARCH "Quick Search"
+    IDS_ACTION_QUICKSEARCH  "Quick Search"
+    IDS_ACTION_PASTE_UNFORMATTED "Paste (unformatted)"
 END
 
 STRINGTABLE

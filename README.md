@@ -1,6 +1,6 @@
 # CLCL - Clipboard Manager
 
-**Version:** 2.1.6
+**Version:** 2.2.0
 
 ## Overview
 CLCL is a powerful Windows clipboard manager with plugin support and customizable hotkeys.
@@ -28,12 +28,12 @@ It provides quick access to recent clipboard items via a customizable pop-up men
 ## Installation
 Works on current Windows OS.
 
-Download and launch [setup_clcl_2_1_6.exe](https://github.com/wilfz/CLCL/releases/download/v2.1.6/setup_clcl_2_1_6.exe).
+Download and launch [setup_clcl_2_2_0.exe](https://github.com/wilfz/CLCL/releases/download/v2.2.0/setup_clcl_2_2_0.exe).
 The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
 
 If you want to uninstall, do so from the Control Panel __after__ closing CLCL.
 
-Instead of the automatic installer, you can also download [CLCL_2_1_6.zip](https://github.com/wilfz/CLCL/releases/download/v2.1.6/CLCL_2_1_6.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
+Instead of the automatic installer, you can also download [CLCL_2_2_0.zip](https://github.com/wilfz/CLCL/releases/download/v2.2.0/CLCL_2_2_0.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
 
 ### Data Storage
 By default, data and settings are stored in this folder (for Windows 10/11):
@@ -435,9 +435,11 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 
 
 ## Update History
-- Ver 2.1.6 -> 2.1.7
+- Ver 2.1.6 -> 2.2.0
 	- Added call types "When connect to session" and "When disconnect from session" to the tool conmfiguration
 	- Added Help Viewer to action menus
+	- Added "Search for Item" to context menus in Viewer
+	- Added "Quick Search" to menu items and actions
 
 - Ver 2.1.5 -> 2.1.6
 	- Integration of CHM help (Issue [nakkag#26](https://github.com/nakkag/CLCL/issues/26)) and invocation of MS Help Viewer

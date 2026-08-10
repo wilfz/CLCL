@@ -164,6 +164,7 @@ static void get_work_path(const HINSTANCE hInstance);
 static void commnad_line_func(const HWND hWnd);
 static BOOL init_application(const HINSTANCE hInstance);
 static HWND init_instance(const HINSTANCE hInstance, const int CmdShow);
+static BOOL paste_unformatted(const HWND hWnd);
 
 /*
  * theme_open - XPテーマを開く
@@ -813,6 +814,16 @@ static BOOL action_execute(const HWND hWnd, const int type, const int id, const 
 		// EXIT
 		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_EXIT, 0);
 		break;
+
+	case ACTION_QUICKSEARCH:
+		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_QUICKSEARCH, 0);
+		break;
+
+	case ACTION_PASTE_UNFORMATTED:
+		// 書式なし貼り付け
+		key_wait();
+		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_PASTE_UNFORMATTED, 0);
+		break;
 	}
 	return TRUE;
 }
@@ -1139,7 +1150,7 @@ static void regist_hotkey(const HWND hWnd, const BOOL show_err)
 	for (i = 0; i < option.action_cnt; i++) {
 		if ((option.action_info + i)->type == ACTION_TYPE_HOTKEY && (option.action_info + i)->enable != 0 &&
 			RegisterHotKey(hWnd, (option.action_info + i)->id,
-			(option.action_info + i)->modifiers, (option.action_info + i)->virtkey) == FALSE) {
+			(option.action_info + i)->modifiers | (i>=5 ? MOD_NOREPEAT : 0), (option.action_info + i)->virtkey) == FALSE) {
 			hk_err = TRUE;
 		}
 	}
@@ -1571,6 +1582,8 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			break;
 		}
 		// ツールチップを表示
+		// LOWORD(wParam): ID within the menu
+		// HIWORD(wParam): flags on current menu selection
 		show_menu_tooltip(hToolTip, (HMENU)lParam, (UINT)LOWORD(wParam),
 			((UINT)HIWORD(wParam) & MF_MOUSESELECT) ? TRUE : FALSE);
 		break;
@@ -1660,11 +1673,51 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			break;
 		}
 
-		case ID_MENUITEM_QUICKSEARCH:
-		{
-			quicksearch(hWnd);
+		case ID_MENUITEM_QUICKSEARCH: {
+			FOCUS_INFO fi;
+			CopyMemory(&fi, &focus_info, sizeof(FOCUS_INFO));
+			if (fi.active_wnd == NULL) {
+				// フォーカス情報取得
+				// Get focus information
+				get_focus_info(&fi);
+			}
+			// Display menu
+			_SetForegroundWindow(hWnd);
+			ShowWindow(hWnd, SW_HIDE);
+
+			POINT pt;
+			if (fi.caret)
+				pt = fi.cpos;
+			else
+				GetCursorPos((LPPOINT)&pt);
+
+			// クイックサーチ - enter text and show items like in a menu
+			DATA_INFO* di = (DATA_INFO*)quicksearch(hWnd, pt);
+			// クリップボードにデータを設定
+			// Set the data on the clipboard
+			set_focus_info(&fi);
+			if (di) {
+				SendMessage(hWnd, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)di);
+				// キーを離すまで待機
+				// Wait until key is released
+				key_wait();
+				// ホットキーの解除
+				// Cancel hotkey
+				unregist_hotkey(hWnd);
+				// 貼り付け
+				// paste
+				sendkey_paste(fi.active_wnd);
+				// ホットキーの登録
+				// Register the hotkey
+				regist_hotkey(hWnd, FALSE);
+			}
+
 			break;
 		}
+
+		case ID_MENUITEM_PASTE_UNFORMATTED:
+			paste_unformatted(hWnd);
+			break;
 
 		}
 		break;
@@ -2225,6 +2278,11 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 		return format_get_file_info(((DATA_INFO *)lParam)->format_name, (DATA_INFO *)lParam,
 			(OPENFILENAME *)wParam, FALSE);
 
+	case WM_PASTE_UNFORMATTED:
+		// 形式を無視して貼り付け
+		paste_unformatted(hWnd);
+		break;
+
 	case WM_VIEWER_SHOW:
 		// ビューア表示
 		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_VIEWER, 0);
@@ -2467,6 +2525,66 @@ static void commnad_line_func(const HWND hWnd)
 			break;
 		}
 	}
+}
+
+/*
+ * paste_unformatted - クリップボードの内容を無形式で貼り付け
+ * Paste the current contents of the clipboard as unformatted text
+ */
+static BOOL paste_unformatted(const HWND hWnd)
+{
+	if (IsClipboardFormatAvailable(CF_UNICODETEXT) && OpenClipboard(NULL)) {
+		HANDLE hData = GetClipboardData(CF_UNICODETEXT);
+		HGLOBAL hMem = NULL;
+		size_t len = 0;
+		if (hData) {
+			wchar_t* buffer = (wchar_t*)GlobalLock(hData);
+			if (buffer) {
+				len = wcslen(buffer);
+				size_t sizeInBytes = (len + 1) * sizeof(wchar_t);
+				// Allocate global memory. Must use GMEM_MOVEABLE for the clipboard.
+				hMem = GlobalAlloc(GHND, sizeInBytes);
+				if (hMem == NULL) {
+					CloseClipboard();
+					return FALSE;
+				}
+
+				// Lock the memory block to get a concrete pointer and copy the text
+				wchar_t* pMem = (wchar_t*)GlobalLock(hMem);
+				if (pMem != NULL) {
+					wcscpy_s(pMem, len + 1, buffer);
+					GlobalUnlock(hMem); // Always unlock after copying
+				}
+				else {
+					GlobalFree(hMem);
+					CloseClipboard();
+					return FALSE;
+				}
+
+			}
+			GlobalUnlock(hData);
+		}
+		EmptyClipboard();
+
+		// Place the data onto the clipboard
+		// Once successful, the system owns hMem; do not call GlobalFree on it.
+		HANDLE hResult = SetClipboardData(CF_UNICODETEXT, hMem);
+
+		if (hResult == NULL) {
+			GlobalFree(hMem); // Free memory only if SetClipboardData failed
+		}
+
+		// Close the clipboard
+		BOOL b = CloseClipboard();
+
+		unregist_hotkey(hWnd);
+		sendkey_paste(GetForegroundWindow());
+		regist_hotkey(hWnd, FALSE);
+
+		return b;
+	}
+
+	return FALSE;
 }
 
 /*

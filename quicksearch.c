@@ -8,7 +8,7 @@
  *		https://github.com/wilfz/clcl
  */
 
- /* Include Files */
+/* Include Files */
 #define _INC_OLE
 #include <windows.h>
 #undef  _INC_OLE
@@ -17,9 +17,13 @@
 #include <strsafe.h>
 
 #include "quicksearch.h"
+#include "Data.h"
 #include "Memory.h"
 #include "ImageList.h"
 #include "Ini.h"
+#include "Profile.h"
+#include "dpi.h"
+#include "Font.h"
 
 #include "dynamic_popup.h"
 
@@ -28,12 +32,14 @@
 
 /* Global Variables */
 HWND hWndClcl = NULL; // the one and only application window handle
+TCHAR ini_path[MAX_PATH] = TEXT("");
 
 // extern
 extern HINSTANCE hInst;
 extern DATA_INFO history_data;
 extern DATA_INFO regist_data;
 extern OPTION_INFO option;
+extern TCHAR work_path[];
 
 /* Item data structure for owner-drawn listbox */
 typedef struct {
@@ -137,6 +143,25 @@ int listbox_add_matches(HWND hListBox, DATA_INFO* start, const TCHAR* srch, int 
 	return cnt;
 }
 
+/*
+ * menu_create_font - ????????????
+ */
+static HFONT menu_create_font(void)
+{
+	NONCLIENTMETRICS ncMetrics;
+
+	if (*option.menu_font_name != TEXT('\0')) {
+		return font_create(option.menu_font_name, option.menu_font_size, option.menu_font_charset,
+			option.menu_font_weight, (option.menu_font_italic == 0) ? FALSE : TRUE, FALSE);
+	}
+
+	ncMetrics.cbSize = sizeof(NONCLIENTMETRICS);
+	if (SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS), &ncMetrics, 0) == FALSE) {
+		return NULL;
+	}
+	return CreateFontIndirect(&ncMetrics.lfMenuFont);
+}
 
 /*
  * get_icon_index_for_data
@@ -221,32 +246,50 @@ TCHAR* MyPopupTooltipHandler(const PopupItemData* pSelectedItem, void* pUserData
 	return pSelectedItem->pszText;
 }
 
-void quicksearch(HWND hWnd)
+UINT_PTR quicksearch(HWND hWnd, POINT pt)
 {
 	hWndClcl = hWnd;
-	POINT pt;
+	int icon_size = option.menu_icon_size ? option.menu_icon_size : Scale(16);
+	int icon_margin = option.menu_icon_margin ? option.menu_icon_margin : Scale(2);
+	int text_margin = option.menu_text_margin_left ? option.menu_text_margin_left : Scale(4);
+	StringCbPrintf(ini_path, BUF_SIZE, TEXT("%s\\%s"), work_path, USER_INI);
+	static unsigned int max_visible_items = 0;
+	if (max_visible_items == 0)
+		max_visible_items = (unsigned int)profile_get_int(TEXT("quicksearch"), TEXT("max_visible_items"), 10, ini_path);
 	HIMAGELIST hImageList = create_imagelist(hInst);
-	if (GetCursorPos(&pt)) {
-		// Aufruf mit allen drei Callbacks: Populate, Selection und Tooltip
-		CreateDynamicPopupMenu(hWnd, pt.x, pt.y, option.menu_max_width,
-			hImageList,
-			MyPopupPopulateHandler,
-			MyPopupSelectionHandler,
-			MyPopupTooltipHandler,  // NEUE TOOLTIP-CALLBACK
-			NULL);
+	// Step 1: Create the popup window
+	HWND hwndPopup = CreateDynamicPopupMenu(hWnd, pt.x, pt.y, option.menu_max_width);
+	if (!hwndPopup) {
+		return 0;
 	}
+
+	// Step 2: Configure the popup using setter functions
+	// Callbacks:
+	SetPopulateCallback(hwndPopup, MyPopupPopulateHandler);
+	SetTooltipCallback(hwndPopup, MyPopupTooltipHandler);
+
+	// Layout:
+	SetImageList(hwndPopup, hImageList, icon_size);
+	SetIconMargin(hwndPopup, icon_margin);
+	SetTextMargin(hwndPopup, text_margin);
+	SetMaxVisibleItems(hwndPopup, max_visible_items);
+	SetUserData(hwndPopup, (void*)NULL);
+
+	// Step 3: Track the popup modally and get the result
+	UINT_PTR itemData = TrackDynamicPopup(hwndPopup);
+
+	// Step 4: Process the result
+	return itemData; // Return the selected item's data or 0 if no selection is made
 }
 
 // 1. DIESER CALLBACK BEFÜLLT DIE LISTBOX DYNAMISCH
 void MyPopupPopulateHandler(const TCHAR* editText, HWND hwndListBox, void* pUserData) 
 {
-	// Wenn das Textfeld leer ist, gibt's auch nichts zu zeigen
-	if (_tcslen(editText) == 0) {
-		return;
-	}
-
 	// Add matching items to the listbox
-	int max_cnt = 20; // Limit the number of matches to add to the combo box
+	static int max_cnt = 0;
+	if (max_cnt == 0)
+		max_cnt = profile_get_int(TEXT("quicksearch"), TEXT("max_item_count"), 30, ini_path);
+
 	int item_count = listbox_add_matches(hwndListBox, &history_data, editText, max_cnt);
 	if (item_count < max_cnt) {
 		item_count = listbox_add_matches(hwndListBox, &regist_data, editText, max_cnt);
@@ -257,9 +300,9 @@ void MyPopupPopulateHandler(const TCHAR* editText, HWND hwndListBox, void* pUser
 void MyPopupSelectionHandler(const PopupItemData* pSelectedItem, void* pUserData) 
 {
 	if (pSelectedItem) {
-		//MessageBox(NULL, pSelectedItem->pszText, TEXT("Ausgewähltes Element"), MB_OK);
 		DATA_INFO* di = (DATA_INFO*) pSelectedItem->itemData;
-		if (di)
-			SendMessage(hWndClcl, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)di);
+		if (di) {
+			LRESULT res = SendMessage(hWndClcl, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)di);
+		}
 	}
 }
