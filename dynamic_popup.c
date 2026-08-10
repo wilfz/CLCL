@@ -767,14 +767,6 @@ LRESULT CALLBACK DynamicListSubclass(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
         break;
     }
 
-    case WM_KILLFOCUS: {
-        HWND hwndNewFocus = (HWND)wParam;
-        if (hwndNewFocus != pData->hwndFrame && hwndNewFocus != pData->hwndEdit && hwndNewFocus != hWnd) {
-            DestroyPopupLayout(pData);
-        }
-        break;
-    }
-
     case WM_LBUTTONUP: {
         LRESULT res = DefSubclassProc(hWnd, uMsg, wParam, lParam);
         int index = (int)SendMessage(hWnd, LB_GETCURSEL, 0, 0);
