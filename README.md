@@ -1,6 +1,6 @@
 # CLCL - Clipboard Manager
 
-**Version:** 2.2.0
+**Version:** 2.1.7
 
 ## Overview
 CLCL is a powerful Windows clipboard manager with plugin support and customizable hotkeys.
@@ -435,7 +435,7 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 
 
 ## Update History
-- Ver 2.1.6 -> 2.2.0
+- Ver 2.1.6 -> 2.1.7
 	- Added call types "When connect to session" and "When disconnect from session" to the tool conmfiguration
 	- Added Help Viewer to action menus
 	- Added "Search for Item" to context menus in Viewer
@@ -469,7 +469,6 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 	- Expand environment variables in tool paths
 
 - Ver 2.1.2 -> Ver 2.1.3
-	- Last release published under https://nakka.com/soft/clcl/index_eng.html
 	- Changed the system tray icon when not monitoring the clipboard.
 	- Improved the up and down movement buttons in the settings.
 	- Improved so that the main screen does not appear when displaying the menu.
