@@ -1255,24 +1255,41 @@ void ini_set_language(const TCHAR* locale_name)
 	// Ver 6.0 refers to Windows Vista
 	// OS version >= Vista?
 	if (IsWindowsVersionOrGreater(6, 0, 0) && IsValidLocaleName(locale_name)) {
-		TCHAR language_name[3];
-		lstrcpyn(language_name, locale_name, 3);
-		LCID lcid = LocaleNameToLCID(language_name, 0);
+		LCID lcid = LocaleNameToLCID(locale_name, 0);
 		LANGID langid = 0;
 		if (lcid > 0 && (langid = LANGIDFROMLCID(lcid)) > 0) {
-			switch (langid)
+			// the language of the resource to be used
+			LANGID res_langid;
+			switch (PRIMARYLANGID(langid))
 			{
-			case 1031: // German (Germany)
-			case 1033: // English (United States)
-			case 1041: // Japanese
-			case 1058: // Ukrainian
-			case 0x0804: // Chinese (Simplified)
-				langid = SetThreadUILanguage(langid);
-				// TODO: error handling
+			case LANG_GERMAN:
+				res_langid = MAKELANGID(LANG_GERMAN, SUBLANG_GERMAN);
+				break;
+			case LANG_ENGLISH:
+				res_langid = MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US);
+				break;
+			case LANG_JAPANESE:
+				res_langid = MAKELANGID(LANG_JAPANESE, SUBLANG_DEFAULT);
+				break;
+			case LANG_UKRAINIAN:
+				res_langid = MAKELANGID(LANG_UKRAINIAN, SUBLANG_DEFAULT);
+				break;
+			case LANG_CHINESE:
+				if (SUBLANGID(langid) != SUBLANG_CHINESE_SIMPLIFIED &&
+					SUBLANGID(langid) != SUBLANG_CHINESE_SINGAPORE) {
+					// traditional chinese resources not yet available
+					return;
+				}
+				res_langid = MAKELANGID(LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED);
 				break;
 			default:
 				// language specific resources not yet available
-				break;
+				return;
+			}
+			LANGID old_langid = GetThreadUILanguage();
+			if (SetThreadUILanguage(res_langid) != res_langid) {
+				// failed to switch, restore the previous ui language
+				SetThreadUILanguage(old_langid);
 			}
 		}
 	}
