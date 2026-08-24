@@ -121,6 +121,10 @@ BOOL CALLBACK set_viewer_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_SETITEMDATA, index, (LPARAM)eng_locale);
 		index = (int)SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_ADDSTRING, 0, (LPARAM)message_get_res(IDS_MAIN_GERMAN));
 		SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_SETITEMDATA, index, (LPARAM)ger_locale);
+		index = (int)SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_ADDSTRING, 0, (LPARAM)message_get_res(IDS_MAIN_UKRAINIAN));
+		SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_SETITEMDATA, index, (LPARAM)ukr_locale);
+		index = (int)SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_ADDSTRING, 0, (LPARAM)message_get_res(IDS_MAIN_SIMP_CHINESE));
+		SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_SETITEMDATA, index, (LPARAM)chs_locale);
 
 		// init with no selection
 		SendDlgItemMessage(hDlg, IDC_UI_LANGUAGE, CB_SETCURSEL, -1, 0);
