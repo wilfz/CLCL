@@ -1,9 +1,9 @@
-/*
+Ôªø/*
  * CLCL
  *
  * General.h
  *
- * Copyright (C) 1996-2022 by Ohno Tomoaki. All rights reserved.
+ * Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
  *		https://www.nakka.com/
  *		nakka@nakka.com
  */
@@ -21,7 +21,7 @@
 #define BUF_SIZE						256
 
 #define APP_NAME						TEXT("CLCL")
-#define APP_VAR							215
+#define APP_VAR							217
 
 #define MAIN_WND_CLASS					TEXT("CLCLMain")
 #define MAIN_WINDOW_TITLE				APP_NAME
@@ -37,7 +37,7 @@
 #define OPTION_EXE						TEXT("CLCLSet.exe")
 #define HOOK_LIB						TEXT("CLCLHook.dll")
 
-#define HKEY_ID							0x0300			// ÉzÉbÉgÉLÅ[ID
+#define HKEY_ID							0x0300			// „Éõ„ÉÉ„Éà„Ç≠„ÉºID
 
 // general
 #define WM_GET_VERSION					(WM_APP + 100)

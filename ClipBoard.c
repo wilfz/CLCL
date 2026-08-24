@@ -23,13 +23,10 @@
 #include "Format.h"
 #include "Filter.h"
 #include "Bitmap.h"
-#include "Ini.h"
 
 /* Define */
 
 /* Global Variables */
-extern OPTION_INFO option;
-
 typedef struct _FORMAT_NAME_INFO {
 	UINT format;
 	TCHAR *name;
@@ -55,7 +52,7 @@ static BOOL should_ignore()
 	for (UINT fmt = EnumClipboardFormats(0); fmt != 0; fmt = EnumClipboardFormats(fmt)) {
 		if (fmt == exclude_monitoring || fmt == clipboard_viewer_ignore) {
 			HANDLE h = GetClipboardData(fmt);
-			// �t�H�[�}�b�g�� ExcludeClipboardContentFromMonitorProcessing �̃f�[�^�����݂���ꍇ�͖�������B
+			// フォーマットが ExcludeClipboardContentFromMonitorProcessing のデータが存在する場合は無視する。
 			if (h != 0)
 				return TRUE;
 		}
@@ -70,7 +67,7 @@ static BOOL should_ignore()
 				val = *(DWORD*)m;
 			GlobalUnlock(h);
 			
-			if (val == 0 || val == 1)
+			if (val == 0)
 				return TRUE;
 		}
 	}
@@ -243,10 +240,6 @@ BOOL clipboard_set_datainfo(const HWND hWnd, DATA_INFO *set_di, TCHAR *err_str)
 	if (set_di == NULL) {
 		return FALSE;
 	}
-	// クリップボードが利用可能かどうかを事前にチェック
-	// 短い遅延を追加して他のアプリケーションのクリップボード操作を待つ
-	Sleep(option.main_clipboard_access_delay);
-
 	// クリップボードの初期化
 	if (OpenClipboard(hWnd) == FALSE) {
 		message_get_error(GetLastError(), err_str);

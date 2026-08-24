@@ -46,6 +46,8 @@
 #include "SelectFormat.h"
 #include "SetHotkey.h"
 #include "OleDragDrop.h"
+#include "dpi.h"
+#include "DarkMode.h"
 #include "ViewerOLEDnD.h"
 #include "ViewerDnD.h"
 
@@ -131,6 +133,7 @@ static void viewer_set_list_column(const HWND hTreeView, const HWND hListView, c
 static BOOL viewer_sel_cheange(const HWND hWnd, const HTREEITEM old_item, const HTREEITEM new_item);
 static BOOL viewer_initialize(const HWND hWnd);
 static void viewer_set_controls(const HWND hWnd);
+static void viewer_reset_dpi(const HWND hWnd);
 static BOOL viewer_close(const HWND hWnd);
 static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -2505,6 +2508,10 @@ static void viewer_set_controls(const HWND hWnd)
 	DWORD toolbar_size = 0;
 	RECT statusbar_rect;
 	DWORD statusbar_size = 0;
+	int sep_size;
+
+	// 他のウィンドウの表示でDPIが変わっている場合があるため設定し直す
+	SetDpiFromWindow(hWnd);
 
 	GetClientRect(hWnd, (LPRECT)&window_rect);
 
@@ -2519,15 +2526,69 @@ static void viewer_set_controls(const HWND hWnd)
 		statusbar_size = (statusbar_rect.bottom - statusbar_rect.top);
 	}
 
+	sep_size = Scale(option.viewer_sep_size);
+
 	// TreeViewの位置、サイズの設定
 	MoveWindow(GetDlgItem(hWnd, ID_TREE),
-		0, toolbar_size, option.viewer_sep_size, window_rect.bottom - statusbar_size - toolbar_size, TRUE);
+		0, toolbar_size, sep_size, window_rect.bottom - statusbar_size - toolbar_size, TRUE);
 	UpdateWindow(GetDlgItem(hWnd, ID_TREE));
 
 	// Containerの位置、サイズの設定
-	MoveWindow(GetDlgItem(hWnd, ID_CONTAINER), option.viewer_sep_size + (FRAME_CNT * 2), toolbar_size,
-		window_rect.right - option.viewer_sep_size - (FRAME_CNT * 2), window_rect.bottom - statusbar_size - toolbar_size, TRUE);
+	MoveWindow(GetDlgItem(hWnd, ID_CONTAINER), sep_size + (FRAME_CNT * 2), toolbar_size,
+		window_rect.right - sep_size - (FRAME_CNT * 2), window_rect.bottom - statusbar_size - toolbar_size, TRUE);
 	UpdateWindow(GetDlgItem(hWnd, ID_CONTAINER));
+}
+
+/*
+ * viewer_reset_dpi - DPIに依存するコントロールを作り直す
+ */
+static void viewer_reset_dpi(const HWND hWnd)
+{
+	HWND hTreeView;
+	HWND hListView;
+	HIMAGELIST icon_list;
+	HIMAGELIST old_list;
+
+	hTreeView = GetDlgItem(hWnd, ID_TREE);
+	hListView = GetDlgItem(GetDlgItem(hWnd, ID_CONTAINER), ID_LIST);
+
+	// ツールバーの作り直し
+	if (GetDlgItem(hWnd, ID_TOOLBAR) != NULL) {
+		DestroyWindow(GetDlgItem(hWnd, ID_TOOLBAR));
+		toolbar_create(hWnd, ID_TOOLBAR);
+		dark_mode_set_control(GetDlgItem(hWnd, ID_TOOLBAR));
+	}
+	// ステータスバーのパーツの再設定
+	statusbar_reset_parts(GetDlgItem(hWnd, ID_STATUSBAR));
+
+	// イメージリストの作り直し
+	if ((icon_list = create_imagelist(hInst)) != NULL) {
+		old_list = (HIMAGELIST)TreeView_SetImageList(hTreeView, icon_list, TVSIL_NORMAL);
+		if (hListView != NULL) {
+			ListView_SetImageList(hListView, icon_list, LVSIL_SMALL);
+		}
+		if (old_list != NULL) {
+			ImageList_Destroy(old_list);
+		}
+	}
+	// フォントの作り直し
+	treeview_set_font(hTreeView);
+	listview_set_font(hListView);
+
+	// リストビューのカラム幅の再設定
+	if (hListView != NULL) {
+		ListView_SetColumnWidth(hListView, 0, Scale(option.list_column_data));
+		ListView_SetColumnWidth(hListView, 1, Scale(option.list_column_size));
+		ListView_SetColumnWidth(hListView, 2, Scale(option.list_column_date));
+		ListView_SetColumnWidth(hListView, 3, Scale(option.list_column_window));
+	}
+
+	// 形式毎のウィンドウへDPIの変更を通知
+	SendMessage(GetDlgItem(hWnd, ID_CONTAINER), WM_DPICHANGED_AFTERPARENT, 0, 0);
+
+	// コントロールの再配置
+	viewer_set_controls(hWnd);
+	InvalidateRect(hWnd, NULL, TRUE);
 }
 
 /*
@@ -2561,11 +2622,12 @@ static BOOL viewer_close(const HWND hWnd)
 	clip_di.child = NULL;
 
 	// リストビューのカラム幅取得
+	SetDpiFromWindow(hWnd);
 	hListView = GetDlgItem(GetDlgItem(hWnd, ID_CONTAINER), ID_LIST);
-	option.list_column_data = ListView_GetColumnWidth(hListView, 0);
-	option.list_column_size = ListView_GetColumnWidth(hListView, 1);
-	option.list_column_date = ListView_GetColumnWidth(hListView, 2);
-	option.list_column_window = ListView_GetColumnWidth(hListView, 3);
+	option.list_column_data = UnScale(ListView_GetColumnWidth(hListView, 0));
+	option.list_column_size = UnScale(ListView_GetColumnWidth(hListView, 1));
+	option.list_column_date = UnScale(ListView_GetColumnWidth(hListView, 2));
+	option.list_column_window = UnScale(ListView_GetColumnWidth(hListView, 3));
 
 	// ツリビューーの解放
 	treeview_close(GetDlgItem(hWnd, ID_TREE));
@@ -2597,11 +2659,47 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 	case WM_CREATE:
 		// ウィンドウ作成
 		viewer_initialize(hWnd);
+		// ダークモードの設定
+		dark_mode_set_window(hWnd);
 		viewer_set_controls(hWnd);
 
 		FocusWnd = GetDlgItem(hWnd, ID_TREE);
 		SetFocus(FocusWnd);
 		break;
+
+	case WM_UAHDRAWMENU:
+	case WM_UAHDRAWMENUITEM:
+	case WM_NCPAINT:
+	case WM_NCACTIVATE:
+		// メニューバーの描画
+		{
+			LRESULT dark_ret;
+
+			if (dark_mode_menubar_message(hWnd, msg, wParam, lParam, &dark_ret) == TRUE) {
+				return dark_ret;
+			}
+		}
+		return DefWindowProc(hWnd, msg, wParam, lParam);
+
+	case WM_SETTINGCHANGE:
+	case WM_THEMECHANGED:
+		// 配色の変更
+		if (dark_mode_is_color_change(msg, lParam) == TRUE) {
+			dark_mode_update();
+			dark_mode_refresh_window(hWnd);
+		}
+		return DefWindowProc(hWnd, msg, wParam, lParam);
+
+	case WM_ERASEBKGND:
+		// 背景の描画
+		if (dark_mode_is_dark() == TRUE) {
+			RECT erase_rect;
+
+			GetClientRect(hWnd, &erase_rect);
+			FillRect((HDC)wParam, &erase_rect, dark_mode_get_brush(COLOR_BTNFACE));
+			return TRUE;
+		}
+		return DefWindowProc(hWnd, msg, wParam, lParam);
 
 	case WM_CLOSE:
 		// ウィンドウを閉じる
@@ -2665,7 +2763,8 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 			if ((ret = frame_draw_end(hWnd)) == -1) {
 				break;
 			}
-			option.viewer_sep_size = ret;
+			SetDpiFromWindow(hWnd);
+			option.viewer_sep_size = UnScale(ret);
 			set_cursor(TRUE);
 			viewer_set_controls(hWnd);
 			set_cursor(FALSE);
@@ -2695,12 +2794,30 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 		viewer_set_controls(hWnd);
 		break;
 
+	case WM_DPICHANGED:
+		// DPIの変更
+		SetDpi(HIWORD(wParam));
+		if (lParam != 0) {
+			// ウィンドウサイズの変更
+			RECT *new_rect;
+
+			new_rect = (RECT *)lParam;
+			SetWindowPos(hWnd, NULL,
+				new_rect->left, new_rect->top,
+				new_rect->right - new_rect->left, new_rect->bottom - new_rect->top,
+				SWP_NOZORDER | SWP_NOACTIVATE);
+		}
+		// コントロールの作り直し
+		viewer_reset_dpi(hWnd);
+		break;
+
 	case WM_EXITSIZEMOVE:
 		// サイズ変更完了
 		if (IsWindowVisible(hWnd) != 0 && IsIconic(hWnd) == 0 && IsZoomed(hWnd) == 0) {
+			SetDpiFromWindow(hWnd);
 			GetWindowRect(hWnd, (LPRECT)&option.viewer_rect);
-			option.viewer_rect.right -= option.viewer_rect.left;
-			option.viewer_rect.bottom -= option.viewer_rect.top;
+			option.viewer_rect.right = UnScale(option.viewer_rect.right - option.viewer_rect.left);
+			option.viewer_rect.bottom = UnScale(option.viewer_rect.bottom - option.viewer_rect.top);
 		}
 		break;
 
@@ -2905,7 +3022,7 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 		case ID_MENUITEM_ABOUT:
 			// バージョン情報
 		{
-			TCHAR var_msg[2*BUF_SIZE];
+			TCHAR var_msg[BUF_SIZE];
 			TCHAR path[MAX_PATH];
 			DWORD size;
 			lstrcpy(var_msg, APP_NAME);
@@ -2918,20 +3035,15 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 				if (buf != NULL) {
 					GetFileVersionInfo(path, 0, size, buf);
 					VerQueryValue(buf, TEXT("\\"), &FileInfo, &len);
-					wsprintf(var_msg + lstrlen(var_msg), TEXT(" Ver %d.%d.%d.%d"),
+					wsprintf(var_msg + lstrlen(var_msg), TEXT(" Ver %d.%d.%d"),
 						HIWORD(FileInfo->dwFileVersionMS),
 						LOWORD(FileInfo->dwFileVersionMS),
-						HIWORD(FileInfo->dwFileVersionLS),
-						LOWORD(FileInfo->dwFileVersionLS));
+						HIWORD(FileInfo->dwFileVersionLS));
 					mem_free(&buf);
 				}
 			}
-			lstrcat(var_msg, TEXT("\n2024-2026 MIT License.\n")
-				TEXT("https://linguversa.de/clcl\nDownload: https://github.com/wilfz/CLCL/releases\n\n"));
-
-			lstrcat(var_msg, TEXT("Ver 0.1.0 -> 2.1.3"));
-			lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved.\n")
-				TEXT("WEB SITE: https://www.nakka.com/"));
+			lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.\n\n")
+				TEXT("WEB SITE: https://www.nakka.com/\nE-MAIL: nakka@nakka.com"));
 			MessageBox(hWnd, var_msg, TEXT("About"), MB_OK | MB_ICONINFORMATION);
 		}
 			break;
@@ -3133,6 +3245,15 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 			return statusbar_notify_proc(GetDlgItem(hWnd, ID_STATUSBAR), lParam);
 		}
 		// ツールバー
+		if (((NMHDR *)lParam)->hwndFrom == GetDlgItem(hWnd, ID_TOOLBAR) &&
+			((NMHDR *)lParam)->code == NM_CUSTOMDRAW) {
+			LRESULT dark_ret;
+
+			if (dark_mode_toolbar_customdraw(lParam, &dark_ret) == TRUE) {
+				return dark_ret;
+			}
+			break;
+		}
 		if (((NMHDR *)lParam)->code == TTN_NEEDTEXT) {
 			((TOOLTIPTEXT*)lParam)->hinst = hInst;
 			((TOOLTIPTEXT*)lParam)->lpszText = MAKEINTRESOURCE(((NMHDR *)lParam)->idFrom);
@@ -3239,9 +3360,9 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 					di = format_get_priority_highest(di);
 					if (di->menu_title == NULL && di->format_name != NULL) {
 						if (((LPNMTVCUSTOMDRAW)lParam)->nmcd.uItemState == (CDIS_FOCUS | CDIS_SELECTED)) {
-							((LPNMTVCUSTOMDRAW)lParam)->clrText = GetSysColor(COLOR_HIGHLIGHTTEXT);
+							((LPNMTVCUSTOMDRAW)lParam)->clrText = dark_mode_get_color(COLOR_HIGHLIGHTTEXT);
 						} else {
-							((LPNMTVCUSTOMDRAW)lParam)->clrText = GetSysColor(COLOR_HIGHLIGHT);
+							((LPNMTVCUSTOMDRAW)lParam)->clrText = dark_mode_get_accent_color();
 						}
 					}
 				}
@@ -3380,9 +3501,9 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 					di = format_get_priority_highest(di);
 					if (di->menu_title == NULL && di->format_name != NULL) {
 						if (((LPNMLVCUSTOMDRAW)lParam)->nmcd.uItemState == (CDIS_FOCUS | CDIS_SELECTED)) {
-							((LPNMLVCUSTOMDRAW)lParam)->clrText = GetSysColor(COLOR_HIGHLIGHTTEXT);
+							((LPNMLVCUSTOMDRAW)lParam)->clrText = dark_mode_get_color(COLOR_HIGHLIGHTTEXT);
 						} else {
-							((LPNMLVCUSTOMDRAW)lParam)->clrText = GetSysColor(COLOR_HIGHLIGHT);
+							((LPNMLVCUSTOMDRAW)lParam)->clrText = dark_mode_get_accent_color();
 						}
 					}
 				}
@@ -3636,8 +3757,14 @@ BOOL viewer_regist(const HINSTANCE hInstance)
 HWND viewer_create(const HWND pWnd, const int CmdShow)
 {
 	HWND hWnd;
+	POINT pt;
 
 	main_wnd = pWnd;
+
+	// 表示するモニタのDPIに合わせる
+	pt.x = option.viewer_rect.left;
+	pt.y = option.viewer_rect.top;
+	SetDpiFromPoint(pt);
 
 	// ウィンドウの作成
 	hWnd = CreateWindow(WINDOW_CLASS,
@@ -3645,8 +3772,8 @@ HWND viewer_create(const HWND pWnd, const int CmdShow)
 		WS_OVERLAPPEDWINDOW,
 		option.viewer_rect.left,
 		option.viewer_rect.top,
-		option.viewer_rect.right,
-		option.viewer_rect.bottom,
+		Scale(option.viewer_rect.right),
+		Scale(option.viewer_rect.bottom),
 		NULL, NULL, hInst, NULL);
 
 	if (hWnd == NULL) {
