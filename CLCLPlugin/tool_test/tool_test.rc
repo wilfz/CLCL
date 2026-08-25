@@ -1,5 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
+#pragma code_page(65001)
+
 #include "resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
@@ -17,7 +19,6 @@
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
-#pragma code_page(932)
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -90,13 +91,13 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_TEST1               "�A�C�e�����̓���`�����폜"
-    IDS_TEST2               "�A�C�e���̍폜"
-    IDS_TEST3               "�A�C�e���̕ۑ�"
-    IDS_TEST4               "�t�@�C������e�L�X�g�`���̃A�C�e�����쐬"
-    IDS_TEST5               "�A�C�e���̃^�C�g����\��"
-    IDS_TEST6               "�f�[�^��ʃt�@�C���ɕۑ�"
-    IDS_TEST7               "�e�X�g7"
+    IDS_TEST1               "アイテム内の特定形式を削除"
+    IDS_TEST2               "アイテムの削除"
+    IDS_TEST3               "アイテムの保存"
+    IDS_TEST4               "ファイルからテキスト形式のアイテムを作成"
+    IDS_TEST5               "アイテムのタイトルを表示"
+    IDS_TEST6               "データを別ファイルに保存"
+    IDS_TEST7               "テスト7"
 END
 
 #endif    // Japanese (Japan) resources
@@ -108,7 +109,7 @@ END
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-#pragma code_page(1252)
+
 // String Table
 //
 
