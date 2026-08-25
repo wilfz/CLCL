@@ -319,7 +319,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "ホットキー(&H):",IDC_STATIC,10,5,75,10
     CONTROL         "HotKey1",IDC_HOTKEY_ITEM,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,10,15,75,15
-    CONTROL         "+ Win",IDC_CHECK_WIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,90,18,27,10
+    CONTROL         "+ Win",IDC_CHECK_WIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,90,18,32,10
     CONTROL         "貼り付け(&P)",IDC_CHECK_PASTE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,35,75,10
     DEFPUSHBUTTON   "OK",IDOK,10,50,50,14
     PUSHBUTTON      "キャンセル",IDCANCEL,65,50,50,14
@@ -916,7 +916,7 @@ STRINGTABLE
 BEGIN
     IDS_VIEWER_COPYNAME     "%s 副本"
     IDS_VIEWER_COPYNAME_NUM "%s 副本 (%d)"
-    IDS_VIEWER_MENU_TOOL_NOTHING "(None)"
+    IDS_VIEWER_MENU_TOOL_NOTHING "(无)"
 END
 
 STRINGTABLE
@@ -1799,7 +1799,7 @@ BEGIN
         MENUITEM "Zu &Vorlagen hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
         MENUITEM "Speichern &unter...\tCtrl+S", ID_MENUITEM_DATA_SAVE
         MENUITEM SEPARATOR
-        POPUP "&Einstellugen"
+        POPUP "&Einstellungen"
         BEGIN
             MENUITEM "&Format...",                  ID_MENUITEM_SET_FORMAT
             MENUITEM "Fi&lter...",                  ID_MENUITEM_SET_FILTER
@@ -1817,7 +1817,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Neu...\tCtrl+N",             ID_MENUITEM_NEW_ITEM
         MENUITEM "Speichern &unter...\tCtrl+S", ID_MENUITEM_DATA_SAVE
-        POPUP "&Einstellugen"
+        POPUP "&Einstellungen"
         BEGIN
             MENUITEM "&Format...",                  ID_MENUITEM_SET_FORMAT
             MENUITEM "Fi&lter...",                  ID_MENUITEM_SET_FILTER
@@ -1855,7 +1855,7 @@ BEGIN
         MENUITEM "Neuer &Ordner",               ID_MENUITEM_CREATE_FOLDER
         MENUITEM "Speichern &unter...\tCtrl+S", ID_MENUITEM_DATA_SAVE
         MENUITEM "Hotkey &setzen...",           ID_MENUITEM_SET_HOTKEY
-        POPUP "&Einstellugen"
+        POPUP "&Einstellungen"
         BEGIN
             MENUITEM "&Format...",                  ID_MENUITEM_SET_FORMAT
             MENUITEM "Fi&lter...",                  ID_MENUITEM_SET_FILTER
@@ -1940,7 +1940,7 @@ BEGIN
         MENUITEM "&Format",                     ID_MENUITEM_SHOW_FORMAT
         MENUITEM "&Binärdaten-Anzeige",         ID_MENUITEM_SHOW_BIN
         MENUITEM SEPARATOR
-        MENUITEM "&Einstellugen...",            ID_MENUITEM_OPTION
+        MENUITEM "&Einstellungen...",           ID_MENUITEM_OPTION
     END
     POPUP "&Tools"
     BEGIN
@@ -2046,7 +2046,7 @@ BEGIN
     IDS_MENU_CANCEL         "&Abbrechen"
     IDS_MENU_EXIT           "&Beenden"
     IDS_MENU_VIEWER         "An&zeige..."
-    IDS_MENU_OPTION         "&Einstellugen..."
+    IDS_MENU_OPTION         "&Einstellungen..."
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage-&Überwachung"
     IDS_TREEITEM_CLIPBOARD  "Zwischenablage"
     IDS_TREEITEM_HISTORY    "Verlauf"
