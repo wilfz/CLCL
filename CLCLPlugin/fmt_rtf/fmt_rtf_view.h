@@ -1,4 +1,4 @@
-/*
+﻿/*
  * CLCL
  *
  * fmt_rtf_view.h

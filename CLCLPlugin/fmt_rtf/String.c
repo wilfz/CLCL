@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * CLCL
  *
  * String.c
@@ -22,7 +22,7 @@
 /* Local Function Prototypes */
 
 /*
- * a2i - ”š‚Ì•¶š—ñ‚ğ”’l(int)‚É•ÏŠ·‚·‚é / convert a string of digits to a number (int)
+ * a2i - æ•°å­—ã®æ–‡å­—åˆ—ã‚’æ•°å€¤(int)ã«å¤‰æ›ã™ã‚‹ / convert a string of digits to a number (int)
  */
 int a2i(const char *str)
 {
@@ -43,7 +43,7 @@ int a2i(const char *str)
 }
 
 /*
- * x2i - 16i•¶š—ñ‚ğ”’l(int)‚É•ÏŠ·‚·‚é / convert a hexadecimal string to a number
+ * x2i - 16é€²æ–‡å­—åˆ—ã‚’æ•°å€¤(int)ã«å¤‰æ›ã™ã‚‹ / convert a hexadecimal string to a number
  */
 int x2i(const char *str)
 {
@@ -77,7 +77,7 @@ int x2i(const char *str)
 }
 
 /*
- * tx2i - 16i•¶š—ñ(UNICODE)‚ğ”’l(int)‚É•ÏŠ·‚·‚é / convert hexadecimal UNICODE string to a number (int)
+ * tx2i - 16é€²æ–‡å­—åˆ—(UNICODE)ã‚’æ•°å€¤(int)ã«å¤‰æ›ã™ã‚‹ / convert hexadecimal UNICODE string to a number (int)
  */
 #ifdef UNICODE
 int tx2i(const TCHAR *str)
@@ -94,7 +94,7 @@ int tx2i(const TCHAR *str)
 #endif
 
 /*
- * str2hash - •¶š—ñ‚ÌƒnƒbƒVƒ…’l‚ğæ“¾ / get the hash value of a string
+ * str2hash - æ–‡å­—åˆ—ã®ãƒãƒƒã‚·ãƒ¥å€¤ã‚’å–å¾— / get the hash value of a string
  */
 int str2hash(const TCHAR *str)
 {
@@ -109,7 +109,7 @@ int str2hash(const TCHAR *str)
 }
 
 /*
- * str_match - ‚Q‚Â‚Ì•¶š—ñ‚ğƒƒCƒ‹ƒhƒJ[ƒh(*)‚ğg‚Á‚Ä”äŠr‚ğs‚¤ / compare two strings using wildcard (*)
+ * str_match - ï¼’ã¤ã®æ–‡å­—åˆ—ã‚’ãƒ¯ã‚¤ãƒ«ãƒ‰ã‚«ãƒ¼ãƒ‰(*)ã‚’ä½¿ã£ã¦æ¯”è¼ƒã‚’è¡Œã† / compare two strings using wildcard (*)
  */
 BOOL str_match(const TCHAR *Ptn, const TCHAR *Str)
 {
@@ -126,20 +126,20 @@ BOOL str_match(const TCHAR *Ptn, const TCHAR *Str)
 }
 
 /*
- * Trim - •¶š—ñ‚Ì‘OŒã‚Ì‹ó”’, Tab‚ğœ‹‚·‚é / remove whitespace (spaces and tabs) before and after string
+ * Trim - æ–‡å­—åˆ—ã®å‰å¾Œã®ç©ºç™½, Tabã‚’é™¤å»ã™ã‚‹ / remove whitespace (spaces and tabs) before and after string
  */
 BOOL Trim(TCHAR *buf)
 {
 	TCHAR *p, *r;
 
-	// ‘OŒã‚Ì‹ó”’‚ğœ‚¢‚½ƒ|ƒCƒ“ƒ^‚ğæ“¾ / get pointer without leading and trailing spaces
+	// å‰å¾Œã®ç©ºç™½ã‚’é™¤ã„ãŸãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾— / get pointer without leading and trailing spaces
 	for (p = buf; (*p == TEXT(' ') || *p == TEXT('\t')) && *p != TEXT('\0'); p++)
 		;
 	for (r = buf + lstrlen(buf) - 1; r > p && (*r == TEXT(' ') || *r == TEXT('\t')); r--)
 		;
 	*(r + 1) = TEXT('\0');
 
-	// Œ³‚Ì•¶š—ñ‚ÉƒRƒs[ / copy to original string buffer
+	// å…ƒã®æ–‡å­—åˆ—ã«ã‚³ãƒ”ãƒ¼ / copy to original string buffer
 	lstrcpy(buf, p);
 	return TRUE;
 }

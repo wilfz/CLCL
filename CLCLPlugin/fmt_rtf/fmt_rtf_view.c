@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * CLCL
  *
  * fmt_text_view.c
@@ -34,7 +34,7 @@ static LONG src_len;
 /* Local Function Prototypes */
 
 /*
- * font_select - ƒtƒHƒ“ƒg‚Ì‘I‘ğ
+ * font_select - ãƒ•ã‚©ãƒ³ãƒˆã®é¸æŠ
  */
 static BOOL font_select(const HWND hWnd)
 {
@@ -43,13 +43,13 @@ static BOOL font_select(const HWND hWnd)
 	LOGFONT lf;
 	HDC hdc;
 
-	// İ’èæ“¾
+	// è¨­å®šå–å¾—
 	ZeroMemory(&cfm, sizeof(cfm));
 	cfm.cbSize = sizeof(cfm);
 	cfm.dwMask = CFM_SIZE | CFM_FACE | CFM_CHARSET | CFM_COLOR | CFM_BOLD | CFM_ITALIC | CFM_STRIKEOUT | CFM_UNDERLINE;
 	SendMessage(GetDlgItem(hWnd, IDC_EDIT_TEXT), EM_GETCHARFORMAT, TRUE, (LPARAM)&cfm);
 
-	// ƒtƒHƒ“ƒgî•ñ‚Ìì¬
+	// ãƒ•ã‚©ãƒ³ãƒˆæƒ…å ±ã®ä½œæˆ
 	ZeroMemory(&lf, sizeof(LOGFONT));
 	hdc = GetDC(NULL);
 	lf.lfHeight = -(int)(((cfm.yHeight / 20) * GetDeviceCaps(hdc, LOGPIXELSY)) / 72);
@@ -70,7 +70,7 @@ static BOOL font_select(const HWND hWnd)
 	lf.lfPitchAndFamily = cfm.bPitchAndFamily;
 	lstrcpy(lf.lfFaceName, cfm.szFaceName);
 
-	// ƒtƒHƒ“ƒg‘I‘ğƒ_ƒCƒAƒƒO‚ğ•\¦
+	// ãƒ•ã‚©ãƒ³ãƒˆé¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤º
 	ZeroMemory(&cf, sizeof(CHOOSEFONT));
 	cf.lStructSize = sizeof(CHOOSEFONT);
 	cf.hwndOwner = hWnd;
@@ -82,7 +82,7 @@ static BOOL font_select(const HWND hWnd)
 		return FALSE;
 	}
 
-	// ƒtƒHƒ“ƒgî•ñ‚ğ”½‰f
+	// ãƒ•ã‚©ãƒ³ãƒˆæƒ…å ±ã‚’åæ˜ 
 	ZeroMemory(&cfm, sizeof(cfm));
 	cfm.cbSize = sizeof(cfm);
 	cfm.dwMask = CFM_SIZE | CFM_FACE | CFM_CHARSET | CFM_COLOR | CFM_BOLD | CFM_ITALIC | CFM_STRIKEOUT | CFM_UNDERLINE;
@@ -108,7 +108,7 @@ static BOOL font_select(const HWND hWnd)
 }
 
 /*
- * rtfview_stream_in_proc - RTFİ’èƒvƒƒV[ƒWƒƒ
+ * rtfview_stream_in_proc - RTFè¨­å®šãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
  */
 static DWORD CALLBACK rtfview_stream_in_proc(DWORD dwCookie, LPBYTE pbBuf, LONG cb, LONG *pcb)
 {
@@ -119,7 +119,7 @@ static DWORD CALLBACK rtfview_stream_in_proc(DWORD dwCookie, LPBYTE pbBuf, LONG 
 }
 
 /*
- * rtfview_stream_out_proc - RTFæ“¾ƒvƒƒV[ƒWƒƒ
+ * rtfview_stream_out_proc - RTFå–å¾—ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
  */
 static DWORD CALLBACK rtfview_stream_out_proc(DWORD dwCookie, LPBYTE pbBuf, LONG cb, LONG *pcb)
 {
@@ -140,7 +140,7 @@ static DWORD CALLBACK rtfview_stream_out_proc(DWORD dwCookie, LPBYTE pbBuf, LONG
 }
 
 /*
- * rtfview_proc - ƒEƒBƒ“ƒhƒE‚ÌƒvƒƒV[ƒWƒƒ
+ * rtfview_proc - ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
  */
 static LRESULT CALLBACK rtfview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -154,7 +154,7 @@ static LRESULT CALLBACK rtfview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 
 	switch (msg) {
 	case WM_CREATE:
-		// RichEdit‚Ìì¬
+		// RichEditã®ä½œæˆ
 		if (CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("RICHEDIT"), NULL,
 			WS_TABSTOP | WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
 			ES_AUTOHSCROLL | ES_AUTOVSCROLL | ES_MULTILINE | ES_SAVESEL | ES_NOHIDESEL | ES_DISABLENOSCROLL | ES_WANTRETURN,
@@ -166,7 +166,7 @@ static LRESULT CALLBACK rtfview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		break;
 
 	case WM_CLOSE:
-		// ƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚é
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
 		DestroyWindow(hWnd);
 		break;
 
@@ -174,17 +174,17 @@ static LRESULT CALLBACK rtfview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		if (GetDlgItem(hWnd, IDC_EDIT_TEXT) != NULL) {
 			DestroyWindow(GetDlgItem(hWnd, IDC_EDIT_TEXT));
 		}
-		// ƒEƒBƒ“ƒhƒE‚Ì”jŠü
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç ´æ£„
 		return DefWindowProc(hWnd, msg, wParam, lParam);
 
 	case WM_SIZE:
-		// ƒTƒCƒY•ÏX
+		// ã‚µã‚¤ã‚ºå¤‰æ›´
 		GetClientRect(hWnd, (LPRECT)&window_rect);
 		MoveWindow(GetDlgItem(hWnd, IDC_EDIT_TEXT), 0, 0, window_rect.right, window_rect.bottom, TRUE);
 		break;
 
 	case WM_EXITSIZEMOVE:
-		// ƒTƒCƒY•ÏXŠ®—¹
+		// ã‚µã‚¤ã‚ºå¤‰æ›´å®Œäº†
 		break;
 
 	case WM_SETFOCUS:
@@ -202,13 +202,13 @@ static LRESULT CALLBACK rtfview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		break;
 
 	case WM_TIMER:
-		// ƒ^ƒCƒ}[
+		// ã‚¿ã‚¤ãƒãƒ¼
 		switch (wParam) {
 		case ID_MENU_TIMER:
 			if (GetKeyState(VK_RBUTTON) >= 0) {
 				KillTimer(hWnd, wParam);
 
-				// ƒƒjƒ…[‚Ìì¬
+				// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
 				hMenu = CreatePopupMenu();
 				AppendMenu(hMenu, MF_STRING | (SendMessage(GetDlgItem(hWnd, IDC_EDIT_TEXT), EM_CANUNDO, 0, 0) == TRUE) ? 0 : MF_GRAYED,
 					WM_UNDO, TEXT("&Undo"));
@@ -223,7 +223,7 @@ static LRESULT CALLBACK rtfview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 				AppendMenu(hMenu, MF_SEPARATOR, 0, NULL);
 				AppendMenu(hMenu, MF_STRING, MENU_SELECT_FONT, TEXT("&Font..."));
 
-				// ƒƒjƒ…[‚Ì•\¦
+				// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¡¨ç¤º
 				GetCursorPos((LPPOINT)&apos);
 				ret = TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_RETURNCMD, apos.x, apos.y, 0, hWnd, NULL);
 				DestroyMenu(hMenu);
@@ -232,12 +232,12 @@ static LRESULT CALLBACK rtfview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 				}
 				switch (ret) {
 				case MENU_SELECT_ALL:
-					// ‚·‚×‚Ä‘I‘ğ
+					// ã™ã¹ã¦é¸æŠ
 					SendMessage(GetDlgItem(hWnd, IDC_EDIT_TEXT), EM_SETSEL, 0, -1);
 					break;
 
 				case MENU_SELECT_FONT:
-					// ƒtƒHƒ“ƒg‘I‘ğ
+					// ãƒ•ã‚©ãƒ³ãƒˆé¸æŠ
 					font_select(hWnd);
 					break;
 
@@ -303,7 +303,7 @@ static LRESULT CALLBACK rtfview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 }
 
 /*
- * rtfview_regist - ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^
+ * rtfview_regist - ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²
  */
 BOOL rtfview_regist(const HINSTANCE hInstance)
 {
@@ -319,18 +319,18 @@ BOOL rtfview_regist(const HINSTANCE hInstance)
 	wc.hbrBackground = (HBRUSH)(COLOR_BTNFACE + 1);
 	wc.lpszMenuName = NULL;
 	wc.lpszClassName = WINDOW_CLASS;
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²
 	return RegisterClass(&wc);
 }
 
 /*
- * rtfview_create - ƒrƒ…[ƒA‚Ìì¬
+ * rtfview_create - ãƒ“ãƒ¥ãƒ¼ã‚¢ã®ä½œæˆ
  */
 HWND rtfview_create(const HINSTANCE hInstance, const HWND pWnd, int id)
 {
 	HWND hWnd;
 
-	// ƒEƒBƒ“ƒhƒE‚Ìì¬
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½œæˆ
 	hWnd = CreateWindow(WINDOW_CLASS,
 		TEXT(""),
 		WS_TABSTOP | WS_CHILD,
