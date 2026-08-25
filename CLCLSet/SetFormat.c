@@ -22,6 +22,7 @@
 #include "..\ClipBoard.h"
 #include "..\Message.h"
 #include "..\dpi.h"
+#include "..\DarkMode.h"
 
 #include "CLCLSet.h"
 
@@ -155,6 +156,8 @@ static BOOL CALLBACK select_headers_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 
 	switch (uMsg) {
 	case WM_INITDIALOG:
+		// ダークモードの設定
+		dark_mode_set_dialog(hDlg);
 		SetWindowText(hDlg, message_get_res(IDS_FORMAT_SELECT_TITLE));
 		SetWindowText(GetDlgItem(hDlg, IDC_STATIC_MSG), message_get_res(IDS_FORMAT_SELECT_MSG));
 
@@ -284,6 +287,8 @@ static BOOL CALLBACK select_header_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 
 	switch (uMsg) {
 	case WM_INITDIALOG:
+		// ダークモードの設定
+		dark_mode_set_dialog(hDlg);
 		SetWindowText(hDlg, message_get_res(IDS_FORMAT_HEAD_SELECT_TITLE));
 		SetWindowText(GetDlgItem(hDlg, IDC_STATIC_MSG), message_get_res(IDS_FORMAT_HEAD_SELECT_MSG));
 
@@ -410,6 +415,8 @@ static BOOL CALLBACK set_format_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 
 	switch (uMsg) {
 	case WM_INITDIALOG:
+		// ダークモードの設定
+		dark_mode_set_dialog(hDlg);
 #ifdef OP_XP_STYLE
 		// XP
 		hTheme = open_theme(GetDlgItem(hDlg, IDC_BUTTON_FORMAT), L"SCROLLBAR");
@@ -574,6 +581,8 @@ static BOOL CALLBACK set_format_property_proc(HWND hDlg, UINT uMsg, WPARAM wPara
 {
 	switch (uMsg) {
 	case WM_INITDIALOG:
+		// ダークモードの設定
+		dark_mode_set_dialog(hDlg);
 		// スピンコントロールの設定
 		SendDlgItemMessage(hDlg, IDC_SPIN_TOOLTIP_SIZE, UDM_SETRANGE, 0, (LPARAM)MAKELONG(UD_MAXVAL, 0));
 
@@ -767,6 +776,8 @@ BOOL CALLBACK set_format_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 	switch (uMsg) {
 	case WM_INITDIALOG:
+		// ダークモードの設定
+		dark_mode_set_dialog(hDlg);
 		// D&Dを受け付ける
 		SetWindowLong(hDlg, GWL_EXSTYLE, GetWindowLong(hDlg, GWL_EXSTYLE) | WS_EX_ACCEPTFILES);
 #ifdef OP_XP_STYLE

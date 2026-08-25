@@ -27,6 +27,8 @@
 #include "File.h"
 #include "ListView.h"
 #include "fmt_file_view.h"
+#include "dpi.h"
+#include "DarkMode.h"
 
 #include "resource.h"
 
@@ -44,8 +46,6 @@
 #define WM_LIST_DELETE					(WM_APP + 12)
 #define WM_LIST_COPY_FILENAME			(WM_APP + 13)
 #define WM_LIST_COPY_PATH				(WM_APP + 14)
-
-#define SICONSIZE						16
 
 #define ABS(n)							((n < 0) ? (n * -1) : n)
 
@@ -121,31 +121,11 @@ HDROP create_dropfile(const TCHAR **FileName, const int cnt, DWORD *ret_size)
 	wchar_t wbuf[BUF_SIZE];
 #endif
 	TCHAR *buf;
-	BOOL fWide = FALSE;
+	BOOL fWide = TRUE;
 	int flen = 0;
 	int i;
 
-	// OSのバージョン取得
-	// Get OS version
-#if (defined(_MSC_VER) && _MSC_VER >=  1930)
-	// According to Microsoft documentation 
-	// Ver 5.0 refers to Windows 2000, Ver 5.1 refers to Windows XP
-	BOOL bWin32NT = IsWindowsVersionOrGreater(5, 0, 0);
-#else
-	OSVERSIONINFO osvi;
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx(&osvi);
-	// According to Microsoft documentation 
-	// VER_PLATFORM_WIN32_NT indicates Windows XP / Windows 2000 or later.
-	BOOL bWin32NT = (osvi.dwPlatformId >= VER_PLATFORM_WIN32_NT);
-#endif
-
-	if (bWin32NT) {
-		fWide = TRUE;
-	}
-
 #ifdef UNICODE
-	fWide = TRUE;
 	for (i = 0; i < cnt; i++) {
 		flen += (lstrlen(*(FileName + i)) + 1) * sizeof(TCHAR);
 	}
@@ -531,6 +511,8 @@ static BOOL lv_show_menu(const HWND hWnd, const HWND hListView, const BOOL lock)
 static LRESULT CALLBACK fileview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	static HFONT lv_font;
+	// lv_fontを作成したときのDPI
+	static UINT lv_font_dpi;
 	HIMAGELIST icon_list;
 	LV_COLUMN lvc;
 	RECT window_rect;
@@ -546,6 +528,17 @@ static LRESULT CALLBACK fileview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 	static BOOL modify;
 
 	switch (msg) {
+	case WM_ERASEBKGND:
+		// 背景の描画
+		if (dark_mode_is_dark() == TRUE) {
+			RECT erase_rect;
+
+			GetClientRect(hWnd, &erase_rect);
+			FillRect((HDC)wParam, &erase_rect, dark_mode_get_brush(COLOR_BTNFACE));
+			return TRUE;
+		}
+		return DefWindowProc(hWnd, msg, wParam, lParam);
+
 	case WM_CREATE:
 		hInst = ((LPCREATESTRUCT)lParam)->hInstance;
 
@@ -568,6 +561,7 @@ static LRESULT CALLBACK fileview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 				SendMessage(GetDlgItem(hWnd, IDC_LIST_FILE), WM_SETFONT, (WPARAM)lv_font, MAKELPARAM(TRUE, 0));
 			}
 		}
+		lv_font_dpi = GetDpi();
 
 		// ImageListの取得
 		icon_list = (HIMAGELIST)SHGetFileInfo(TEXT(""), 0,
@@ -577,22 +571,43 @@ static LRESULT CALLBACK fileview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 		lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 
 		lvc.fmt = LVCFMT_LEFT;
-		lvc.cx = option.fmt_file_column_name;
+		lvc.cx = Scale(option.fmt_file_column_name);
 		lvc.pszText = message_get_res(IDS_FILE_LIST_NAME);
 		lvc.iSubItem = 0;
 		ListView_InsertColumn(GetDlgItem(hWnd, IDC_LIST_FILE), lvc.iSubItem, &lvc);
 
 		lvc.fmt = LVCFMT_LEFT;
-		lvc.cx = option.fmt_file_column_folder;
+		lvc.cx = Scale(option.fmt_file_column_folder);
 		lvc.pszText = message_get_res(IDS_FILE_LIST_FOLDER);
 		lvc.iSubItem = 1;
 		ListView_InsertColumn(GetDlgItem(hWnd, IDC_LIST_FILE), lvc.iSubItem, &lvc);
 
 		lvc.fmt = LVCFMT_LEFT;
-		lvc.cx = option.fmt_file_column_type;
+		lvc.cx = Scale(option.fmt_file_column_type);
 		lvc.pszText = message_get_res(IDS_FILE_LIST_TYPE);
 		lvc.iSubItem = 2;
 		ListView_InsertColumn(GetDlgItem(hWnd, IDC_LIST_FILE), lvc.iSubItem, &lvc);
+		break;
+
+	case WM_DPICHANGED_AFTERPARENT:
+		// フォントとカラム幅の作り直し
+		if (SetDpiFromWindow(hWnd) == lv_font_dpi) {
+			break;
+		}
+		if (*option.fmt_file_font_name != TEXT('\0')) {
+			if (lv_font != NULL) {
+				DeleteObject(lv_font);
+			}
+			lv_font = font_create(option.fmt_file_font_name, option.fmt_file_font_size, option.fmt_file_font_charset,
+				option.fmt_file_font_weight, (option.fmt_file_font_italic == 0) ? FALSE : TRUE, FALSE);
+			if (lv_font != NULL) {
+				SendMessage(GetDlgItem(hWnd, IDC_LIST_FILE), WM_SETFONT, (WPARAM)lv_font, MAKELPARAM(TRUE, 0));
+			}
+		}
+		lv_font_dpi = GetDpi();
+		ListView_SetColumnWidth(GetDlgItem(hWnd, IDC_LIST_FILE), 0, Scale(option.fmt_file_column_name));
+		ListView_SetColumnWidth(GetDlgItem(hWnd, IDC_LIST_FILE), 1, Scale(option.fmt_file_column_folder));
+		ListView_SetColumnWidth(GetDlgItem(hWnd, IDC_LIST_FILE), 2, Scale(option.fmt_file_column_type));
 		break;
 
 	case WM_CLOSE:
@@ -602,9 +617,10 @@ static LRESULT CALLBACK fileview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 
 	case WM_DESTROY:
 		// カラム幅取得
-		option.fmt_file_column_name = ListView_GetColumnWidth(GetDlgItem(hWnd, IDC_LIST_FILE), 0);
-		option.fmt_file_column_folder = ListView_GetColumnWidth(GetDlgItem(hWnd, IDC_LIST_FILE), 1);
-		option.fmt_file_column_type = ListView_GetColumnWidth(GetDlgItem(hWnd, IDC_LIST_FILE), 2);
+		SetDpiFromWindow(hWnd);
+		option.fmt_file_column_name = UnScale(ListView_GetColumnWidth(GetDlgItem(hWnd, IDC_LIST_FILE), 0));
+		option.fmt_file_column_folder = UnScale(ListView_GetColumnWidth(GetDlgItem(hWnd, IDC_LIST_FILE), 1));
+		option.fmt_file_column_type = UnScale(ListView_GetColumnWidth(GetDlgItem(hWnd, IDC_LIST_FILE), 2));
 		// フォント解放
 		if (lv_font != NULL) {
 			DeleteObject(lv_font);

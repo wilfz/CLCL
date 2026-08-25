@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * CLCL
  *
  * fmt_bitmap_view.c
@@ -25,6 +25,7 @@
 #include "Data.h"
 #include "Bitmap.h"
 #include "fmt_bitmap_view.h"
+#include "DarkMode.h"
 
 #include "resource.h"
 
@@ -37,7 +38,7 @@
 #define WM_ZOOM_IN						(WM_APP + 103)
 #define WM_ZOOM_OUT						(WM_APP + 104)
 
-/* ƒzƒC[ƒ‹ƒƒbƒZ[ƒW */
+/* ãƒ›ã‚¤ãƒ¼ãƒ«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
 #ifndef WM_MOUSEWHEEL
 #define WM_MOUSEWHEEL					0x020A
 #endif
@@ -55,7 +56,6 @@ typedef struct _BUFFER {
 	HDC draw_dc;
 	HBITMAP draw_bmp;
 	HBITMAP draw_ret_bmp;
-	HBRUSH draw_brush;
 
 	BOOL stretch_mode;
 	BOOL free;
@@ -69,13 +69,13 @@ typedef struct _BUFFER {
 #endif	// OP_XP_STYLE
 } BUFFER;
 
-// ƒIƒvƒVƒ‡ƒ“
+// ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 extern OPTION_INFO option;
 
 /* Local Function Prototypes */
 
 /*
- * bmpview_proc - ƒEƒBƒ“ƒhƒE‚ÌƒvƒƒV[ƒWƒƒ
+ * bmpview_proc - ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
  */
 static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -94,7 +94,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 
 	switch (msg) {
 	case WM_CREATE:
-		// ƒEƒBƒ“ƒhƒEì¬
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä½œæˆ
 		if ((bf = mem_calloc(sizeof(BUFFER))) == NULL) {
 			return -1;
 		}
@@ -104,7 +104,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		bf->hTheme = theme_open(hWnd);
 #endif	// OP_XP_STYLE
 
-		// •`‰æ—pî•ñ
+		// æç”»ç”¨æƒ…å ±
 		hdc = GetDC(hWnd);
 		GetClientRect(hWnd, &window_rect);
 		bf->draw_dc = CreateCompatibleDC(hdc);
@@ -113,8 +113,6 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		ReleaseDC(hWnd, hdc);
 		SetStretchBltMode(bf->draw_dc, COLORONCOLOR);
 		SetBrushOrgEx(bf->draw_dc, 0, 0, NULL);
-		// ”wŒiƒuƒ‰ƒV
-		bf->draw_brush = CreateSolidBrush(GetSysColor(COLOR_BTNSHADOW));
 		// option
 		bf->stretch_mode = option.fmt_bmp_stretch_mode;
 		bf->scale = 100;
@@ -124,7 +122,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		break;
 
 	case WM_CLOSE:
-		// ƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚é
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
 		DestroyWindow(hWnd);
 		break;
 
@@ -142,21 +140,20 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 			SelectObject(bf->draw_dc, bf->draw_ret_bmp);
 			DeleteObject(bf->draw_bmp);
 			DeleteDC(bf->draw_dc);
-			DeleteObject(bf->draw_brush);
 
 			option.fmt_bmp_stretch_mode = bf->stretch_mode;
 			mem_free(&bf);
 		}
-		// ƒEƒBƒ“ƒhƒE‚Ì”jŠü
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç ´æ£„
 		return DefWindowProc(hWnd, msg, wParam, lParam);
 
 	case WM_SIZE:
-		// ƒTƒCƒY•ÏX
+		// ã‚µã‚¤ã‚ºå¤‰æ›´
 		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
 			break;
 		}
 
-		// •`‰æî•ñ‚ÌXV
+		// æç”»æƒ…å ±ã®æ›´æ–°
 		GetClientRect(hWnd, &window_rect);
 		hdc = GetDC(hWnd);
 		SelectObject(bf->draw_dc, bf->draw_ret_bmp);
@@ -171,7 +168,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		break;
 
 	case WM_EXITSIZEMOVE:
-		// ƒTƒCƒY•ÏXŠ®—¹
+		// ã‚µã‚¤ã‚ºå¤‰æ›´å®Œäº†
 		break;
 
 	case WM_SETFOCUS:
@@ -235,14 +232,14 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		break;
 
 	case WM_PAINT:
-		// •`‰æ
+		// æç”»
 		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
 			break;
 		}
 		hdc = BeginPaint(hWnd, &ps);
 		if (bf->stretch_mode == FALSE) {
-			// ”wŒi“h‚è‚Â‚Ô‚µ
-			FillRect(bf->draw_dc, &ps.rcPaint, bf->draw_brush);
+			// èƒŒæ™¯å¡—ã‚Šã¤ã¶ã—
+			FillRect(bf->draw_dc, &ps.rcPaint, dark_mode_get_brush(COLOR_BTNSHADOW));
 			if (bf->hbmp != NULL) {
 				int w, h;
 				mdc = CreateCompatibleDC(hdc);
@@ -256,7 +253,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 				if (h > bmp.bmHeight) {
 					h = bmp.bmHeight;
 				}
-				// BITMAP ‚Ì•`‰æ
+				// BITMAP ã®æç”»
 				StretchBlt(bf->draw_dc,
 					ps.rcPaint.left * bf->scale / 100,
 					ps.rcPaint.top * bf->scale / 100,
@@ -272,7 +269,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 				DeleteDC(mdc);
 			}
 		}
-		// •`‰æ
+		// æç”»
 		BitBlt(hdc, ps.rcPaint.left, ps.rcPaint.top, ps.rcPaint.right, ps.rcPaint.bottom,
 			bf->draw_dc, ps.rcPaint.left, ps.rcPaint.top, SRCCOPY);
 
@@ -284,7 +281,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 
 #ifdef OP_XP_STYLE
 	case WM_NCPAINT:
-		// XP—p‚Ì”wŒi•`‰æ
+		// XPç”¨ã®èƒŒæ™¯æç”»
 		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL ||
 			theme_draw(hWnd, (HRGN)wParam, bf->hTheme) == FALSE) {
 			return DefWindowProc(hWnd, msg, wParam, lParam);
@@ -295,7 +292,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
 			break;
 		}
-		// XPƒe[ƒ}‚Ì•ÏX
+		// XPãƒ†ãƒ¼ãƒã®å¤‰æ›´
 		theme_close(bf->hTheme);
 		bf->hTheme = theme_open(hWnd);
 		break;
@@ -490,7 +487,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		bf->free = FALSE;
 		bf->scale = 100;
 
-		// ƒf[ƒ^İ’è
+		// ãƒ‡ãƒ¼ã‚¿è¨­å®š
 		if ((di = (DATA_INFO *)lParam) != NULL && di->data != NULL) {
 			if (lstrcmpi(di->format_name, TEXT("BITMAP")) != 0) {
 				if ((mem = GlobalLock(di->data)) == NULL) {
@@ -548,16 +545,16 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		}
 		GetClientRect(hWnd, &window_rect);
 		if (bf->hbmp == NULL) {
-			// ”wŒi“h‚è‚Â‚Ô‚µ
-			FillRect(bf->draw_dc, &window_rect, bf->draw_brush);
+			// èƒŒæ™¯å¡—ã‚Šã¤ã¶ã—
+			FillRect(bf->draw_dc, &window_rect, dark_mode_get_brush(COLOR_BTNSHADOW));
 			break;
 		}
-		// ‰æ‘œî•ñæ“¾
+		// ç”»åƒæƒ…å ±å–å¾—
 		GetObject(bf->hbmp, sizeof(BITMAP), &bmp);
 
 		mdc = CreateCompatibleDC(bf->draw_dc);
 		hRetBmp = SelectObject(mdc, bf->hbmp);
-		// Lk‰æ‘œ‚Ì•`‰æ
+		// ä¼¸ç¸®ç”»åƒã®æç”»
 		StretchBlt(bf->draw_dc, 0, 0, window_rect.right, window_rect.bottom,
 			mdc, 0, 0, bmp.bmWidth, bmp.bmHeight, SRCCOPY);
 		SelectObject(mdc, hRetBmp);
@@ -565,7 +562,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		break;
 
 	case WM_SET_SCROLLBAR:
-		// ƒXƒNƒ[ƒ‹ƒo[İ’è
+		// ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼è¨­å®š
 		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || bf->hbmp == NULL) {
 			break;
 		}
@@ -685,7 +682,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 			if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
 				break;
 			}
-			// ƒƒjƒ…[‚Ìì¬
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
 			hMenu = CreatePopupMenu();
 			AppendMenu(hMenu, MF_STRING | (bf->stretch_mode == 1) ? MF_CHECKED : 0,
 				1, message_get_res(IDS_BITMAP_MENU_STRETCH));
@@ -697,7 +694,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 				2, buf);
 			AppendMenu(hMenu, MF_STRING | (bf->stretch_mode == 1) ? MF_DISABLED : MF_ENABLED,
 				3, message_get_res(IDS_BITMAP_MENU_ZOOM_OUT));
-			// ƒƒjƒ…[‚Ì•\¦
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¡¨ç¤º
 			GetCursorPos((LPPOINT)&apos);
 			i = TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_RETURNCMD, apos.x, apos.y, 0, hWnd, NULL);
 			DestroyMenu(hMenu);
@@ -725,7 +722,7 @@ static LRESULT CALLBACK bmpview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 }
 
 /*
- * bmpview_regist - ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^
+ * bmpview_regist - ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²
  */
 BOOL bmpview_regist(const HINSTANCE hInstance)
 {
@@ -741,18 +738,18 @@ BOOL bmpview_regist(const HINSTANCE hInstance)
 	wc.hbrBackground = (HBRUSH)(COLOR_BTNSHADOW + 1);
 	wc.lpszMenuName = NULL;
 	wc.lpszClassName = WINDOW_CLASS;
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²
 	return RegisterClass(&wc);
 }
 
 /*
- * bmpview_create - ƒrƒbƒgƒ}ƒbƒvƒrƒ…[ƒA‚Ìì¬
+ * bmpview_create - ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãƒ“ãƒ¥ãƒ¼ã‚¢ã®ä½œæˆ
  */
 HWND bmpview_create(const HINSTANCE hInstance, const HWND pWnd, int id)
 {
 	HWND hWnd;
 
-	// ƒEƒBƒ“ƒhƒE‚Ìì¬
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½œæˆ
 	hWnd = CreateWindowEx(WS_EX_CLIENTEDGE, WINDOW_CLASS,
 		TEXT(""),
 		WS_TABSTOP | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL,

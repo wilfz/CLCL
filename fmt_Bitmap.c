@@ -39,24 +39,44 @@
 
 /* Global Variables */
 static HICON bmp_icon;
+// 読み込み済みのアイコンのサイズ
+static int bmp_icon_size;
 static HWND hBmpWnd;
 
 extern HINSTANCE hInst;
 extern OPTION_INFO option;
 
 /* Local Function Prototypes */
+static HICON bitmap_load_icon(const int icon_size);
 
 /*
  * bitmap_initialize - 初期化
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_initialize(void)
 {
-	if (bmp_icon == NULL) {
-		bmp_icon = LoadImage(hInst, MAKEINTRESOURCE(IDI_ICON_BITMAP), IMAGE_ICON, Scale(16), Scale(16), 0);
-	}
+	bitmap_load_icon(GetSystemMetricsDpi(SM_CXSMICON));
 	bmpview_regist(hInst);
 	init_gdip();
 	return TRUE;
+}
+
+/*
+ * bitmap_load_icon - 形式用のアイコンの読み込み
+ */
+static HICON bitmap_load_icon(const int icon_size)
+{
+	if (icon_size <= 0) {
+		return bmp_icon;
+	}
+	if (bmp_icon != NULL && bmp_icon_size == icon_size) {
+		return bmp_icon;
+	}
+	if (bmp_icon != NULL) {
+		DestroyIcon(bmp_icon);
+	}
+	bmp_icon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDI_ICON_BITMAP), IMAGE_ICON, icon_size, icon_size, 0);
+	bmp_icon_size = icon_size;
+	return bmp_icon;
 }
 
 /*
@@ -65,7 +85,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_initialize(void)
 __declspec(dllexport) HICON CALLBACK bitmap_get_icon(const int icon_size, BOOL *free_icon)
 {
 	*free_icon = FALSE;
-	return bmp_icon;
+	return bitmap_load_icon(icon_size);
 }
 
 /*
@@ -77,6 +97,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_free(void)
 		DestroyIcon(bmp_icon);
 		bmp_icon = NULL;
 	}
+	bmp_icon_size = 0;
 	shutdown_gdip();
 	return TRUE;
 }
@@ -369,7 +390,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_get_menu_title(DATA_INFO *di)
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_get_menu_icon(DATA_INFO *di, const int icon_size)
 {
-	di->menu_icon = bmp_icon;
+	di->menu_icon = bitmap_load_icon(icon_size);
 	di->free_icon = FALSE;
 	return TRUE;
 }
@@ -415,23 +436,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_get_menu_bitmap(DATA_INFO *di, const 
 	di->free_bitmap = TRUE;
 	old_to_hbmp = SelectObject(to_dc, di->menu_bitmap);
 
-	//OSバージョンのチェック
-	//Check OS version
-#if (defined(_MSC_VER) && _MSC_VER >=  1930)
-	// According to Microsoft documentation 
-	// Ver 5.0 refers to Windows 2000, Ver 5.1 refers to Windows XP
-	BOOL bWin32NT = IsWindowsVersionOrGreater(5, 0, 0);
-#else
-	OSVERSIONINFO osvi;
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx(&osvi);
-	// According to Microsoft documentation 
-	// VER_PLATFORM_WIN32_NT indicates Windows XP / Windows 2000 or later.
-	BOOL bWin32NT = (osvi.dwPlatformId >= VER_PLATFORM_WIN32_NT);
-#endif
-
-	if (bWin32NT &&
-		(width < bmp.bmWidth || height < bmp.bmHeight)) {
+	if (width < bmp.bmWidth || height < bmp.bmHeight) {
 		SetStretchBltMode(to_dc, HALFTONE);
 		SetBrushOrgEx(to_dc, 0, 0, NULL);
 	} else {

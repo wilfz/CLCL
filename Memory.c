@@ -59,7 +59,11 @@ void *mem_alloc(const DWORD size)
 }
 
 /*
+<<<<<<< HEAD
  * mem_calloc - 初期化してバッファを確保 / initialize and alocate buffer
+=======
+ * mem_calloc - 初期化してバッファを確保
+>>>>>>> 56fd048e6c1ccf68dffacc10c40ed57748f97d80
  */
 void *mem_calloc(const DWORD size)
 {
@@ -85,7 +89,11 @@ void *mem_calloc(const DWORD size)
 }
 
 /*
+<<<<<<< HEAD
  * mem_free - バッファを解放 / free buffer
+=======
+ * mem_free - バッファを解放
+>>>>>>> 56fd048e6c1ccf68dffacc10c40ed57748f97d80
  */
 void mem_free(void **mem)
 {
@@ -111,7 +119,11 @@ void mem_free(void **mem)
 }
 
 /*
+<<<<<<< HEAD
  * mem_debug - メモリ情報の表示 / show memory information
+=======
+ * mem_debug - メモリ情報の表示
+>>>>>>> 56fd048e6c1ccf68dffacc10c40ed57748f97d80
  */
 #ifdef _DEBUG
 void mem_debug(void)
@@ -141,7 +153,11 @@ void mem_debug(void)
 #endif	// _DEBUG
 
 /*
+<<<<<<< HEAD
  * mem_cmp - メモリの比較 / compare memory
+=======
+ * mem_cmp - メモリの比較
+>>>>>>> 56fd048e6c1ccf68dffacc10c40ed57748f97d80
  */
 int mem_cmp(const BYTE *mem1, const DWORD size1, const BYTE *mem2, const DWORD size2)
 {
@@ -152,7 +168,11 @@ int mem_cmp(const BYTE *mem1, const DWORD size1, const BYTE *mem2, const DWORD s
 }
 
 /*
+<<<<<<< HEAD
  * alloc_copy - バッファを確保して文字列をコピーする / allocate buffer and copy the string
+=======
+ * alloc_copy - バッファを確保して文字列をコピーする
+>>>>>>> 56fd048e6c1ccf68dffacc10c40ed57748f97d80
  */
 TCHAR *alloc_copy(const TCHAR *buf)
 {
@@ -169,7 +189,11 @@ TCHAR *alloc_copy(const TCHAR *buf)
 }
 
 /*
+<<<<<<< HEAD
  * alloc_copy_n - バッファを確保して指定長さ分の文字列をコピーする / allocate buffer and copy string of specified length
+=======
+ * alloc_copy_n - バッファを確保して指定長さ分の文字列をコピーする
+>>>>>>> 56fd048e6c1ccf68dffacc10c40ed57748f97d80
  */
 TCHAR *alloc_copy_n(const TCHAR *buf, const int size)
 {
@@ -204,7 +228,11 @@ char *alloc_tchar_to_char(const TCHAR *str)
 #endif
 
 /*
+<<<<<<< HEAD
  * alloc_char_to_tchar - メモリを確保して char を TCHAR に変換する / allocate memory and convert char to TCHAR
+=======
+ * alloc_char_to_tchar - メモリを確保して char を TCHAR に変換する
+>>>>>>> 56fd048e6c1ccf68dffacc10c40ed57748f97d80
  */
 #ifdef UNICODE
 TCHAR *alloc_char_to_tchar(const char *str)
