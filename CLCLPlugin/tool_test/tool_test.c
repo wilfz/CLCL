@@ -42,22 +42,17 @@ int WINAPI DllMain(HINSTANCE hInstance, DWORD fdwReason, PVOID pvReserved)
 }
 
 /*
-<<<<<<< HEAD
- * get_tool_info_w - �c�[�����擾
- * Get tool information
- *
- *	���� / argument:
- *		hWnd - �Ăяo�����E�B���h�E / the calling window
- *		index - �擾�̃C���f�b�N�X (0�`) / the index of the acquisition (from 0)
- *		tgi - �c�[���擾��� / tool retrieval information
- *
- *	�߂�l / Return value:
- *		TRUE - ���Ɏ擾����c�[������ / has tools to get next
- *		FALSE - �擾�̏I�� / end of acquisition
-=======
  * get_tool_info_w - ツール情報取得
  * Get tool information 
->>>>>>> 56fd048e6c1ccf68dffacc10c40ed57748f97d80
+ *
+ *	引数 / argument:
+ *		hWnd - 呼び出し元ウィンドウ / the calling window
+ *		index - 取得のインデックス (0～) / the index of the acquisition (from 0)
+ *		tgi - ツール取得情報 / tool retrieval information
+ *
+ *	戻り値 / Return value:
+ *		TRUE - 次に取得するツールあり / has tools to get next
+ *		FALSE - 取得の終了 / end of acquisition
  */
 __declspec(dllexport) BOOL CALLBACK get_tool_info_w(const HWND hWnd, const int index, TOOL_GET_INFO *tgi)
 {
