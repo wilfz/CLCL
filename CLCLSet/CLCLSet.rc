@@ -1029,7 +1029,7 @@ BEGIN
     CONTROL         "显示热键(&H)",IDC_CHECK_SHOW_HOTKEY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,85,175,10
     CONTROL         "多列菜单(&l)",IDC_CHECK_BREAK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,98,180,10
     CONTROL         "点击右侧菜单，显示工具(&m)",IDC_CHECK_SHOW_TOOL_MENU,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,111,175,10
-    CONTROL         "&Attach to the process to show the menu",IDC_CHECK_ATTACH_PROCESS,
+    CONTROL         "附加到进程以显示菜单(&A)",IDC_CHECK_ATTACH_PROCESS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,124,195,10
     LTEXT           "菜单显示格式(&f):",IDC_STATIC,10,144,175,9
     EDITTEXT        IDC_EDIT_TEXT_FORMAT,10,140,235,13,ES_AUTOHSCROLL
@@ -1899,7 +1899,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,98,180,10
     CONTROL         "Клік правою кнопкою по меню відкриває інструменти",IDC_CHECK_SHOW_TOOL_MENU,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,111,175,10
-    CONTROL         "&Attach to the process to show the menu",IDC_CHECK_ATTACH_PROCESS,
+    CONTROL         "&Приєднуватися до процесу для показу меню",IDC_CHECK_ATTACH_PROCESS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,124,195,10
     LTEXT           "Формат відображення тексту меню:",IDC_STATIC,10,144,175,9
     EDITTEXT        IDC_EDIT_TEXT_FORMAT,10,153,235,13,ES_AUTOHSCROLL
@@ -3589,7 +3589,7 @@ BEGIN
     CONTROL         "Große Menüs umbrechen",IDC_CHECK_BREAK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,98,180,10
     CONTROL         "Rechtsklick im Menü zeigt Tools",IDC_CHECK_SHOW_TOOL_MENU,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,111,175,10
-    CONTROL         "Process &anheften bei Menünazeige",IDC_CHECK_ATTACH_PROCESS,
+    CONTROL         "&Prozess anheften bei Menüanzeige",IDC_CHECK_ATTACH_PROCESS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,124,195,10
     LTEXT           "Anzeigeformat des Menüs:",IDC_STATIC,10,144,175,9
     EDITTEXT        IDC_EDIT_TEXT_FORMAT,10,153,235,13,ES_AUTOHSCROLL
