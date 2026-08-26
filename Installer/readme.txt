@@ -9,14 +9,16 @@ CLCL のインストーラと、インストーラを作成するツールです
 必要なランタイムやライブラリはありません。
 
 ■ ファイル
-  build.ps1        インストーラを作成する PowerShell スクリプト
-  Installer.c      インストーラ本体
-  Installer.h      インストーラの定義
-  Installer.rc     リソース (ダイアログ / 各言語の文字列 / ZIP)
-  resource.h       リソース ID
-  unzip.c          ZIP の展開 (deflate と CRC32 の実装)
-  unzip.h          ZIP の展開の定義
-  res/manifest.xml マニフェスト (管理者権限で実行)
+  Installer.vcxproj インストーラのプロジェクト (CLCL.sln に含まれる)
+  build.ps1         インストーラを作成する PowerShell スクリプト
+  prepare.ps1       ファイルの収集と ZIP の作成 (プロジェクトから呼ばれる)
+  Installer.c       インストーラ本体
+  Installer.h       インストーラの定義
+  Installer.rc      リソース (ダイアログ / 各言語の文字列 / ZIP)
+  resource.h        リソース ID
+  unzip.c           ZIP の展開 (deflate と CRC32 の実装)
+  unzip.h           ZIP の展開の定義
+  res/manifest.xml  マニフェスト (管理者権限で実行)
 
 ■ インストーラの作成
 Visual Studio 2017 以降 (C++ デスクトップ開発) と Windows SDK が必要です。
@@ -40,13 +42,31 @@ PowerShell で以下を実行すると、CLCL 本体のビルドからインス�
   -Platform <プラットフォーム>
                           ビルドするプラットフォーム (既定: x86)
   -Version <バージョン>   バージョン (既定: CLCL.rc の FILEVERSION)
-  -SourceDir <フォルダ>   収集元のフォルダ (既定: <リポジトリ>\Release)
+  -SourceDir <フォルダ>   収集元のフォルダ (既定: <リポジトリ>\<ビルド構成>)
   -OutDir <フォルダ>      出力先のフォルダ (既定: Installer\out)
   -SkipBuild              CLCL 本体のビルドを行わない
-  -KeepWork               作業フォルダ (Installer\obj) を残す
+
+■ Visual Studio でのビルド
+Installer.vcxproj は CLCL.sln に含まれています。ソリューションをビルドすると、
+CLCL 本体のビルドの後にインストーラが作成されます。Installer プロジェクトだけを
+ビルドすることもできます。その場合は CLCL 本体をビルド済みにしておいてください。
+
+ビルド前のイベントで prepare.ps1 がファイルの収集と ZIP の作成、バージョン情報の
+instinfo.h の生成を行い、ビルド後のイベントで prepare.ps1 が Installer\out へ
+clcl<バージョン>.exe として出力します。build.ps1 はこのプロジェクトを msbuild で
+ビルドしているだけなので、どちらの方法でも結果は同じです。
+
+プロジェクトの設定は msbuild のプロパティで変更できます。build.ps1 のオプション
+はこれらに対応しています。フォルダは末尾に \ を付けないでください。
+  ClclVersion    バージョン
+  ClclSourceDir  インストールするファイルの収集元
+  ClclOutDir     インストーラの出力先
+
+インストーラのバージョン情報はビルド時に生成する instinfo.h で決まります。この
+ファイルはリポジトリには含めていません。
 
 ■ インストールするファイル
-build.ps1 が以下のファイルを収集して ZIP にまとめ、インストーラのリソース
+prepare.ps1 が以下のファイルを収集して ZIP にまとめ、インストーラのリソース
 (RCDATA) として登録します。インストーラは実行時にこの ZIP を展開して配置します。
 
   CLCL.exe        Release フォルダから収集
@@ -62,7 +82,8 @@ build.ps1 が以下のファイルを収集して ZIP にまとめ、インス�
 clcl_app.ini は収集しません。ファイルが無い場合は portable=0 として動作するため、
 更新時に利用者の設定を上書きしないようにしています。
 
-収集するファイルを変更する場合は build.ps1 の $targetFiles を編集してください。
+収集するファイルを変更する場合は prepare.ps1 の Get-TargetFiles を編集してくださ
+い。
 
 ■ インストーラの動作
 管理者権限で実行します (マニフェストで requireAdministrator を指定)。
