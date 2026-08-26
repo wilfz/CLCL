@@ -94,8 +94,31 @@ if ($LASTEXITCODE -ne 0) {
 	throw "ビルドに失敗しました。"
 }
 
+$targetPath = Join-Path $InstallerDir (Join-Path $Configuration "CLCLInst.exe")
+if (-not (Test-Path $targetPath)) {
+	throw "インストーラがビルドされていません: $targetPath"
+}
+if ($Configuration -ne "Release") {
+	Write-Step "インストーラをビルドしました ($Configuration)"
+	Write-Host "    $targetPath"
+	Write-Host "    out フォルダへの出力は Release 構成のみです。" -ForegroundColor Yellow
+	return
+}
+
+# msbuild が再ビルドを省略するとビルド後のイベントも実行されないため、
+# out フォルダへの出力はここで必ず行う
+$publishArgs = @("-Mode", "Publish", "-TargetPath", $targetPath)
+if (-not [string]::IsNullOrEmpty($OutDir)) {
+	$publishArgs += @("-OutDir", $OutDir.TrimEnd('\'))
+}
+if (-not [string]::IsNullOrEmpty($Version)) {
+	$publishArgs += @("-Version", $Version)
+}
+& (Join-Path $InstallerDir "prepare.ps1") @publishArgs
+
 $outRoot = if ([string]::IsNullOrEmpty($OutDir)) { Join-Path $InstallerDir "out" } else { $OutDir }
 $exe = Get-ChildItem -Path (Join-Path $outRoot "clcl*.exe") -ErrorAction SilentlyContinue |
+	Where-Object { $_.LastWriteTimeUtc -ge (Get-Item $targetPath).LastWriteTimeUtc } |
 	Sort-Object LastWriteTime -Descending | Select-Object -First 1
 if ($null -eq $exe) {
 	throw "インストーラが出力されていません: $outRoot"
