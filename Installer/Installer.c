@@ -46,6 +46,8 @@ static int reg_target_cnt;
 static STR_BUF log_buf;
 // インストール完了
 static BOOL install_end;
+// ダイアログ用のフォント
+static HFONT hDlgFont;
 // タイトル用のフォント
 static HFONT hTitleFont;
 
@@ -967,6 +969,46 @@ static BOOL do_install(const HWND hDlg)
 }
 
 /*
+ * set_font_proc - 子ウィンドウにフォントを設定
+ */
+static BOOL CALLBACK set_font_proc(HWND hWnd, LPARAM lParam)
+{
+	SendMessage(hWnd, WM_SETFONT, (WPARAM)lParam, MAKELPARAM(TRUE, 0));
+	return TRUE;
+}
+
+/*
+ * set_dialog_font - システムの既定のフォントを設定
+ */
+static void set_dialog_font(const HWND hDlg)
+{
+	NONCLIENTMETRICS ncm;
+	LOGFONT lf;
+
+	// リソースのフォントは文字セットが環境に依存するため、
+	// システムが実際に使用しているフォントを設定する
+	ZeroMemory(&ncm, sizeof(NONCLIENTMETRICS));
+	ncm.cbSize = sizeof(NONCLIENTMETRICS);
+	if (SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS), &ncm, 0) != FALSE) {
+		lf = ncm.lfMessageFont;
+		if ((hDlgFont = CreateFontIndirect(&lf)) != NULL) {
+			SendMessage(hDlg, WM_SETFONT, (WPARAM)hDlgFont, MAKELPARAM(TRUE, 0));
+			EnumChildWindows(hDlg, set_font_proc, (LPARAM)hDlgFont);
+		}
+	} else if (GetObject((HFONT)SendMessage(hDlg, WM_GETFONT, 0, 0),
+		sizeof(LOGFONT), &lf) == 0) {
+		return;
+	}
+	// タイトルは太字で表示
+	lf.lfWeight = FW_BOLD;
+	if ((hTitleFont = CreateFontIndirect(&lf)) != NULL) {
+		SendDlgItemMessage(hDlg, IDC_STATIC_TITLE, WM_SETFONT,
+			(WPARAM)hTitleFont, MAKELPARAM(TRUE, 0));
+	}
+}
+
+/*
  * browse_proc - フォルダ選択のコールバック
  */
 static int CALLBACK browse_proc(HWND hWnd, UINT msg, LPARAM lParam, LPARAM lpData)
@@ -1059,7 +1101,6 @@ static INT_PTR CALLBACK dlg_proc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPar
 	TCHAR buf[MSG_SIZE];
 	TCHAR fmt[MSG_SIZE];
 	TCHAR *p;
-	LOGFONT lf;
 
 	switch (msg) {
 	case WM_INITDIALOG:
@@ -1069,13 +1110,8 @@ static INT_PTR CALLBACK dlg_proc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPar
 			(LPARAM)LoadIcon(hInst, MAKEINTRESOURCE(IDI_ICON_MAIN)));
 		SetWindowText(hDlg, title_str);
 
-		// タイトルは太字で表示
-		if (GetObject((HFONT)SendMessage(hDlg, WM_GETFONT, 0, 0), sizeof(LOGFONT), &lf) != 0) {
-			lf.lfWeight = FW_BOLD;
-			if ((hTitleFont = CreateFontIndirect(&lf)) != NULL) {
-				SendDlgItemMessage(hDlg, IDC_STATIC_TITLE, WM_SETFONT, (WPARAM)hTitleFont, TRUE);
-			}
-		}
+		set_dialog_font(hDlg);
+
 		wsprintf(buf, str_load(IDS_HEADER, fmt, MSG_SIZE), ver_str);
 		SetDlgItemText(hDlg, IDC_STATIC_TITLE, buf);
 		set_ctrl_text(hDlg, IDC_STATIC_DESC,
@@ -1116,6 +1152,10 @@ static INT_PTR CALLBACK dlg_proc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPar
 		if (hTitleFont != NULL) {
 			DeleteObject(hTitleFont);
 			hTitleFont = NULL;
+		}
+		if (hDlgFont != NULL) {
+			DeleteObject(hDlgFont);
+			hDlgFont = NULL;
 		}
 		return TRUE;
 
