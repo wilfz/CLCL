@@ -106,10 +106,21 @@ clcl_app.ini は収集しません。ファイルが無い場合は portable=0 �
   HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\CLCL
     (32bit のため、64bit 環境では WOW6432Node の配下になります)
 
+これは Ver 2.1 系のインストーラが使用しているキーと同じ場所のため、既存の環境に
+上書きしても登録が二重になることはありません。
+
 登録する値
   DisplayName, DisplayVersion, DisplayIcon, Publisher, URLInfoAbout,
-  InstallLocation, UninstallString, NoModify, NoRepair, EstimatedSize,
-  VersionMajor, VersionMinor
+  InstallLocation, UninstallString, InstallDate, NoModify, NoRepair,
+  EstimatedSize, VersionMajor, VersionMinor
+
+値を設定する前にキーの値をすべて削除します。以前のインストーラが設定した値
+(別のアンインストーラを指す UnInstallString など) が残ると、コントロールパネル
+から古いアンインストーラが呼ばれてしまうためです。
+
+以前のインストーラがインストール先に残すファイルの一覧 (install.DAT) がある場合
+は、アンインストール時に削除するように記録します。インストール先のフォルダが残
+らないようにするためです。
 
 既存のインストーラが別のキー名を使用している場合は、Installer.h の
 UNINSTALL_SUBKEY を変更してください。既存の登録が見つかった場合はキー名に関わら

@@ -445,11 +445,30 @@ static void reg_delete_install(const REG_TARGET *rt)
 }
 
 /*
+ * reg_clear_value - キーの値をすべて削除
+ */
+static void reg_clear_value(const HKEY hKey)
+{
+	TCHAR name[BUF_SIZE];
+	DWORD len;
+
+	// 以前のインストーラが設定した値が残らないようにする
+	for (;;) {
+		len = BUF_SIZE;
+		if (RegEnumValue(hKey, 0, name, &len, NULL, NULL, NULL, NULL) != ERROR_SUCCESS ||
+			RegDeleteValue(hKey, name) != ERROR_SUCCESS) {
+			break;
+		}
+	}
+}
+
+/*
  * reg_write_install - アプリの一覧に登録
  */
 static BOOL reg_write_install(const REG_TARGET *rt)
 {
 	HKEY hKey, hSubKey;
+	SYSTEMTIME st;
 	TCHAR buf[MAX_PATH * 2];
 	int i;
 
@@ -461,6 +480,7 @@ static BOOL reg_write_install(const REG_TARGET *rt)
 		RegCloseKey(hKey);
 		return FALSE;
 	}
+	reg_clear_value(hSubKey);
 	reg_set_string(hSubKey, TEXT("DisplayName"), APP_NAME);
 	reg_set_string(hSubKey, TEXT("DisplayVersion"), ver_str);
 	reg_set_string(hSubKey, TEXT("Publisher"), APP_PUBLISHER);
@@ -475,6 +495,9 @@ static BOOL reg_write_install(const REG_TARGET *rt)
 	reg_set_dword(hSubKey, TEXT("EstimatedSize"), (total_size + 1023) / 1024);
 	reg_set_dword(hSubKey, TEXT("VersionMajor"), INST_VER_MAJOR);
 	reg_set_dword(hSubKey, TEXT("VersionMinor"), INST_VER_MINOR);
+	GetLocalTime(&st);
+	wsprintf(buf, TEXT("%04d%02d%02d"), st.wYear, st.wMonth, st.wDay);
+	reg_set_string(hSubKey, TEXT("InstallDate"), buf);
 	RegCloseKey(hSubKey);
 	RegCloseKey(hKey);
 
@@ -897,6 +920,12 @@ static BOOL do_install(const HWND hDlg)
 		log_add(TEXT('F'), path);
 	}
 	SendDlgItemMessage(hDlg, IDC_PROGRESS, PBM_SETPOS, (WPARAM)zip.count, 0);
+
+	// 以前のインストーラがインストール先に残したファイルも削除対象にする
+	wsprintf(path, TEXT("%s\\%s"), install_path, OLD_INSTALL_LOG);
+	if (GetFileAttributes(path) != INVALID_FILE_ATTRIBUTES) {
+		log_add(TEXT('F'), path);
+	}
 
 	// アンインストーラの配置
 	GetModuleFileName(NULL, self, MAX_PATH);
