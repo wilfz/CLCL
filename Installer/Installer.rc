@@ -1,0 +1,307 @@
+// CLCL Installer resource script.
+//
+#pragma code_page(65001)
+
+#include "winres.h"
+
+#include "instinfo.h"
+#include "resource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+IDI_ICON_MAIN           ICON                    "..\\res\\ico00001.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+1                       RT_MANIFEST             "res\\manifest.xml"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RCDATA
+//
+// インストールするファイルをまとめたZIP (作成ツールが生成)
+IDR_PAYLOAD             RCDATA                  "payload.zip"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+// 表示する文字列はすべて実行時に文字列リソースから設定する
+
+IDD_MAIN DIALOGEX 0, 0, 320, 200
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "CLCL"
+FONT 9, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "", IDC_STATIC_TITLE, 12, 10, 296, 12
+    LTEXT           "", IDC_STATIC_DESC, 12, 26, 296, 32
+    LTEXT           "", IDC_STATIC_FOLDER, 12, 66, 296, 9
+    EDITTEXT        IDC_EDIT_PATH, 12, 77, 236, 14, ES_AUTOHSCROLL
+    PUSHBUTTON      "", IDC_BUTTON_BROWSE, 254, 76, 54, 16
+    CONTROL         "", IDC_CHECK_STARTUP, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 12, 102, 296, 10
+    CONTROL         "", IDC_CHECK_STARTMENU, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 12, 116, 296, 10
+    CONTROL         "", IDC_CHECK_DESKTOP, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 12, 130, 296, 10
+    CONTROL         "", IDC_CHECK_RUN, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 12, 102, 296, 10
+    CONTROL         "", IDC_PROGRESS, "msctls_progress32", WS_BORDER, 12, 150, 296, 10
+    LTEXT           "", IDC_STATIC_STATUS, 12, 164, 296, 9
+    DEFPUSHBUTTON   "", IDOK, 196, 176, 54, 15
+    PUSHBUTTON      "", IDCANCEL, 254, 176, 54, 15
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION INST_VER_MAJOR,INST_VER_MINOR,INST_VER_REVISION,0
+ PRODUCTVERSION INST_VER_MAJOR,INST_VER_MINOR,INST_VER_REVISION,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "CLCL Installer"
+            VALUE "FileVersion", INST_FILE_VERSION_STR
+            VALUE "InternalName", INST_FILE_NAME
+            VALUE "LegalCopyright", "Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved."
+            VALUE "OriginalFilename", INST_FILE_NAME
+            VALUE "ProductName", "CLCL"
+            VALUE "ProductVersion", INST_FILE_VERSION_STR
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// Japanese (Japan) resources
+
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+
+STRINGTABLE
+BEGIN
+    IDS_SETUP_TITLE         "CLCL セットアップ"
+    IDS_UNINSTALL_TITLE     "CLCL アンインストール"
+    IDS_HEADER              "CLCL Ver %s"
+    IDS_DESC_INSTALL        "CLCL をインストールします。\nインストール先のフォルダとオプションを指定して [インストール] をクリックしてください。"
+    IDS_DESC_UPDATE         "CLCL は既にインストールされています。\nインストール先のフォルダとオプションを確認して [更新] をクリックしてください。"
+    IDS_DESC_COMPLETE       "CLCL のインストールが完了しました。"
+    IDS_FOLDER              "インストール先のフォルダ(&F):"
+    IDS_BROWSE              "参照(&B)..."
+    IDS_CHECK_STARTUP       "Windows のスタートアップに登録する(&S)"
+    IDS_CHECK_STARTMENU     "スタートメニューにショートカットを作成する(&M)"
+    IDS_CHECK_DESKTOP       "デスクトップにショートカットを作成する(&D)"
+    IDS_CHECK_RUN           "CLCL を起動する(&R)"
+    IDS_BUTTON_INSTALL      "インストール(&I)"
+    IDS_BUTTON_UPDATE       "更新(&U)"
+    IDS_BUTTON_CANCEL       "キャンセル"
+    IDS_BUTTON_FINISH       "完了(&F)"
+    IDS_SELECT_FOLDER       "インストール先のフォルダを選択してください。"
+    IDS_STATUS_EXTRACT      "ファイルをコピーしています..."
+    IDS_STATUS_SHORTCUT     "ショートカットを作成しています..."
+    IDS_STATUS_REGIST       "アプリの一覧に登録しています..."
+    IDS_CONFIRM_CANCEL      "インストールを中止しますか?"
+    IDS_CONFIRM_UNINSTALL   "CLCL をアンインストールします。\nよろしいですか?"
+    IDS_CONFIRM_DELETE_DATA "設定と履歴のデータも削除しますか?"
+    IDS_UNINSTALL_COMPLETE  "CLCL のアンインストールが完了しました。"
+    IDS_ERR_PATH_EMPTY      "インストール先のフォルダを入力してください。"
+    IDS_ERR_PAYLOAD         "インストールするファイルの読み込みに失敗しました。"
+    IDS_ERR_CREATE_DIR      "フォルダを作成できませんでした。\n%s"
+    IDS_ERR_EXTRACT         "ファイルを展開できませんでした。\n%s"
+    IDS_ERR_REGIST          "アプリの一覧に登録できませんでした。"
+    IDS_ERR_NOT_INSTALLED   "CLCL はインストールされていません。"
+    IDS_ERR_RUN             "CLCL を起動できませんでした。"
+    IDS_RUNNING             "CLCL が起動中です。\nCLCL を終了してから [再試行] をクリックしてください。"
+    IDS_FILE_LOCKED         "ファイルを更新できませんでした。\n%s\n\nCLCL が起動中の場合は、CLCL を終了してから [再試行] をクリックしてください。"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+
+STRINGTABLE
+BEGIN
+    IDS_SETUP_TITLE         "CLCL Setup"
+    IDS_UNINSTALL_TITLE     "CLCL Uninstall"
+    IDS_HEADER              "CLCL Ver %s"
+    IDS_DESC_INSTALL        "CLCL will be installed on your computer.\nChoose the destination folder and the options, then click [Install]."
+    IDS_DESC_UPDATE         "CLCL is already installed.\nCheck the destination folder and the options, then click [Update]."
+    IDS_DESC_COMPLETE       "CLCL has been installed successfully."
+    IDS_FOLDER              "&Destination folder:"
+    IDS_BROWSE              "&Browse..."
+    IDS_CHECK_STARTUP       "Add to Windows &startup"
+    IDS_CHECK_STARTMENU     "Create a shortcut in the Start &menu"
+    IDS_CHECK_DESKTOP       "Create a shortcut on the &desktop"
+    IDS_CHECK_RUN           "&Run CLCL"
+    IDS_BUTTON_INSTALL      "&Install"
+    IDS_BUTTON_UPDATE       "&Update"
+    IDS_BUTTON_CANCEL       "Cancel"
+    IDS_BUTTON_FINISH       "&Finish"
+    IDS_SELECT_FOLDER       "Select the destination folder."
+    IDS_STATUS_EXTRACT      "Copying files..."
+    IDS_STATUS_SHORTCUT     "Creating shortcuts..."
+    IDS_STATUS_REGIST       "Registering the application..."
+    IDS_CONFIRM_CANCEL      "Do you want to cancel the installation?"
+    IDS_CONFIRM_UNINSTALL   "CLCL will be uninstalled.\nAre you sure?"
+    IDS_CONFIRM_DELETE_DATA "Do you also want to delete the settings and history data?"
+    IDS_UNINSTALL_COMPLETE  "CLCL has been uninstalled successfully."
+    IDS_ERR_PATH_EMPTY      "Enter the destination folder."
+    IDS_ERR_PAYLOAD         "Failed to read the files to install."
+    IDS_ERR_CREATE_DIR      "Failed to create the folder.\n%s"
+    IDS_ERR_EXTRACT         "Failed to extract the file.\n%s"
+    IDS_ERR_REGIST          "Failed to register the application."
+    IDS_ERR_NOT_INSTALLED   "CLCL is not installed."
+    IDS_ERR_RUN             "Failed to start CLCL."
+    IDS_RUNNING             "CLCL is running.\nExit CLCL, and then click [Retry]."
+    IDS_FILE_LOCKED         "Failed to update the file.\n%s\n\nIf CLCL is running, exit CLCL and then click [Retry]."
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+
+STRINGTABLE
+BEGIN
+    IDS_SETUP_TITLE         "CLCL Setup"
+    IDS_UNINSTALL_TITLE     "CLCL deinstallieren"
+    IDS_HEADER              "CLCL Ver %s"
+    IDS_DESC_INSTALL        "CLCL wird auf Ihrem Computer installiert.\nWählen Sie den Zielordner und die Optionen, und klicken Sie dann auf [Installieren]."
+    IDS_DESC_UPDATE         "CLCL ist bereits installiert.\nPrüfen Sie den Zielordner und die Optionen, und klicken Sie dann auf [Aktualisieren]."
+    IDS_DESC_COMPLETE       "CLCL wurde erfolgreich installiert."
+    IDS_FOLDER              "&Zielordner:"
+    IDS_BROWSE              "&Durchsuchen..."
+    IDS_CHECK_STARTUP       "Zum Windows-&Autostart hinzufügen"
+    IDS_CHECK_STARTMENU     "Verknüpfung im Start&menü erstellen"
+    IDS_CHECK_DESKTOP       "Verknüpfung auf dem &Desktop erstellen"
+    IDS_CHECK_RUN           "CLCL &starten"
+    IDS_BUTTON_INSTALL      "&Installieren"
+    IDS_BUTTON_UPDATE       "&Aktualisieren"
+    IDS_BUTTON_CANCEL       "Abbrechen"
+    IDS_BUTTON_FINISH       "&Fertig stellen"
+    IDS_SELECT_FOLDER       "Wählen Sie den Zielordner."
+    IDS_STATUS_EXTRACT      "Dateien werden kopiert..."
+    IDS_STATUS_SHORTCUT     "Verknüpfungen werden erstellt..."
+    IDS_STATUS_REGIST       "Anwendung wird registriert..."
+    IDS_CONFIRM_CANCEL      "Möchten Sie die Installation abbrechen?"
+    IDS_CONFIRM_UNINSTALL   "CLCL wird deinstalliert.\nSind Sie sicher?"
+    IDS_CONFIRM_DELETE_DATA "Sollen auch die Einstellungen und der Verlauf gelöscht werden?"
+    IDS_UNINSTALL_COMPLETE  "CLCL wurde erfolgreich deinstalliert."
+    IDS_ERR_PATH_EMPTY      "Geben Sie den Zielordner an."
+    IDS_ERR_PAYLOAD         "Die zu installierenden Dateien konnten nicht gelesen werden."
+    IDS_ERR_CREATE_DIR      "Der Ordner konnte nicht erstellt werden.\n%s"
+    IDS_ERR_EXTRACT         "Die Datei konnte nicht entpackt werden.\n%s"
+    IDS_ERR_REGIST          "Die Anwendung konnte nicht registriert werden."
+    IDS_ERR_NOT_INSTALLED   "CLCL ist nicht installiert."
+    IDS_ERR_RUN             "CLCL konnte nicht gestartet werden."
+    IDS_RUNNING             "CLCL wird ausgeführt.\nBeenden Sie CLCL, und klicken Sie dann auf [Wiederholen]."
+    IDS_FILE_LOCKED         "Die Datei konnte nicht aktualisiert werden.\n%s\n\nFalls CLCL ausgeführt wird, beenden Sie CLCL und klicken Sie dann auf [Wiederholen]."
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (Simplified) resources
+
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+
+STRINGTABLE
+BEGIN
+    IDS_SETUP_TITLE         "CLCL 安装程序"
+    IDS_UNINSTALL_TITLE     "卸载 CLCL"
+    IDS_HEADER              "CLCL Ver %s"
+    IDS_DESC_INSTALL        "将在您的计算机上安装 CLCL。\n请选择安装文件夹和选项，然后单击[安装]。"
+    IDS_DESC_UPDATE         "CLCL 已安装。\n请确认安装文件夹和选项，然后单击[更新]。"
+    IDS_DESC_COMPLETE       "CLCL 安装完成。"
+    IDS_FOLDER              "安装文件夹(&F):"
+    IDS_BROWSE              "浏览(&B)..."
+    IDS_CHECK_STARTUP       "添加到 Windows 启动项(&S)"
+    IDS_CHECK_STARTMENU     "在开始菜单中创建快捷方式(&M)"
+    IDS_CHECK_DESKTOP       "在桌面上创建快捷方式(&D)"
+    IDS_CHECK_RUN           "启动 CLCL(&R)"
+    IDS_BUTTON_INSTALL      "安装(&I)"
+    IDS_BUTTON_UPDATE       "更新(&U)"
+    IDS_BUTTON_CANCEL       "取消"
+    IDS_BUTTON_FINISH       "完成(&F)"
+    IDS_SELECT_FOLDER       "请选择安装文件夹。"
+    IDS_STATUS_EXTRACT      "正在复制文件..."
+    IDS_STATUS_SHORTCUT     "正在创建快捷方式..."
+    IDS_STATUS_REGIST       "正在注册应用..."
+    IDS_CONFIRM_CANCEL      "要取消安装吗?"
+    IDS_CONFIRM_UNINSTALL   "将卸载 CLCL。\n确定吗?"
+    IDS_CONFIRM_DELETE_DATA "是否同时删除设置和历史数据?"
+    IDS_UNINSTALL_COMPLETE  "CLCL 卸载完成。"
+    IDS_ERR_PATH_EMPTY      "请输入安装文件夹。"
+    IDS_ERR_PAYLOAD         "读取要安装的文件失败。"
+    IDS_ERR_CREATE_DIR      "无法创建文件夹。\n%s"
+    IDS_ERR_EXTRACT         "无法解压文件。\n%s"
+    IDS_ERR_REGIST          "无法注册应用。"
+    IDS_ERR_NOT_INSTALLED   "未安装 CLCL。"
+    IDS_ERR_RUN             "无法启动 CLCL。"
+    IDS_RUNNING             "CLCL 正在运行。\n请退出 CLCL 后单击[重试]。"
+    IDS_FILE_LOCKED         "无法更新文件。\n%s\n\n如果 CLCL 正在运行，请退出 CLCL 后单击[重试]。"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// Ukrainian resources
+
+LANGUAGE LANG_UKRAINIAN, SUBLANG_DEFAULT
+
+STRINGTABLE
+BEGIN
+    IDS_SETUP_TITLE         "Встановлення CLCL"
+    IDS_UNINSTALL_TITLE     "Видалення CLCL"
+    IDS_HEADER              "CLCL Ver %s"
+    IDS_DESC_INSTALL        "CLCL буде встановлено на ваш комп'ютер.\nВиберіть папку призначення та параметри, потім натисніть [Встановити]."
+    IDS_DESC_UPDATE         "CLCL уже встановлено.\nПеревірте папку призначення та параметри, потім натисніть [Оновити]."
+    IDS_DESC_COMPLETE       "CLCL успішно встановлено."
+    IDS_FOLDER              "&Папка призначення:"
+    IDS_BROWSE              "&Огляд..."
+    IDS_CHECK_STARTUP       "Додати до &автозавантаження Windows"
+    IDS_CHECK_STARTMENU     "Створити ярлик у &меню Пуск"
+    IDS_CHECK_DESKTOP       "Створити ярлик на &робочому столі"
+    IDS_CHECK_RUN           "&Запустити CLCL"
+    IDS_BUTTON_INSTALL      "&Встановити"
+    IDS_BUTTON_UPDATE       "&Оновити"
+    IDS_BUTTON_CANCEL       "Скасувати"
+    IDS_BUTTON_FINISH       "&Готово"
+    IDS_SELECT_FOLDER       "Виберіть папку призначення."
+    IDS_STATUS_EXTRACT      "Копіювання файлів..."
+    IDS_STATUS_SHORTCUT     "Створення ярликів..."
+    IDS_STATUS_REGIST       "Реєстрація програми..."
+    IDS_CONFIRM_CANCEL      "Скасувати встановлення?"
+    IDS_CONFIRM_UNINSTALL   "CLCL буде видалено.\nВи впевнені?"
+    IDS_CONFIRM_DELETE_DATA "Також видалити налаштування та історію?"
+    IDS_UNINSTALL_COMPLETE  "CLCL успішно видалено."
+    IDS_ERR_PATH_EMPTY      "Вкажіть папку призначення."
+    IDS_ERR_PAYLOAD         "Не вдалося прочитати файли для встановлення."
+    IDS_ERR_CREATE_DIR      "Не вдалося створити папку.\n%s"
+    IDS_ERR_EXTRACT         "Не вдалося розпакувати файл.\n%s"
+    IDS_ERR_REGIST          "Не вдалося зареєструвати програму."
+    IDS_ERR_NOT_INSTALLED   "CLCL не встановлено."
+    IDS_ERR_RUN             "Не вдалося запустити CLCL."
+    IDS_RUNNING             "CLCL запущено.\nЗавершіть роботу CLCL, потім натисніть [Повторити]."
+    IDS_FILE_LOCKED         "Не вдалося оновити файл.\n%s\n\nЯкщо CLCL запущено, завершіть роботу CLCL та натисніть [Повторити]."
+END
