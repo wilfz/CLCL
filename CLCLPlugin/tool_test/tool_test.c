@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * tool_test
  *
  * tool_test.c
@@ -24,7 +24,7 @@ HINSTANCE hInst;
 /* Local Function Prototypes */
 
 /*
- * DllMain - ƒƒCƒ“
+ * DllMain - ãƒ¡ã‚¤ãƒ³
  */
 int WINAPI DllMain(HINSTANCE hInstance, DWORD fdwReason, PVOID pvReserved)
 {
@@ -42,17 +42,17 @@ int WINAPI DllMain(HINSTANCE hInstance, DWORD fdwReason, PVOID pvReserved)
 }
 
 /*
- * get_tool_info_w - ƒc[ƒ‹î•ñæ“¾
+ * get_tool_info_w - ãƒ„ãƒ¼ãƒ«æƒ…å ±å–å¾—
  * Get tool information
  *
- *	ˆø” / argument:
- *		hWnd - ŒÄ‚Ño‚µŒ³ƒEƒBƒ“ƒhƒE / the calling window
- *		index - æ“¾‚ÌƒCƒ“ƒfƒbƒNƒX (0`) / the index of the acquisition (from 0)
- *		tgi - ƒc[ƒ‹æ“¾î•ñ / tool retrieval information
+ *	å¼•æ•° / argument:
+ *		hWnd - å‘¼ã³å‡ºã—å…ƒã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ / the calling window
+ *		index - å–å¾—ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ (0ï½) / the index of the acquisition (from 0)
+ *		tgi - ãƒ„ãƒ¼ãƒ«å–å¾—æƒ…å ± / tool retrieval information
  *
- *	–ß‚è’l / Return value:
- *		TRUE - Ÿ‚Éæ“¾‚·‚éƒc[ƒ‹‚ ‚è / has tools to get next
- *		FALSE - æ“¾‚ÌI—¹ / end of acquisition
+ *	æˆ»ã‚Šå€¤ / Return value:
+ *		TRUE - æ¬¡ã«å–å¾—ã™ã‚‹ãƒ„ãƒ¼ãƒ«ã‚ã‚Š / has tools to get next
+ *		FALSE - å–å¾—ã®çµ‚äº† / end of acquisition
  */
 __declspec(dllexport) BOOL CALLBACK get_tool_info_w(const HWND hWnd, const int index, TOOL_GET_INFO *tgi)
 {
@@ -117,15 +117,15 @@ __declspec(dllexport) BOOL CALLBACK get_tool_info_w(const HWND hWnd, const int i
 }
 
 /*
- * test1 - ƒAƒCƒeƒ€“à‚Ì“Á’èŒ`®‚ğíœ
+ * test1 - ã‚¢ã‚¤ãƒ†ãƒ å†…ã®ç‰¹å®šå½¢å¼ã‚’å‰Šé™¤
  * test1 - Remove specific format in item 
  *
- *	ˆø” / argument:
- *		hWnd - ŒÄ‚Ño‚µŒ³ƒEƒBƒ“ƒhƒE / the calling window
- *		tei - ƒc[ƒ‹Àsî•ñ / tool execution information
- *		tdi - ƒc[ƒ‹—pƒAƒCƒeƒ€î•ñ / item information for tools
+ *	å¼•æ•° / argument:
+ *		hWnd - å‘¼ã³å‡ºã—å…ƒã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ / the calling window
+ *		tei - ãƒ„ãƒ¼ãƒ«å®Ÿè¡Œæƒ…å ± / tool execution information
+ *		tdi - ãƒ„ãƒ¼ãƒ«ç”¨ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ± / item information for tools
  *
- *	–ß‚è’l / Return value:
+ *	æˆ»ã‚Šå€¤ / Return value:
  *		TOOL_
  */
 __declspec(dllexport) int CALLBACK test1(const HWND hWnd, TOOL_EXEC_INFO *tei, TOOL_DATA_INFO *tdi)
@@ -135,7 +135,7 @@ __declspec(dllexport) int CALLBACK test1(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 
 	for (; tdi != NULL; tdi = tdi->next) {
 		if (tdi->di->type == TYPE_ITEM) {
-			// Œ`®‚ÌŒŸõ
+			// å½¢å¼ã®æ¤œç´¢
 			// Format search 
 			pdi = NULL;
 			for (cdi = tdi->di->child; cdi != NULL && lstrcmpi(cdi->format_name, TEXT("TEXT")) != 0; cdi = cdi->next) {
@@ -144,7 +144,7 @@ __declspec(dllexport) int CALLBACK test1(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 			if (cdi == NULL) {
 				continue;
 			}
-			// Œ`®‚ğƒŠƒXƒg‚©‚çíœ
+			// å½¢å¼ã‚’ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
 			// Remove format from list
 			if (pdi == NULL) {
 				tdi->di->child = cdi->next;
@@ -152,12 +152,12 @@ __declspec(dllexport) int CALLBACK test1(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 				pdi->next = cdi->next;
 			}
 			cdi->next = NULL;
-			// ƒAƒCƒeƒ€‚Ì‰ğ•ú
+			// ã‚¢ã‚¤ãƒ†ãƒ ã®è§£æ”¾
 			// Release items 
 			SendMessage(hWnd, WM_ITEM_FREE, 0, (LPARAM)cdi);
 		}
 	}
-	// ƒAƒCƒeƒ€‚Ì•Ï‰»‚ğ’Ê’m
+	// ã‚¢ã‚¤ãƒ†ãƒ ã®å¤‰åŒ–ã‚’é€šçŸ¥
 	// Notify item changes 
 	if (tei->call_type & CALLTYPE_HISTORY) {
 		SendMessage(hWnd, WM_HISTORY_CHANGED, 0, 0);
@@ -168,7 +168,7 @@ __declspec(dllexport) int CALLBACK test1(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 }
 
 /*
- * test2 - ƒAƒCƒeƒ€‚Ìíœ
+ * test2 - ã‚¢ã‚¤ãƒ†ãƒ ã®å‰Šé™¤
  * test2 - Delete item
  */
 __declspec(dllexport) int CALLBACK test2(const HWND hWnd, TOOL_EXEC_INFO *tei, TOOL_DATA_INFO *tdi)
@@ -179,7 +179,7 @@ __declspec(dllexport) int CALLBACK test2(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 		return TOOL_SUCCEED;
 	}
 
-	// ƒAƒCƒeƒ€‚ğƒŠƒXƒg‚©‚çíœ
+	// ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
 	// Remove item from list
 	if (di->child == tdi->di) {
 		di->child = tdi->di->next;
@@ -192,11 +192,11 @@ __declspec(dllexport) int CALLBACK test2(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 		di->next = tdi->di->next;
 	}
 	tdi->di->next = NULL;
-	// ƒAƒCƒeƒ€‚Ì‰ğ•ú
+	// ã‚¢ã‚¤ãƒ†ãƒ ã®è§£æ”¾
 	// Release items 
 	SendMessage(hWnd, WM_ITEM_FREE, 0, (LPARAM)tdi->di);
 
-	// ƒAƒCƒeƒ€‚Ì•Ï‰»‚ğ’Ê’m
+	// ã‚¢ã‚¤ãƒ†ãƒ ã®å¤‰åŒ–ã‚’é€šçŸ¥
 	// Notify item changes 
 	if (tei->call_type & CALLTYPE_HISTORY) {
 		SendMessage(hWnd, WM_HISTORY_CHANGED, 0, 0);
@@ -207,7 +207,7 @@ __declspec(dllexport) int CALLBACK test2(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 }
 
 /*
- * test3 - ƒAƒCƒeƒ€‚Ì•Û‘¶
+ * test3 - ã‚¢ã‚¤ãƒ†ãƒ ã®ä¿å­˜
  * test3 - Save item
  */
 __declspec(dllexport) int CALLBACK test3(const HWND hWnd, TOOL_EXEC_INFO *tei, TOOL_DATA_INFO *tdi)
@@ -229,19 +229,19 @@ __declspec(dllexport) int CALLBACK test3(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 	of.lpstrFile = file_name;
 	of.nMaxFile = MAX_PATH - 1;
 	of.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
-	// •Û‘¶î•ñæ“¾‚Æƒtƒ@ƒCƒ‹–¼‘I‘ğ
+	// ä¿å­˜æƒ…å ±å–å¾—ã¨ãƒ•ã‚¡ã‚¤ãƒ«åé¸æŠ
 	// Get saved information and select file name
 	if (SendMessage(hWnd, WM_ITEM_GET_SAVE_INFO, (WPARAM)&of, (LPARAM)di) >= 0 && GetSaveFileName(&of) == FALSE) {
 		return TOOL_CANCEL;
 	}
-	// ƒAƒCƒeƒ€‚ğƒtƒ@ƒCƒ‹‚É•Û‘¶
+	// ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
 	// Save item to file
 	SendMessage(hWnd, WM_ITEM_TO_FILE, (WPARAM)file_name, (LPARAM)di);
 	return TOOL_SUCCEED;
 }
 
 /*
- * test4 - ƒtƒ@ƒCƒ‹‚©‚çƒeƒLƒXƒgŒ`®‚ÌƒAƒCƒeƒ€‚ğì¬
+ * test4 - ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ†ã‚­ã‚¹ãƒˆå½¢å¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’ä½œæˆ
  * test4 - Create a text item from a file
  */
 __declspec(dllexport) int CALLBACK test4(const HWND hWnd, TOOL_EXEC_INFO *tei, TOOL_DATA_INFO *tdi)
@@ -251,7 +251,7 @@ __declspec(dllexport) int CALLBACK test4(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 	DATA_INFO *history_di;
 	DATA_INFO *di;
 
-	// —š—ğ‚Ìæ“¾
+	// å±¥æ­´ã®å–å¾—
 	// Get history
 	if ((history_di = (DATA_INFO *)SendMessage(hWnd, WM_HISTORY_GET_ROOT, 0, 0)) == NULL) {
 		return TOOL_SUCCEED;
@@ -267,12 +267,12 @@ __declspec(dllexport) int CALLBACK test4(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 	of.lpstrFile = file_name;
 	of.nMaxFile = MAX_PATH - 1;
 	of.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
-	// •Û‘¶î•ñæ“¾‚Æƒtƒ@ƒCƒ‹–¼‘I‘ğ
+	// ä¿å­˜æƒ…å ±å–å¾—ã¨ãƒ•ã‚¡ã‚¤ãƒ«åé¸æŠ
 	// Get saved information and select file name
 	if (SendMessage(hWnd, WM_ITEM_GET_OPEN_INFO, (WPARAM)&of, (LPARAM)TEXT("TEXT")) >= 0 && GetOpenFileName(&of) == FALSE) {
 		return TOOL_CANCEL;
 	}
-	// ƒAƒCƒeƒ€‚Ìì¬
+	// ã‚¢ã‚¤ãƒ†ãƒ ã®ä½œæˆ
 	// Creating an item
 	if ((di = (DATA_INFO *)SendMessage(hWnd, WM_ITEM_CREATE, TYPE_ITEM, 0)) == NULL) {
 		return TOOL_CANCEL;
@@ -281,22 +281,22 @@ __declspec(dllexport) int CALLBACK test4(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 		SendMessage(hWnd, WM_ITEM_FREE, 0, (LPARAM)di);
 		return TOOL_CANCEL;
 	}
-	// ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ñ‚ÅƒAƒCƒeƒ€‚Éİ’è
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚“ã§ã‚¢ã‚¤ãƒ†ãƒ ã«è¨­å®š
 	// Load a file and set it as an item
 	SendMessage(hWnd, WM_ITEM_FROM_FILE, (WPARAM)file_name, (LPARAM)di->child);
 
-	// —š—ğ‚É’Ç‰Á
+	// å±¥æ­´ã«è¿½åŠ 
 	// Add to history
 	di->next = history_di->child;
 	history_di->child = di;
-	// —š—ğ‚Ì•Ï‰»‚ğ’Ê’m
+	// å±¥æ­´ã®å¤‰åŒ–ã‚’é€šçŸ¥
 	// Notify history changes
 	SendMessage(hWnd, WM_HISTORY_CHANGED, 0, 0);
 	return TOOL_SUCCEED;
 }
 
 /*
- * test5 - ƒAƒCƒeƒ€‚Ìƒ^ƒCƒgƒ‹‚ğ•\¦
+ * test5 - ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¡¨ç¤º
  * test5 - Show item title
  */
 __declspec(dllexport) int CALLBACK test5(const HWND hWnd, TOOL_EXEC_INFO *tei, TOOL_DATA_INFO *tdi)
@@ -304,26 +304,26 @@ __declspec(dllexport) int CALLBACK test5(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 	DATA_INFO *di;
 	TCHAR buf[BUF_SIZE];
 
-	// ƒrƒ…[ƒA‚Ì‘I‘ğƒAƒCƒeƒ€æ“¾
+	// ãƒ“ãƒ¥ãƒ¼ã‚¢ã®é¸æŠã‚¢ã‚¤ãƒ†ãƒ å–å¾—
 	// Get selected items in the viewer
 	if ((di = (DATA_INFO *)SendMessage(hWnd, WM_VIEWER_GET_SELECTION, 0, 0)) != NULL) {
-		// ‘I‘ğƒAƒCƒeƒ€‚Ìƒ^ƒCƒgƒ‹‚ğ•\¦
+		// é¸æŠã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¡¨ç¤º
 		// Show title of selected item
 		SendMessage(hWnd, WM_ITEM_GET_TITLE, (WPARAM)buf, (LPARAM)di);
 		MessageBox(hWnd, buf, TEXT("sel item"), 0);
 	}
 
-	// —š—ğ‚Ìæ“¾
+	// å±¥æ­´ã®å–å¾—
 	// Get history
 	if ((di = (DATA_INFO *)SendMessage(hWnd, WM_HISTORY_GET_ROOT, 0, 0)) == NULL) {
 		return TOOL_SUCCEED;
 	}
 	for (di = di->child; di != NULL; di = di->next) {
-		// ƒAƒCƒeƒ€‚Ìƒ^ƒCƒgƒ‹‚ğæ“¾
+		// ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’å–å¾—
 		// Get the title of the item
 		SendMessage(hWnd, WM_ITEM_GET_TITLE, (WPARAM)buf, (LPARAM)di);
 		if (MessageBox(hWnd, buf, TEXT("title"), MB_OKCANCEL) == IDCANCEL) {
-			// ƒrƒ…[ƒA‚ÅƒAƒCƒeƒ€‚ğ‘I‘ğó‘Ô‚É‚·‚é
+			// ãƒ“ãƒ¥ãƒ¼ã‚¢ã§ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 			// Select an item in the viewer 
 			SendMessage(hWnd, WM_VIEWER_SELECT_ITEM, 0, (LPARAM)di);
 			break;
@@ -333,7 +333,7 @@ __declspec(dllexport) int CALLBACK test5(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 }
 
 /*
- * test6 - ƒf[ƒ^‚ğ•Êƒtƒ@ƒCƒ‹‚É•Û‘¶
+ * test6 - ãƒ‡ãƒ¼ã‚¿ã‚’åˆ¥ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
  * test6 - Save the data in a separate file
  */
 __declspec(dllexport) int CALLBACK test6(const HWND hWnd, TOOL_EXEC_INFO *tei, TOOL_DATA_INFO *tdi)
@@ -365,7 +365,7 @@ __declspec(dllexport) int CALLBACK test6(const HWND hWnd, TOOL_EXEC_INFO *tei, T
 }
 
 /*
- * test7 - ƒeƒXƒg
+ * test7 - ãƒ†ã‚¹ãƒˆ
  * test7 - Test
  */
 __declspec(dllexport) int CALLBACK test7(const HWND hWnd, TOOL_EXEC_INFO *tei, TOOL_DATA_INFO *tdi)
