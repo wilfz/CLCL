@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * CLCL
  *
  * fmt_Bitmap.c
@@ -35,37 +35,57 @@
 
 /* Global Variables */
 static HICON bmp_icon;
+// èª­ã¿è¾¼ã¿æ¸ˆã¿ã®ã‚¢ã‚¤ã‚³ãƒ³ã®ã‚µã‚¤ã‚º
+static int bmp_icon_size;
 static HWND hBmpWnd;
 
 extern HINSTANCE hInst;
 extern OPTION_INFO option;
 
 /* Local Function Prototypes */
+static HICON bitmap_load_icon(const int icon_size);
 
 /*
- * bitmap_initialize - ‰Šú‰»
+ * bitmap_initialize - åˆæœŸåŒ–
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_initialize(void)
 {
-	if (bmp_icon == NULL) {
-		bmp_icon = LoadImage(hInst, MAKEINTRESOURCE(IDI_ICON_BITMAP), IMAGE_ICON, Scale(16), Scale(16), 0);
-	}
+	bitmap_load_icon(GetSystemMetricsDpi(SM_CXSMICON));
 	bmpview_regist(hInst);
 	init_gdip();
 	return TRUE;
 }
 
 /*
- * bitmap_get_icon - Œ`®—p‚ÌƒAƒCƒRƒ“‚ğæ“¾
+ * bitmap_load_icon - å½¢å¼ç”¨ã®ã‚¢ã‚¤ã‚³ãƒ³ã®èª­ã¿è¾¼ã¿
  */
-__declspec(dllexport) HICON CALLBACK bitmap_get_icon(const int icon_size, BOOL *free_icon)
+static HICON bitmap_load_icon(const int icon_size)
 {
-	*free_icon = FALSE;
+	if (icon_size <= 0) {
+		return bmp_icon;
+	}
+	if (bmp_icon != NULL && bmp_icon_size == icon_size) {
+		return bmp_icon;
+	}
+	if (bmp_icon != NULL) {
+		DestroyIcon(bmp_icon);
+	}
+	bmp_icon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDI_ICON_BITMAP), IMAGE_ICON, icon_size, icon_size, 0);
+	bmp_icon_size = icon_size;
 	return bmp_icon;
 }
 
 /*
- * bitmap_free - I—¹ˆ—
+ * bitmap_get_icon - å½¢å¼ç”¨ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’å–å¾—
+ */
+__declspec(dllexport) HICON CALLBACK bitmap_get_icon(const int icon_size, BOOL *free_icon)
+{
+	*free_icon = FALSE;
+	return bitmap_load_icon(icon_size);
+}
+
+/*
+ * bitmap_free - çµ‚äº†å‡¦ç†
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_free(void)
 {
@@ -73,12 +93,13 @@ __declspec(dllexport) BOOL CALLBACK bitmap_free(void)
 		DestroyIcon(bmp_icon);
 		bmp_icon = NULL;
 	}
+	bmp_icon_size = 0;
 	shutdown_gdip();
 	return TRUE;
 }
 
 /*
- * bitmap_initialize_item - ƒAƒCƒeƒ€î•ñ‚Ì‰Šú‰»
+ * bitmap_initialize_item - ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®åˆæœŸåŒ–
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_initialize_item(DATA_INFO *di, const BOOL set_init_data)
 {
@@ -86,7 +107,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_initialize_item(DATA_INFO *di, const 
 }
 
 /*
- * bitmap_copy_data - ƒf[ƒ^‚ÌƒRƒs[
+ * bitmap_copy_data - ãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ”ãƒ¼
  */
 __declspec(dllexport) HANDLE CALLBACK bitmap_copy_data(const TCHAR *format_name, const HANDLE data, DWORD *ret_size)
 {
@@ -94,7 +115,7 @@ __declspec(dllexport) HANDLE CALLBACK bitmap_copy_data(const TCHAR *format_name,
 }
 
 /*
- * bitmap_data_to_bytes - ƒf[ƒ^‚ğƒoƒCƒg—ñ‚É•ÏŠ·
+ * bitmap_data_to_bytes - ãƒ‡ãƒ¼ã‚¿ã‚’ãƒã‚¤ãƒˆåˆ—ã«å¤‰æ›
  */
 __declspec(dllexport) BYTE* CALLBACK bitmap_data_to_bytes(const DATA_INFO *di, DWORD *ret_size)
 {
@@ -102,7 +123,7 @@ __declspec(dllexport) BYTE* CALLBACK bitmap_data_to_bytes(const DATA_INFO *di, D
 }
 
 /*
- * bitmap_bytes_to_data - ƒoƒCƒg—ñ‚ğƒf[ƒ^‚É•ÏŠ·
+ * bitmap_bytes_to_data - ãƒã‚¤ãƒˆåˆ—ã‚’ãƒ‡ãƒ¼ã‚¿ã«å¤‰æ›
  */
 __declspec(dllexport) HANDLE CALLBACK bitmap_bytes_to_data(const TCHAR *format_name, const BYTE *data, DWORD *size)
 {
@@ -110,7 +131,7 @@ __declspec(dllexport) HANDLE CALLBACK bitmap_bytes_to_data(const TCHAR *format_n
 }
 
 /*
- * bitmap_get_file_info - ƒRƒ‚ƒ“ƒ_ƒCƒAƒƒOî•ñ‚Ìæ“¾
+ * bitmap_get_file_info - ã‚³ãƒ¢ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°æƒ…å ±ã®å–å¾—
  */
 __declspec(dllexport) int CALLBACK bitmap_get_file_info(const TCHAR *format_name, const DATA_INFO *di, OPENFILENAME *of, const BOOL mode)
 {
@@ -121,7 +142,7 @@ __declspec(dllexport) int CALLBACK bitmap_get_file_info(const TCHAR *format_name
 }
 
 /*
- * bitmap_data_to_file - ƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚É•Û‘¶
+ * bitmap_data_to_file - ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_data_to_file(DATA_INFO *di, const TCHAR *file_name, const int filter_index, TCHAR *err_str)
 {
@@ -156,19 +177,19 @@ __declspec(dllexport) BOOL CALLBACK bitmap_data_to_file(DATA_INFO *di, const TCH
 			hbmp = (HBITMAP)di->data;
 		}
 		if (lstrcmpi(ext, TEXT(".png")) == 0) {
-			// PNG‚Å•Û‘¶
+			// PNGã§ä¿å­˜
 			if (save_png(hbmp, file_name) == 0) {
 				return FALSE;
 			}
 		}
 		else {
-			// JPEG‚Å•Û‘¶
+			// JPEGã§ä¿å­˜
 			if (save_jpeg(hbmp, file_name, 90) == 0) {
 				return FALSE;
 			}
 		}
 	} else {
-		// BMP‚Å•Û‘¶
+		// BMPã§ä¿å­˜
 		if (lstrcmpi(di->format_name, TEXT("BITMAP")) != 0) {
 			if ((mem = GlobalLock(di->data)) == NULL) {
 				message_get_error(GetLastError(), err_str);
@@ -182,7 +203,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_data_to_file(DATA_INFO *di, const TCH
 				return FALSE;
 			}
 		}
-		// BITMAPƒtƒ@ƒCƒ‹‚Ìì¬
+		// BITMAPãƒ•ã‚¡ã‚¤ãƒ«ã®ä½œæˆ
 		pbih = (PBITMAPINFOHEADER)mem;
 		if ((plt = pbih->biClrUsed) == 0) {
 			switch (pbih->biPlanes * pbih->biBitCount) {
@@ -220,7 +241,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_data_to_file(DATA_INFO *di, const TCH
 		CopyMemory(save_mem, &hdr, sizeof(BITMAPFILEHEADER));
 		CopyMemory(save_mem + sizeof(BITMAPFILEHEADER), mem, size);
 
-		// ƒtƒ@ƒCƒ‹‚É‘‚«‚Ş
+		// ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã‚€
 		if (file_write_buf(file_name, save_mem, sizeof(BITMAPFILEHEADER) + size, err_str) == FALSE) {
 			mem_free(&save_mem);
 			if (lstrcmpi(di->format_name, TEXT("BITMAP")) != 0) {
@@ -243,7 +264,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_data_to_file(DATA_INFO *di, const TCH
 }
 
 /*
- * bitmap_file_to_data - ƒtƒ@ƒCƒ‹‚©‚çƒf[ƒ^‚ğì¬
+ * bitmap_file_to_data - ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆ
  */
 __declspec(dllexport) HANDLE CALLBACK bitmap_file_to_data(const TCHAR *file_name, const TCHAR *format_name, DWORD *ret_size, TCHAR *err_str)
 {
@@ -262,14 +283,14 @@ __declspec(dllexport) HANDLE CALLBACK bitmap_file_to_data(const TCHAR *file_name
 				DeleteObject(hbmp);
 				return NULL;
 			}
-			// ƒRƒs[æŠm•Û
+			// ã‚³ãƒ”ãƒ¼å…ˆç¢ºä¿
 			if ((ret = GlobalAlloc(GHND, size)) == NULL) {
 				message_get_error(GetLastError(), err_str);
 				mem_free(&data);
 				DeleteObject(hbmp);
 				return NULL;
 			}
-			// ƒRƒs[æƒƒbƒN
+			// ã‚³ãƒ”ãƒ¼å…ˆãƒ­ãƒƒã‚¯
 			if ((mem = GlobalLock(ret)) == NULL) {
 				message_get_error(GetLastError(), err_str);
 				GlobalFree(ret);
@@ -277,9 +298,9 @@ __declspec(dllexport) HANDLE CALLBACK bitmap_file_to_data(const TCHAR *file_name
 				DeleteObject(hbmp);
 				return NULL;
 			}
-			// ƒRƒs[
+			// ã‚³ãƒ”ãƒ¼
 			CopyMemory(mem, data, size);
-			// ƒƒbƒN‰ğœ
+			// ãƒ­ãƒƒã‚¯è§£é™¤
 			GlobalUnlock(ret);
 
 			if (ret_size != NULL) {
@@ -299,27 +320,27 @@ __declspec(dllexport) HANDLE CALLBACK bitmap_file_to_data(const TCHAR *file_name
 		}
 	}
 	else {
-		// ƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+		// ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
 		if ((data = file_read_buf(file_name, &size, err_str)) == NULL) {
 			return NULL;
 		}
 		if (lstrcmpi(format_name, TEXT("BITMAP")) != 0) {
-			// ƒRƒs[æŠm•Û
+			// ã‚³ãƒ”ãƒ¼å…ˆç¢ºä¿
 			if ((ret = GlobalAlloc(GHND, size - sizeof(BITMAPFILEHEADER))) == NULL) {
 				message_get_error(GetLastError(), err_str);
 				mem_free(&data);
 				return NULL;
 			}
-			// ƒRƒs[æƒƒbƒN
+			// ã‚³ãƒ”ãƒ¼å…ˆãƒ­ãƒƒã‚¯
 			if ((mem = GlobalLock(ret)) == NULL) {
 				message_get_error(GetLastError(), err_str);
 				GlobalFree(ret);
 				mem_free(&data);
 				return NULL;
 			}
-			// ƒRƒs[
+			// ã‚³ãƒ”ãƒ¼
 			CopyMemory(mem, data + sizeof(BITMAPFILEHEADER), size - sizeof(BITMAPFILEHEADER));
-			// ƒƒbƒN‰ğœ
+			// ãƒ­ãƒƒã‚¯è§£é™¤
 			GlobalUnlock(ret);
 
 		}
@@ -337,7 +358,7 @@ __declspec(dllexport) HANDLE CALLBACK bitmap_file_to_data(const TCHAR *file_name
 }
 
 /*
- * bitmap_free_data - ƒf[ƒ^‚Ì‰ğ•ú
+ * bitmap_free_data - ãƒ‡ãƒ¼ã‚¿ã®è§£æ”¾
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_free_data(const TCHAR *format_name, HANDLE data)
 {
@@ -345,7 +366,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_free_data(const TCHAR *format_name, H
 }
 
 /*
- * bitmap_free_item - ƒAƒCƒeƒ€î•ñ‚Ì‰ğ•ú
+ * bitmap_free_item - ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®è§£æ”¾
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_free_item(DATA_INFO *di)
 {
@@ -353,7 +374,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_free_item(DATA_INFO *di)
 }
 
 /*
- * bitmap_get_menu_title - ƒƒjƒ…[ƒ^ƒCƒgƒ‹‚Ìæ“¾
+ * bitmap_get_menu_title - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚¿ã‚¤ãƒˆãƒ«ã®å–å¾—
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_get_menu_title(DATA_INFO *di)
 {
@@ -361,17 +382,17 @@ __declspec(dllexport) BOOL CALLBACK bitmap_get_menu_title(DATA_INFO *di)
 }
 
 /*
- * bitmap_get_menu_icon - ƒƒjƒ…[ƒ^ƒCƒgƒ‹
+ * bitmap_get_menu_icon - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚¿ã‚¤ãƒˆãƒ«
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_get_menu_icon(DATA_INFO *di, const int icon_size)
 {
-	di->menu_icon = bmp_icon;
+	di->menu_icon = bitmap_load_icon(icon_size);
 	di->free_icon = FALSE;
 	return TRUE;
 }
 
 /*
- * bitmap_get_menu_bitmap - ƒƒjƒ…[—pƒrƒbƒgƒ}ƒbƒv
+ * bitmap_get_menu_bitmap - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”¨ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_get_menu_bitmap(DATA_INFO *di, const int width, const int height)
 {
@@ -383,7 +404,6 @@ __declspec(dllexport) BOOL CALLBACK bitmap_get_menu_bitmap(DATA_INFO *di, const 
 	HBITMAP old_to_hbmp;
 	BITMAP bmp;
 	BYTE *mem;
-	OSVERSIONINFO osvi;
 
 	if (di->data == NULL) {
 		return FALSE;
@@ -399,7 +419,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_get_menu_bitmap(DATA_INFO *di, const 
 		hbmp = di->data;
 	}
 
-	// ƒƒjƒ…[‚É•\¦‚·‚éƒrƒbƒgƒ}ƒbƒv‚Ìì¬
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¡¨ç¤ºã™ã‚‹ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ä½œæˆ
 	GetObject(hbmp, sizeof(BITMAP), &bmp);
 
 	hdc = GetDC(NULL);
@@ -412,11 +432,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_get_menu_bitmap(DATA_INFO *di, const 
 	di->free_bitmap = TRUE;
 	old_to_hbmp = SelectObject(to_dc, di->menu_bitmap);
 
-	//OSƒo[ƒWƒ‡ƒ“‚Ìƒ`ƒFƒbƒN
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx(&osvi);
-	if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
-		(width < bmp.bmWidth || height < bmp.bmHeight)) {
+	if (width < bmp.bmWidth || height < bmp.bmHeight) {
 		SetStretchBltMode(to_dc, HALFTONE);
 		SetBrushOrgEx(to_dc, 0, 0, NULL);
 	} else {
@@ -440,7 +456,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_get_menu_bitmap(DATA_INFO *di, const 
 }
 
 /*
- * bitmap_get_tooltip_text - ƒƒjƒ…[—pƒc[ƒ‹ƒ`ƒbƒvƒeƒLƒXƒg
+ * bitmap_get_tooltip_text - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”¨ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ãƒ†ã‚­ã‚¹ãƒˆ
  */
 __declspec(dllexport) TCHAR* CALLBACK bitmap_get_tooltip_text(DATA_INFO *di)
 {
@@ -463,7 +479,7 @@ __declspec(dllexport) TCHAR* CALLBACK bitmap_get_tooltip_text(DATA_INFO *di)
 		hbmp = di->data;
 	}
 
-	// ‰æ‘œî•ñæ“¾
+	// ç”»åƒæƒ…å ±å–å¾—
 	GetObject(hbmp, sizeof(BITMAP), &bmp);
 	if (di->size < 1024) {
 		wsprintf(buf, TEXT("%u x %u (%d bytes)"), bmp.bmWidth, bmp.bmHeight, di->size);
@@ -479,7 +495,7 @@ __declspec(dllexport) TCHAR* CALLBACK bitmap_get_tooltip_text(DATA_INFO *di)
 }
 
 /*
- * bitmap_window_create - ƒf[ƒ^•\¦ƒEƒBƒ“ƒhƒE‚Ìì¬
+ * bitmap_window_create - ãƒ‡ãƒ¼ã‚¿è¡¨ç¤ºã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½œæˆ
  */
 __declspec(dllexport) HWND CALLBACK bitmap_window_create(const HWND parent_wnd)
 {
@@ -490,7 +506,7 @@ __declspec(dllexport) HWND CALLBACK bitmap_window_create(const HWND parent_wnd)
 }
 
 /*
- * bitmap_window_destroy - ƒf[ƒ^•\¦ƒEƒBƒ“ƒhƒE‚Ì”jŠü
+ * bitmap_window_destroy - ãƒ‡ãƒ¼ã‚¿è¡¨ç¤ºã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç ´æ£„
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_window_destroy(const HWND hWnd)
 {
@@ -499,7 +515,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_window_destroy(const HWND hWnd)
 }
 
 /*
- * bitmap_window_show_data - ƒf[ƒ^‚Ì•\¦
+ * bitmap_window_show_data - ãƒ‡ãƒ¼ã‚¿ã®è¡¨ç¤º
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_window_show_data(const HWND hWnd, DATA_INFO *di, const BOOL lock)
 {
@@ -508,7 +524,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_window_show_data(const HWND hWnd, DAT
 }
 
 /*
- * bitmap_window_save_data - ƒf[ƒ^‚Ì•Û‘¶
+ * bitmap_window_save_data - ãƒ‡ãƒ¼ã‚¿ã®ä¿å­˜
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_window_save_data(const HWND hWnd, DATA_INFO *di)
 {
@@ -516,7 +532,7 @@ __declspec(dllexport) BOOL CALLBACK bitmap_window_save_data(const HWND hWnd, DAT
 }
 
 /*
- * bitmap_window_hide_data - ƒf[ƒ^‚Ì”ñ•\¦
+ * bitmap_window_hide_data - ãƒ‡ãƒ¼ã‚¿ã®éè¡¨ç¤º
  */
 __declspec(dllexport) BOOL CALLBACK bitmap_window_hide_data(const HWND hWnd, DATA_INFO *di)
 {

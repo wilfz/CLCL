@@ -1,4 +1,4 @@
-/*
+Ôªø/*
  * CLCL
  *
  * Font.c
@@ -13,6 +13,8 @@
 #include <windows.h>
 #undef  _INC_OLE
 
+#include "dpi.h"
+
 /* Define */
 
 /* Global Variables */
@@ -20,18 +22,16 @@
 /* Local Function Prototypes */
 
 /*
- * font_create - ÉtÉHÉìÉgÇçÏê¨Ç∑ÇÈ
+ * font_create - „Éï„Ç©„É≥„Éà„Çí‰ΩúÊàê„Åô„Çã
  */
 HFONT font_create(const TCHAR *FontName, const int FontSize, const int Charset, const int weight, const BOOL italic, const BOOL fixed)
 {
 	LOGFONT lf;
-	HDC hdc;
 
 	ZeroMemory(&lf, sizeof(LOGFONT));
 
-	hdc = GetDC(NULL);
-	lf.lfHeight = -(int)((FontSize * GetDeviceCaps(hdc, LOGPIXELSY)) / 72);
-	ReleaseDC(NULL, hdc);
+	// „Éï„Ç©„É≥„Éà„ÅÆÈ´ò„Åï
+	lf.lfHeight = -MulDiv(FontSize, GetDpi(), 72);
 
 	lf.lfWidth = 0;
 	lf.lfEscapement = 0;
@@ -47,9 +47,9 @@ HFONT font_create(const TCHAR *FontName, const int FontSize, const int Charset, 
 	lf.lfPitchAndFamily = (BYTE)(((fixed == TRUE) ? FIXED_PITCH : DEFAULT_PITCH) | FF_DONTCARE);
 	if (*FontName == TEXT('\0')) {
 		NONCLIENTMETRICS ncm;
-		ncm.cbSize = sizeof(NONCLIENTMETRICS);
-		SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0);
-		lstrcpy(lf.lfFaceName, ncm.lfCaptionFont.lfFaceName);
+		if (GetNonClientMetricsDpi(&ncm) != FALSE) {
+			lstrcpy(lf.lfFaceName, ncm.lfCaptionFont.lfFaceName);
+		}
 	} else {
 		lstrcpy(lf.lfFaceName, FontName);
 	}

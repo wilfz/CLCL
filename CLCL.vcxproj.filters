@@ -21,10 +21,16 @@
     <ClCompile Include="Bitmap.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Caret.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ClipBoard.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Container.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DarkMode.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data.c">
@@ -157,10 +163,16 @@
     <ClInclude Include="Bitmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Caret.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="ClipBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Container.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DarkMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data.h">

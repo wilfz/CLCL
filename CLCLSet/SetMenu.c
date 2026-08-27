@@ -1,4 +1,4 @@
-/*
+Ôªø/*
  * CLCLSet
  *
  * SetMenu.c
@@ -18,6 +18,7 @@
 #include "..\Ini.h"
 #include "..\Message.h"
 #include "..\dpi.h"
+#include "..\DarkMode.h"
 
 #include "CLCLSet.h"
 
@@ -29,13 +30,13 @@
 extern HINSTANCE hInst;
 extern int prop_ret;
 
-// ÉIÉvÉVÉáÉì
+// „Ç™„Éó„Ç∑„Éß„É≥
 extern OPTION_INFO option;
 
 /* Local Function Prototypes */
 
 /*
- * set_menu_proc - ÉÅÉjÉÖÅ[ê›íËÇÃÉvÉçÉVÅ[ÉWÉÉ
+ * set_menu_proc - „É°„Éã„É•„ÉºË®≠ÂÆö„ÅÆ„Éó„É≠„Ç∑„Éº„Ç∏„É£
  */
 BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -49,11 +50,13 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	switch (uMsg) {
 	case WM_INITDIALOG:
+		// „ÉÄ„Éº„ÇØ„É¢„Éº„Éâ„ÅÆË®≠ÂÆö
+		dark_mode_set_dialog(hDlg);
 #ifdef OP_XP_STYLE
 		// XP
 		hTheme = open_theme(GetDlgItem(hDlg, IDC_BUTTON_FORMAT_SELECT), L"SCROLLBAR");
 #endif	// OP_XP_STYLE
-		// ÉXÉsÉìÉRÉìÉgÉçÅ[ÉãÇÃê›íË
+		// „Çπ„Éî„É≥„Ç≥„É≥„Éà„É≠„Éº„É´„ÅÆË®≠ÂÆö
 		SendDlgItemMessage(hDlg, IDC_SPIN_ICON_SIZE, UDM_SETRANGE, 0, (LPARAM)MAKELONG(UD_MAXVAL, 1));
 		SendDlgItemMessage(hDlg, IDC_SPIN_BMP_WIDTH, UDM_SETRANGE, 0, (LPARAM)MAKELONG(UD_MAXVAL, 1));
 		SendDlgItemMessage(hDlg, IDC_SPIN_BMP_HEIGHT, UDM_SETRANGE, 0, (LPARAM)MAKELONG(UD_MAXVAL, 1));
@@ -61,11 +64,11 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		SendDlgItemMessage(hDlg, IDC_SPIN_MAX_WIDTH, UDM_SETRANGE, 0, (LPARAM)MAKELONG(UD_MAXVAL, 1));
 
 		CheckDlgButton(hDlg, IDC_CHECK_SHOW_ICON, option.menu_show_icon);
-		SetDlgItemInt(hDlg, IDC_EDIT_ICON_SIZE, UnScale(option.menu_icon_size), FALSE);
+		SetDlgItemInt(hDlg, IDC_EDIT_ICON_SIZE, option.menu_icon_size, FALSE);
 
 		CheckDlgButton(hDlg, IDC_CHECK_SHOW_BITMAP, option.menu_show_bitmap);
-		SetDlgItemInt(hDlg, IDC_EDIT_BMP_WIDTH, UnScale(option.menu_bitmap_width), FALSE);
-		SetDlgItemInt(hDlg, IDC_EDIT_BMP_HEIGHT, UnScale(option.menu_bitmap_height), FALSE);
+		SetDlgItemInt(hDlg, IDC_EDIT_BMP_WIDTH, option.menu_bitmap_width, FALSE);
+		SetDlgItemInt(hDlg, IDC_EDIT_BMP_HEIGHT, option.menu_bitmap_height, FALSE);
 
 		CheckDlgButton(hDlg, IDC_CHECK_SHOW_TOOLTIP, option.menu_show_tooltip);
 		SetDlgItemInt(hDlg, IDC_EDIT_SHOW_DELAY, option.tooltip_show_delay, FALSE);
@@ -75,7 +78,7 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		CheckDlgButton(hDlg, IDC_CHECK_ATTACH_PROCESS, option.menu_attach_process);
 		CheckDlgButton(hDlg, IDC_CHECK_BREAK, option.menu_break);
 		SendDlgItemMessage(hDlg, IDC_EDIT_TEXT_FORMAT, WM_SETTEXT, 0, (LPARAM)option.menu_text_format);
-		SetDlgItemInt(hDlg, IDC_EDIT_MAX_WIDTH, UnScale(option.menu_max_width), FALSE);
+		SetDlgItemInt(hDlg, IDC_EDIT_MAX_WIDTH, option.menu_max_width, FALSE);
 
 		SendMessage(hDlg, WM_COMMAND, IDC_CHECK_SHOW_ICON, 0);
 		SendMessage(hDlg, WM_COMMAND, IDC_CHECK_SHOW_TOOLTIP, 0);
@@ -91,7 +94,7 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_DRAWITEM:
-		// É{É^ÉìÇÃï`âÊ
+		// „Éú„Çø„É≥„ÅÆÊèèÁîª
 #ifdef OP_XP_STYLE
 		if (hTheme != 0) {
 			draw_theme_scroll((LPDRAWITEMSTRUCT)lParam, DFCS_SCROLLRIGHT, hTheme);
@@ -105,7 +108,7 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 #ifdef OP_XP_STYLE
 	case WM_THEMECHANGED:
-		// ÉeÅ[É}ÇÃïœçX
+		// „ÉÜ„Éº„Éû„ÅÆÂ§âÊõ¥
 		if (hTheme != 0) {
 			close_theme(hTheme);
 		}
@@ -144,7 +147,7 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 
 		case IDC_BUTTON_FORMAT_SELECT:
-			// ÉÅÉjÉÖÅ[ÇÃçÏê¨
+			// „É°„Éã„É•„Éº„ÅÆ‰ΩúÊàê
 			hMenu = CreatePopupMenu();
 			AppendMenu(hMenu, MF_STRING, 1, message_get_res(IDS_MENU_FORMAT_1));
 			AppendMenu(hMenu, MF_STRING, 2, message_get_res(IDS_MENU_FORMAT_2));
@@ -158,7 +161,7 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			AppendMenu(hMenu, MF_STRING, 10, message_get_res(IDS_MENU_FORMAT_10));
 			AppendMenu(hMenu, MF_STRING, 11, message_get_res(IDS_MENU_FORMAT_11));
 
-			// ÉÅÉjÉÖÅ[ÇÃï\é¶
+			// „É°„Éã„É•„Éº„ÅÆË°®Á§∫
 			GetWindowRect(GetDlgItem(hDlg, LOWORD(wParam)), (LPRECT)&button_rect);
 			ret = TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_RETURNCMD, button_rect.right, button_rect.top, 0, hDlg, NULL);
 			DestroyMenu(hMenu);
@@ -166,7 +169,7 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				break;
 			}
 
-			// ï∂éöóÒÇÃíuÇ´ä∑Ç¶
+			// ÊñáÂ≠óÂàó„ÅÆÁΩÆ„ÅçÊèõ„Åà
 			SetFocus(GetDlgItem(hDlg, IDC_EDIT_TEXT_FORMAT));
 			switch (ret) {
 			case 1:
@@ -211,11 +214,11 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		case IDOK:
 			option.menu_show_icon = IsDlgButtonChecked(hDlg, IDC_CHECK_SHOW_ICON);
-			option.menu_icon_size = Scale(GetDlgItemInt(hDlg, IDC_EDIT_ICON_SIZE, NULL, FALSE));
+			option.menu_icon_size = GetDlgItemInt(hDlg, IDC_EDIT_ICON_SIZE, NULL, FALSE);
 
 			option.menu_show_bitmap = IsDlgButtonChecked(hDlg, IDC_CHECK_SHOW_BITMAP);
-			option.menu_bitmap_width = Scale(GetDlgItemInt(hDlg, IDC_EDIT_BMP_WIDTH, NULL, FALSE));
-			option.menu_bitmap_height = Scale(GetDlgItemInt(hDlg, IDC_EDIT_BMP_HEIGHT, NULL, FALSE));
+			option.menu_bitmap_width = GetDlgItemInt(hDlg, IDC_EDIT_BMP_WIDTH, NULL, FALSE);
+			option.menu_bitmap_height = GetDlgItemInt(hDlg, IDC_EDIT_BMP_HEIGHT, NULL, FALSE);
 
 			option.menu_show_tooltip = IsDlgButtonChecked(hDlg, IDC_CHECK_SHOW_TOOLTIP);
 			option.tooltip_show_delay = GetDlgItemInt(hDlg, IDC_EDIT_SHOW_DELAY, NULL, FALSE);
@@ -225,7 +228,7 @@ BOOL CALLBACK set_menu_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			option.menu_attach_process = IsDlgButtonChecked(hDlg, IDC_CHECK_ATTACH_PROCESS);
 			option.menu_break = IsDlgButtonChecked(hDlg, IDC_CHECK_BREAK);
 			alloc_get_text(GetDlgItem(hDlg, IDC_EDIT_TEXT_FORMAT), &option.menu_text_format);
-			option.menu_max_width = Scale(GetDlgItemInt(hDlg, IDC_EDIT_MAX_WIDTH, NULL, FALSE));
+			option.menu_max_width = GetDlgItemInt(hDlg, IDC_EDIT_MAX_WIDTH, NULL, FALSE);
 			prop_ret = 1;
 			break;
 

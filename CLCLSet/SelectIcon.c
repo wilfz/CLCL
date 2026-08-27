@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * CLCL
  *
  * SelectIcon.c
@@ -14,10 +14,16 @@
 #undef	_INC_OLE
 #include <commctrl.h>
 
+#include "..\dpi.h"
+#include "..\DarkMode.h"
+
 #include "resource.h"
 
 /* Define */
 #define BUF_SIZE						256
+
+// ã‚¢ã‚¤ã‚³ãƒ³ä¸€è¦§ã«è¡¨ç¤ºã™ã‚‹ã‚¢ã‚¤ã‚³ãƒ³ã®ã‚µã‚¤ã‚º
+#define ICONSIZE						32
 
 #define WM_LV_EVENT						(WM_APP + 100)
 
@@ -39,7 +45,7 @@ static int set_list_icon(const HWND hListView, const TCHAR *path, const int inde
 static BOOL CALLBACK select_icon_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 /*
- * listView_get_lparam - ƒAƒCƒeƒ€‚ÌLPARAM‚ğæ“¾
+ * listView_get_lparam - ã‚¢ã‚¤ãƒ†ãƒ ã®LPARAMã‚’å–å¾—
  */
 static LPARAM listView_get_lparam(const HWND hListView, const int i)
 {
@@ -53,7 +59,7 @@ static LPARAM listView_get_lparam(const HWND hListView, const int i)
 }
 
 /*
- * listview_notify_proc - ƒŠƒXƒgƒrƒ…[ƒƒbƒZ[ƒW
+ * listview_notify_proc - ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
  */
 static LRESULT listview_notify_proc(const HWND hWnd, const LPARAM lParam, const HWND hListView)
 {
@@ -66,18 +72,18 @@ static LRESULT listview_notify_proc(const HWND hWnd, const LPARAM lParam, const 
 	}
 
 	switch (plv->hdr.code) {
-	case LVN_ITEMCHANGED:		// ƒAƒCƒeƒ€‚Ì‘I‘ğó‘Ô‚Ì•ÏX
+	case LVN_ITEMCHANGED:		// ã‚¢ã‚¤ãƒ†ãƒ ã®é¸æŠçŠ¶æ…‹ã®å¤‰æ›´
 		return SendMessage(hWnd, WM_LV_EVENT, plv->hdr.code, lParam);
 	}
 
 	switch (CForm->code) {
-	case NM_DBLCLK:				// ƒ_ƒuƒ‹ƒNƒŠƒbƒN
+	case NM_DBLCLK:				// ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯
 		SendMessage(hWnd, WM_COMMAND, IDC_BUTTON_EDIT, 0);
 		return 1;
 	}
 
 	switch (LKey->hdr.code) {
-	case LVN_KEYDOWN:			// ƒL[ƒ_ƒEƒ“
+	case LVN_KEYDOWN:			// ã‚­ãƒ¼ãƒ€ã‚¦ãƒ³
 		if (LKey->wVKey == VK_DELETE) {
 			SendMessage(hWnd, WM_COMMAND, IDC_BUTTON_DELETE, 0);
 			return 1;
@@ -87,7 +93,7 @@ static LRESULT listview_notify_proc(const HWND hWnd, const LPARAM lParam, const 
 }
 
 /*
- * file_select - ƒtƒ@ƒCƒ‹‘I‘ğƒ_ƒCƒAƒƒO‚Ì•\¦
+ * file_select - ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º
  */
 static int file_select(const HWND hDlg, const TCHAR *oFilter, const int Index, TCHAR *ret)
 {
@@ -114,7 +120,7 @@ static int file_select(const HWND hDlg, const TCHAR *oFilter, const int Index, T
 }
 
 /*
- * set_list_icon - ƒŠƒXƒgƒrƒ…[‚ÉƒAƒCƒRƒ“ˆê——‚ğİ’è
+ * set_list_icon - ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ã‚³ãƒ³ä¸€è¦§ã‚’è¨­å®š
  */
 static int set_list_icon(const HWND hListView, const TCHAR *path, const int index)
 {
@@ -128,7 +134,7 @@ static int set_list_icon(const HWND hListView, const TCHAR *path, const int inde
 	int i, j;
 
 	SendMessage(hListView, WM_SETREDRAW, (WPARAM)FALSE, 0);
-	// ƒŠƒXƒgƒrƒ…[‚ÌƒNƒŠƒA
+	// ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¯ãƒªã‚¢
 	ListView_DeleteAllItems(hListView);
 
 	if (path == NULL) {
@@ -136,31 +142,31 @@ static int set_list_icon(const HWND hListView, const TCHAR *path, const int inde
 		UpdateWindow(hListView);
 		return 0;
 	}
-	// ƒAƒCƒRƒ“”æ“¾
+	// ã‚¢ã‚¤ã‚³ãƒ³æ•°å–å¾—
 	if ((icon_cnt = ExtractIconEx(path, -1, NULL, NULL, 1)) <= 0) {
 		SendMessage(hListView, WM_SETREDRAW, (WPARAM)TRUE, 0);
 		UpdateWindow(hListView);
 		return 0;
 	}
 
-	// ƒCƒ[ƒWƒŠƒXƒg‚Ìì¬Aİ’è
+	// ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã®ä½œæˆã€è¨­å®š
 	if ((icon_list = ListView_GetImageList(hListView, LVSIL_NORMAL)) == NULL) {
-		icon_list = ImageList_Create(32, 32, ILC_COLOR16 | ILC_MASK, 0, 0);
-		ImageList_SetBkColor(icon_list, GetSysColor(COLOR_WINDOW));
+		icon_list = ImageList_Create(Scale(ICONSIZE), Scale(ICONSIZE), ILC_COLOR32 | ILC_MASK, 0, 0);
+		ImageList_SetBkColor(icon_list, dark_mode_get_color(COLOR_WINDOW));
 		ListView_SetImageList(hListView, icon_list, LVSIL_NORMAL);
 	} else {
 		ImageList_Remove(icon_list, -1);
 	}
 
 	for (i = 0; i < icon_cnt; i++) {
-		// ƒAƒCƒRƒ“‚Ì’Šo
+		// ã‚¢ã‚¤ã‚³ãƒ³ã®æŠ½å‡º
 		ExtractIconEx(path, i, &hIcon, &hsIcon, 1);
 		if (hIcon != NULL) {
-			// ƒCƒ[ƒWƒŠƒXƒg‚É’Ç‰Á
+			// ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«è¿½åŠ 
 			ret = ImageList_AddIcon(icon_list, hIcon);
 			DestroyIcon(hIcon);
 
-			// ƒŠƒXƒgƒrƒ…[‚ÉƒAƒCƒeƒ€‚ğ’Ç‰Á
+			// ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ 
 			wsprintf(buf, TEXT("%d"), i);
 			lvi.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM;
 			lvi.iItem = ListView_GetItemCount(hListView);
@@ -185,7 +191,7 @@ static int set_list_icon(const HWND hListView, const TCHAR *path, const int inde
 }
 
 /*
- * select_icon_proc - ƒAƒCƒRƒ“‘I‘ğƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+ * select_icon_proc - ã‚¢ã‚¤ã‚³ãƒ³é¸æŠã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
  */
 static BOOL CALLBACK select_icon_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -195,6 +201,8 @@ static BOOL CALLBACK select_icon_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 
 	switch (uMsg) {
 	case WM_INITDIALOG:
+		// ãƒ€ãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰ã®è¨­å®š
+		dark_mode_set_dialog(hDlg);
 		icon_info = (ICON_INFO *)lParam;
 		SendDlgItemMessage(hDlg, IDC_EDIT_FILE, WM_SETTEXT, 0, (LPARAM)icon_info->path);
 		set_list_icon(GetDlgItem(hDlg, IDC_LIST_ICON), icon_info->path, icon_info->index);
@@ -222,7 +230,7 @@ static BOOL CALLBACK select_icon_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 		switch (LOWORD(wParam)) {
 		case IDC_EDIT_FILE:
 			if (HIWORD(wParam) == EN_KILLFOCUS && SendDlgItemMessage(hDlg, IDC_EDIT_FILE, EM_GETMODIFY, 0, 0) == TRUE) {
-				// •ÏXƒAƒCƒRƒ“ˆê——‚ğæ“¾‚µ‚È‚¨‚·
+				// å¤‰æ›´æ™‚ã‚¢ã‚¤ã‚³ãƒ³ä¸€è¦§ã‚’å–å¾—ã—ãªãŠã™
 				SendDlgItemMessage(hDlg, IDC_EDIT_FILE, WM_GETTEXT, BUF_SIZE - 1, (LPARAM)buf);
 				set_list_icon(GetDlgItem(hDlg, IDC_LIST_ICON), buf, -1);
 				SendMessage(hDlg, WM_LV_EVENT, LVN_ITEMCHANGED, 0);
@@ -231,7 +239,7 @@ static BOOL CALLBACK select_icon_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 			break;
 
 		case IDC_BUTTON_BROWS:
-			// ƒAƒCƒRƒ“ƒtƒ@ƒCƒ‹‘I‘ğ
+			// ã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠ
 			if (file_select(hDlg, FILEFILTER_ICON, 1, buf) == -1) {
 				break;
 			}
@@ -265,7 +273,7 @@ static BOOL CALLBACK select_icon_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 }
 
 /*
- * SelectIcon - ƒAƒCƒRƒ“‘I‘ğƒEƒBƒ“ƒhƒE‚Ì•\¦
+ * SelectIcon - ã‚¢ã‚¤ã‚³ãƒ³é¸æŠã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤º
  */
 int select_icon(const HINSTANCE hInst, const HWND hWnd, TCHAR *path, const int index)
 {

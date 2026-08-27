@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * CLCL
  *
  * Menu.c
@@ -25,27 +25,67 @@
 #include "Format.h"
 #include "Font.h"
 #include "dpi.h"
+#include "DarkMode.h"
 
 #include "resource.h"
 
 /* Define */
-#define LICONSIZE			32
-#define SICONSIZE			16
+// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ã‚µã‚¤ã‚º
+#define MENU_TEXT_MARGIN_LEFT		Scale(option.menu_text_margin_left)
+#define MENU_TEXT_MARGIN_RIGHT		Scale(option.menu_text_margin_right)
+#define MENU_TEXT_MARGIN_Y			Scale(option.menu_text_margin_y)
+#define MENU_SEPARATOR_HEIGHT		Scale(option.menu_separator_height)
+#define MENU_SEPARATOR_MARGIN_LEFT	Scale(option.menu_separator_margin_left)
+#define MENU_SEPARATOR_MARGIN_RIGHT	Scale(option.menu_separator_margin_right)
+#define MENU_MAX_WIDTH				Scale(option.menu_max_width)
+#define MENU_ICON_SIZE				Scale(option.menu_icon_size)
+#define MENU_ICON_MARGIN			Scale(option.menu_icon_margin)
+#define MENU_BITMAP_WIDTH			Scale(option.menu_bitmap_width)
+#define MENU_BITMAP_HEIGHT			Scale(option.menu_bitmap_height)
 
 /* Global Variables */
 static MENU_ITEM_INFO *menu_item_info;
 static int menu_item_cnt;
 
+#ifdef OP_XP_STYLE
+// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«
+typedef HTHEME (WINAPI *OPENTHEMEDATA_PROC)(HWND, LPCWSTR);
+typedef HRESULT (WINAPI *CLOSETHEMEDATA_PROC)(HTHEME);
+typedef HRESULT (WINAPI *DRAWTHEMEBACKGROUND_PROC)(HTHEME, HDC, int, int, const RECT *, const RECT *);
+typedef HRESULT (WINAPI *GETTHEMECOLOR_PROC)(HTHEME, int, int, int, COLORREF *);
+typedef HRESULT (WINAPI *GETTHEMEPARTSIZE_PROC)(HTHEME, HDC, int, int, RECT *, int, SIZE *);
+typedef BOOL (WINAPI *ISTHEMEACTIVE_PROC)(VOID);
+typedef BOOL (WINAPI *ISTHEMEPARTDEFINED_PROC)(HTHEME, int, int);
+
+static HMODULE menu_theme_lib;
+static HTHEME menu_theme;
+
+static OPENTHEMEDATA_PROC _MenuOpenThemeData;
+static CLOSETHEMEDATA_PROC _MenuCloseThemeData;
+static DRAWTHEMEBACKGROUND_PROC _MenuDrawThemeBackground;
+static GETTHEMECOLOR_PROC _MenuGetThemeColor;
+static GETTHEMEPARTSIZE_PROC _MenuGetThemePartSize;
+static ISTHEMEACTIVE_PROC _MenuIsThemeActive;
+static ISTHEMEPARTDEFINED_PROC _MenuIsThemePartDefined;
+#endif	// OP_XP_STYLE
+
+// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ãƒ¢ãƒ‹ã‚¿ã®çŸ©å½¢
+static RECT menu_monitor_rect;
+
+// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¡¨ç¤ºã™ã‚‹æ—¢å®šã®ã‚¢ã‚¤ã‚³ãƒ³
+static HICON menu_icon_default;
+static HICON menu_icon_folder;
+static int menu_icon_load_size;
+
 extern HINSTANCE hInst;
 
-extern HICON icon_menu_default;
-extern HICON icon_menu_folder;
-
-// ƒIƒvƒVƒ‡ƒ“
+// ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 extern OPTION_INFO option;
 
 /* Local Function Prototypes */
 static void menu_item_free(MENU_ITEM_INFO *mii, int cnt);
+static void menu_load_icons(void);
+static void menu_get_show_point(const POINT *mpos, POINT *ret);
 static MENU_ITEM_INFO *menu_id_to_menuitem(MENU_ITEM_INFO *mii, const int mcnt, const UINT id);
 static HICON menu_read_icon(const TCHAR *file_name, const int index, const int icon_size);
 static HFONT menu_create_font(void);
@@ -59,10 +99,18 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 static BOOL menu_set_item(const HDC hdc, const HMENU hMenu, MENU_ITEM_INFO *mii, const int cnt);
 static int menu_draw_bitmap(const HDC draw_dc, const DATA_INFO *di, const int height);
 static BOOL menu_draw_ckeck(const HDC draw_dc, const int left, const int top, const int right, const int bottom);
+static int menu_get_arrow_size(void);
+static void menu_draw_arrow(const HDC draw_dc, const RECT *rect, const COLORREF color);
 static TCHAR menu_get_accelerator(TCHAR *str);
+#ifdef OP_XP_STYLE
+static void menu_theme_open(const HWND hWnd);
+static void menu_theme_close(void);
+static COLORREF menu_theme_text_color(const int state_id, const COLORREF default_color);
+static BOOL menu_draw_check_theme(const HDC draw_dc, const int left, const int top, const int right, const int bottom);
+#endif	// OP_XP_STYLE
 
 /*
- * menu_item_free - ƒƒjƒ…[î•ñ‚Ì‰ğ•ú
+ * menu_item_free - ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã®è§£æ”¾
  */
 static void menu_item_free(MENU_ITEM_INFO *mii, int cnt)
 {
@@ -85,43 +133,207 @@ static void menu_item_free(MENU_ITEM_INFO *mii, int cnt)
 }
 
 /*
- * menu_free - ƒƒjƒ…[î•ñ‚Ì‰ğ•ú
+ * menu_free - ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã®è§£æ”¾
  */
 void menu_free(void)
 {
 	menu_item_free(menu_item_info, menu_item_cnt);
 	menu_item_info = NULL;
 	menu_item_cnt = 0;
+#ifdef OP_XP_STYLE
+	menu_theme_close();
+#endif	// OP_XP_STYLE
 }
 
 /*
- * menu_show - ƒ}ƒEƒX‚ÌˆÊ’u‚Éƒƒjƒ…[‚ğ•\¦‚·‚é
+ * menu_free_icons - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¡¨ç¤ºã™ã‚‹æ—¢å®šã®ã‚¢ã‚¤ã‚³ãƒ³ã®è§£æ”¾
+ */
+void menu_free_icons(void)
+{
+	if (menu_icon_default != NULL) {
+		DestroyIcon(menu_icon_default);
+		menu_icon_default = NULL;
+	}
+	if (menu_icon_folder != NULL) {
+		DestroyIcon(menu_icon_folder);
+		menu_icon_folder = NULL;
+	}
+	menu_icon_load_size = 0;
+}
+
+/*
+ * menu_load_icons - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¡¨ç¤ºã™ã‚‹æ—¢å®šã®ã‚¢ã‚¤ã‚³ãƒ³ã®èª­ã¿è¾¼ã¿
+ */
+static void menu_load_icons(void)
+{
+	int icon_size = MENU_ICON_SIZE;
+
+	if (menu_icon_load_size == icon_size) {
+		return;
+	}
+	menu_free_icons();
+	menu_icon_default = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDI_ICON_DEFAULT),
+		IMAGE_ICON, icon_size, icon_size, 0);
+	menu_icon_folder = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDI_ICON_FOLDER),
+		IMAGE_ICON, icon_size, icon_size, 0);
+	menu_icon_load_size = icon_size;
+}
+
+#ifdef OP_XP_STYLE
+/*
+ * menu_theme_open - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«ãƒ†ãƒ¼ãƒã‚’é–‹ã
+ */
+static void menu_theme_open(const HWND hWnd)
+{
+	menu_theme_close();
+
+	if (menu_theme_lib == NULL) {
+		if ((menu_theme_lib = LoadLibrary(TEXT("uxtheme.dll"))) == NULL) {
+			return;
+		}
+		_MenuOpenThemeData = (OPENTHEMEDATA_PROC)GetProcAddress(menu_theme_lib, "OpenThemeData");
+		_MenuCloseThemeData = (CLOSETHEMEDATA_PROC)GetProcAddress(menu_theme_lib, "CloseThemeData");
+		_MenuDrawThemeBackground = (DRAWTHEMEBACKGROUND_PROC)GetProcAddress(menu_theme_lib, "DrawThemeBackground");
+		_MenuGetThemeColor = (GETTHEMECOLOR_PROC)GetProcAddress(menu_theme_lib, "GetThemeColor");
+		_MenuGetThemePartSize = (GETTHEMEPARTSIZE_PROC)GetProcAddress(menu_theme_lib, "GetThemePartSize");
+		_MenuIsThemeActive = (ISTHEMEACTIVE_PROC)GetProcAddress(menu_theme_lib, "IsThemeActive");
+		_MenuIsThemePartDefined = (ISTHEMEPARTDEFINED_PROC)GetProcAddress(menu_theme_lib, "IsThemePartDefined");
+	}
+	if (_MenuOpenThemeData == NULL || _MenuCloseThemeData == NULL ||
+		_MenuDrawThemeBackground == NULL || _MenuGetThemeColor == NULL ||
+		_MenuGetThemePartSize == NULL || _MenuIsThemeActive == NULL ||
+		_MenuIsThemePartDefined == NULL) {
+		return;
+	}
+#ifdef MENU_COLOR
+	// è‰²ã®è¨­å®šãŒã‚ã‚‹å ´åˆã¯ç‹¬è‡ªæç”»ã‚’ä½¿ç”¨ã™ã‚‹
+	if (*option.menu_color_back.color_str != TEXT('\0') ||
+		*option.menu_color_text.color_str != TEXT('\0') ||
+		*option.menu_color_highlight.color_str != TEXT('\0') ||
+		*option.menu_color_highlighttext.color_str != TEXT('\0') ||
+		*option.menu_color_3d_shadow.color_str != TEXT('\0') ||
+		*option.menu_color_3d_highlight.color_str != TEXT('\0')) {
+		return;
+	}
+#endif	// MENU_COLOR
+	if (_MenuIsThemeActive() == FALSE) {
+		return;
+	}
+	// ãƒ€ãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰ã®é…è‰²ã¯ç‹¬è‡ªæç”»ã§è¡Œã†
+	if (dark_mode_is_dark() == TRUE) {
+		return;
+	}
+	if ((menu_theme = _MenuOpenThemeData(hWnd, L"MENU")) == NULL) {
+		return;
+	}
+	// ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒ‘ãƒ¼ãƒ„ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª (Vistaä»¥é™)
+	if (_MenuIsThemePartDefined(menu_theme, MENU_POPUPITEM, 0) == FALSE) {
+		_MenuCloseThemeData(menu_theme);
+		menu_theme = NULL;
+	}
+}
+
+/*
+ * menu_theme_close - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«ãƒ†ãƒ¼ãƒã‚’é–‰ã˜ã‚‹
+ */
+static void menu_theme_close(void)
+{
+	if (menu_theme != NULL) {
+		_MenuCloseThemeData(menu_theme);
+		menu_theme = NULL;
+	}
+}
+
+/*
+ * menu_theme_text_color - ãƒ†ãƒ¼ãƒã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼æ–‡å­—è‰²ã‚’å–å¾—
+ */
+static COLORREF menu_theme_text_color(const int state_id, const COLORREF default_color)
+{
+	COLORREF color;
+
+	if (menu_theme == NULL ||
+		_MenuGetThemeColor(menu_theme, MENU_POPUPITEM, state_id, TMT_TEXTCOLOR, &color) != S_OK) {
+		return default_color;
+	}
+	return color;
+}
+
+/*
+ * menu_draw_check_theme - ãƒ†ãƒ¼ãƒã§ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒã‚§ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚’æç”»
+ */
+static BOOL menu_draw_check_theme(const HDC draw_dc, const int left, const int top, const int right, const int bottom)
+{
+	RECT rect;
+	SIZE size;
+
+	if (menu_theme == NULL) {
+		return FALSE;
+	}
+	SetRect(&rect, left, top, right, bottom);
+	_MenuDrawThemeBackground(menu_theme, draw_dc, MENU_POPUPCHECKBACKGROUND, MCB_NORMAL, &rect, NULL);
+	if (_MenuGetThemePartSize(menu_theme, draw_dc, MENU_POPUPCHECK, MC_CHECKMARKNORMAL, NULL, TS_TRUE, &size) == S_OK &&
+		size.cx <= right - left && size.cy <= bottom - top) {
+		rect.left = left + ((right - left) - size.cx) / 2;
+		rect.top = top + ((bottom - top) - size.cy) / 2;
+		rect.right = rect.left + size.cx;
+		rect.bottom = rect.top + size.cy;
+	}
+	_MenuDrawThemeBackground(menu_theme, draw_dc, MENU_POPUPCHECK, MC_CHECKMARKNORMAL, &rect, NULL);
+	return TRUE;
+}
+#endif	// OP_XP_STYLE
+
+/*
+ * menu_get_show_point - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ä½ç½®ã®å–å¾—
+ */
+static void menu_get_show_point(const POINT *mpos, POINT *ret)
+{
+	RECT vrect;
+
+	// ä»®æƒ³ç”»é¢å…¨ä½“ã®çŸ©å½¢
+	SetRect(&vrect,
+		GetSystemMetrics(SM_XVIRTUALSCREEN),
+		GetSystemMetrics(SM_YVIRTUALSCREEN),
+		GetSystemMetrics(SM_XVIRTUALSCREEN) + GetSystemMetrics(SM_CXVIRTUALSCREEN),
+		GetSystemMetrics(SM_YVIRTUALSCREEN) + GetSystemMetrics(SM_CYVIRTUALSCREEN));
+
+	if (mpos == NULL || PtInRect(&vrect, *mpos) == FALSE) {
+		GetCursorPos(ret);
+	} else {
+		*ret = *mpos;
+	}
+}
+
+/*
+ * menu_set_dpi - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ãƒ¢ãƒ‹ã‚¿ã®DPIã‚’è¨­å®šã™ã‚‹
+ */
+void menu_set_dpi(const POINT *mpos)
+{
+	POINT apos;
+
+	menu_get_show_point(mpos, &apos);
+	SetDpiFromPoint(apos);
+	GetMonitorRectFromPoint(apos, &menu_monitor_rect);
+}
+
+/*
+ * menu_show - ãƒã‚¦ã‚¹ã®ä½ç½®ã«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹
  */
 int menu_show(const HWND hWnd, const HMENU hMenu, const POINT *mpos)
 {
 	POINT apos;
 	DWORD ret;
-	int x = 0, y = 0;
 
-	if (mpos == NULL ||
-		(mpos->x < 0 || mpos->x > GetSystemMetrics(SM_CXSCREEN) ||
-		mpos->y < 0 || mpos->y > GetSystemMetrics(SM_CYSCREEN))) {
-		GetCursorPos((LPPOINT)&apos);
-		x = apos.x;
-		y = apos.y;
-	} else {
-		x = mpos->x;
-		y = mpos->y;
-	}
+	menu_get_show_point(mpos, &apos);
 	ret = TrackPopupMenu(hMenu,
 		TPM_TOPALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON | TPM_RETURNCMD,
-		x, y, 0, hWnd, NULL);
+		apos.x, apos.y, 0, hWnd, NULL);
 	PostMessage(hWnd, WM_NULL, 0, 0);
 	return ret;
 }
 
 /*
- * menu_id_to_menuitem - ƒƒjƒ…[ID‚©‚çƒƒjƒ…[î•ñ‚ğŒŸõ
+ * menu_id_to_menuitem - ãƒ¡ãƒ‹ãƒ¥ãƒ¼IDã‹ã‚‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã‚’æ¤œç´¢
  */
 static MENU_ITEM_INFO *menu_id_to_menuitem(MENU_ITEM_INFO *mii, const int mcnt, const UINT id)
 {
@@ -146,7 +358,7 @@ static MENU_ITEM_INFO *menu_id_to_menuitem(MENU_ITEM_INFO *mii, const int mcnt, 
 }
 
 /*
- * menu_get_info - ƒƒjƒ…[ID‚©‚çƒƒjƒ…[î•ñ‚ğæ“¾
+ * menu_get_info - ãƒ¡ãƒ‹ãƒ¥ãƒ¼IDã‹ã‚‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã‚’å–å¾—
  */
 MENU_ITEM_INFO *menu_get_info(const UINT id)
 {
@@ -154,7 +366,7 @@ MENU_ITEM_INFO *menu_get_info(const UINT id)
 }
 
 /*
- * menu_read_icon - ƒAƒCƒRƒ“æ“¾
+ * menu_read_icon - ã‚¢ã‚¤ã‚³ãƒ³å–å¾—
  */
 static HICON menu_read_icon(const TCHAR *file_name, const int index, const int icon_size)
 {
@@ -162,6 +374,7 @@ static HICON menu_read_icon(const TCHAR *file_name, const int index, const int i
 	HICON hIcon = NULL;
 	HICON hsIcon = NULL;
 	int icon_flag;
+	BOOL large_icon;
 
 	if (file_name == NULL || *file_name == TEXT('\0')) {
 		return NULL;
@@ -171,19 +384,25 @@ static HICON menu_read_icon(const TCHAR *file_name, const int index, const int i
 	DWORD ret = 0;
 	if ((ret = ExpandEnvironmentStrings(file_name, expanded_name, MAX_PATH)) == 0 || ret > MAX_PATH)
 		return NULL;
-	// ƒtƒ@ƒCƒ‹‚©‚çƒAƒCƒRƒ“æ“¾
+	large_icon = (icon_size > GetSystemMetricsDpi(SM_CXSMICON)) ? TRUE : FALSE;
+
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã‚¢ã‚¤ã‚³ãƒ³å–å¾—
 	// get icon from file
 	ExtractIconEx(expanded_name, index, &hIcon, &hsIcon, 1);
-	if (icon_size >= LICONSIZE) {
-		DestroyIcon(hsIcon);
+	if (large_icon == TRUE) {
+		if (hsIcon != NULL) {
+			DestroyIcon(hsIcon);
+		}
 	} else {
-		DestroyIcon(hIcon);
+		if (hIcon != NULL) {
+			DestroyIcon(hIcon);
+		}
 		hIcon = hsIcon;
 	}
 	if (hIcon == NULL) {
-		// ŠÖ˜A•t‚¯‚©‚çƒAƒCƒRƒ“æ“¾
+		// é–¢é€£ä»˜ã‘ã‹ã‚‰ã‚¢ã‚¤ã‚³ãƒ³å–å¾—
 		// get icon from file association
-		icon_flag = SHGFI_ICON | ((icon_size == SICONSIZE) ? SHGFI_SMALLICON : SHGFI_LARGEICON);
+		icon_flag = SHGFI_ICON | ((large_icon == TRUE) ? SHGFI_LARGEICON : SHGFI_SMALLICON);
 		SHGetFileInfo(expanded_name, SHGFI_USEFILEATTRIBUTES, &shfi, sizeof(SHFILEINFO), icon_flag);
 		hIcon = shfi.hIcon;
 	}
@@ -191,7 +410,7 @@ static HICON menu_read_icon(const TCHAR *file_name, const int index, const int i
 }
 
 /*
- * menu_create_font - ƒƒjƒ…[—pƒtƒHƒ“ƒg‚Ìì¬
+ * menu_create_font - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”¨ãƒ•ã‚©ãƒ³ãƒˆã®ä½œæˆ
  */
 static HFONT menu_create_font(void)
 {
@@ -202,16 +421,14 @@ static HFONT menu_create_font(void)
 			option.menu_font_weight, (option.menu_font_italic == 0) ? FALSE : TRUE, FALSE);
 	}
 
-	ncMetrics.cbSize = sizeof(NONCLIENTMETRICS);
-	if (SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS), &ncMetrics, 0) == FALSE) {
+	if (GetNonClientMetricsDpi(&ncMetrics) == FALSE) {
 		return NULL;
 	}
 	return CreateFontIndirect(&ncMetrics.lfMenuFont);
 }
 
 /*
- * menu_get_item_size - ƒI[ƒi[ƒhƒ[ƒƒjƒ…[€–Ú‚ÌƒTƒCƒY‚ğæ“¾
+ * menu_get_item_size - ã‚ªãƒ¼ãƒŠãƒ¼ãƒ‰ãƒ­ãƒ¼ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®ã‚µã‚¤ã‚ºã‚’å–å¾—
  */
 static int menu_get_item_size(const MENU_ITEM_INFO *mii, int *width)
 {
@@ -223,42 +440,42 @@ static int menu_get_item_size(const MENU_ITEM_INFO *mii, int *width)
 	text_y = mii->text_y;
 
 	if (mii->flag & MF_SEPARATOR) {
-		// ‹æØ‚è
+		// åŒºåˆ‡ã‚Š
 		ret_x = 0;
-		ret_y = option.menu_separator_height;
+		ret_y = MENU_SEPARATOR_HEIGHT;
 
 	} else if (option.menu_show_icon != 1) {
-		// ƒeƒLƒXƒg‚Ì‚İ
-		text_x += (option.menu_icon_margin + option.menu_icon_size + option.menu_text_margin_left + option.menu_text_margin_right);
-		ret_x = (text_x > option.menu_max_width) ? option.menu_max_width : text_x;
+		// ãƒ†ã‚­ã‚¹ãƒˆã®ã¿
+		text_x += (MENU_ICON_MARGIN + MENU_ICON_SIZE + MENU_TEXT_MARGIN_LEFT + MENU_TEXT_MARGIN_RIGHT);
+		ret_x = (text_x > MENU_MAX_WIDTH) ? MENU_MAX_WIDTH : text_x;
 
-		text_y += (option.menu_text_margin_y * 2);
+		text_y += (MENU_TEXT_MARGIN_Y * 2);
 		ret_y = text_y;
 
 	} else if (mii->show_bitmap == TRUE) {
-		// ƒrƒbƒgƒ}ƒbƒv•\¦
+		// ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—è¡¨ç¤º
 		if (mii->show_di->menu_bmp_width == 0 && mii->show_di->menu_bmp_height == 0) {
-			bmp_x = option.menu_bitmap_width;
-			bmp_y = option.menu_bitmap_height;
+			bmp_x = MENU_BITMAP_WIDTH;
+			bmp_y = MENU_BITMAP_HEIGHT;
 		} else {
 			bmp_x = mii->show_di->menu_bmp_width;
 			bmp_y = mii->show_di->menu_bmp_height;
 		}
-		text_x += (option.menu_icon_margin + bmp_x + option.menu_text_margin_left + option.menu_text_margin_right);
-		ret_x = (text_x > option.menu_max_width) ? option.menu_max_width : text_x;
+		text_x += (MENU_ICON_MARGIN + bmp_x + MENU_TEXT_MARGIN_LEFT + MENU_TEXT_MARGIN_RIGHT);
+		ret_x = (text_x > MENU_MAX_WIDTH) ? MENU_MAX_WIDTH : text_x;
 
-		text_y += (option.menu_text_margin_y * 2);
-		ret_y = (bmp_y + (option.menu_icon_margin * 2) > text_y)
-			? bmp_y + (option.menu_icon_margin * 2) : text_y;
+		text_y += (MENU_TEXT_MARGIN_Y * 2);
+		ret_y = (bmp_y + (MENU_ICON_MARGIN * 2) > text_y)
+			? bmp_y + (MENU_ICON_MARGIN * 2) : text_y;
 
 	} else {
-		// ƒAƒCƒRƒ“•\¦
-		text_x += (option.menu_icon_margin + option.menu_icon_size + option.menu_text_margin_left + option.menu_text_margin_right);
-		ret_x = (text_x > option.menu_max_width) ? option.menu_max_width : text_x;
+		// ã‚¢ã‚¤ã‚³ãƒ³è¡¨ç¤º
+		text_x += (MENU_ICON_MARGIN + MENU_ICON_SIZE + MENU_TEXT_MARGIN_LEFT + MENU_TEXT_MARGIN_RIGHT);
+		ret_x = (text_x > MENU_MAX_WIDTH) ? MENU_MAX_WIDTH : text_x;
 
-		text_y += (option.menu_text_margin_y * 2);
-		ret_y = (text_y > option.menu_icon_margin + option.menu_icon_size + option.menu_icon_margin)
-			? text_y : (option.menu_icon_margin + option.menu_icon_size + option.menu_icon_margin);
+		text_y += (MENU_TEXT_MARGIN_Y * 2);
+		ret_y = (text_y > MENU_ICON_MARGIN + MENU_ICON_SIZE + MENU_ICON_MARGIN)
+			? text_y : (MENU_ICON_MARGIN + MENU_ICON_SIZE + MENU_ICON_MARGIN);
 	}
 	if (width != NULL) {
 		*width = ret_x;
@@ -267,7 +484,7 @@ static int menu_get_item_size(const MENU_ITEM_INFO *mii, int *width)
 }
 
 /*
- * menu_create_text - ƒAƒNƒZƒ‰ƒŒ[ƒ^•t‚«•¶š•¶š—ñ‚Ìì¬
+ * menu_create_text - ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ä»˜ãæ–‡å­—æ–‡å­—åˆ—ã®ä½œæˆ
  */
 static void menu_create_text(const int index, const TCHAR *buf, TCHAR *ret)
 {
@@ -299,7 +516,7 @@ static void menu_create_text(const int index, const TCHAR *buf, TCHAR *ret)
 		r = p;
 		p++;
 
-		// ƒx[ƒX’l
+		// ãƒ™ãƒ¼ã‚¹å€¤
 		if (*p >= TEXT('0') && *p <= TEXT('9')) {
 			base = _ttoi(p);
 			for (; *p >= TEXT('0') && *p <= TEXT('9'); p++)
@@ -312,20 +529,20 @@ static void menu_create_text(const int index, const TCHAR *buf, TCHAR *ret)
 		switch (*p) {
 		case TEXT('d'):
 		case TEXT('D'):
-			// ”š (10i”)
+			// æ•°å­— (10é€²æ•°)
 			_itot_s(num, ret, BUF_SIZE, 10);
 			ret += lstrlen(ret);
 			break;
 
 		case TEXT('x'):
-			// ”š (16i”) (¬•¶š)
+			// æ•°å­— (16é€²æ•°) (å°æ–‡å­—)
 			_itot_s(num, ret, BUF_SIZE, 16);
 			CharLower(ret);
 			ret += lstrlen(ret);
 			break;
 
 		case TEXT('X'):
-			// ”š (16i”)
+			// æ•°å­— (16é€²æ•°)
 			_itot_s(num, ret, BUF_SIZE, 16);
 			CharUpper(ret);
 			ret += lstrlen(ret);
@@ -333,47 +550,47 @@ static void menu_create_text(const int index, const TCHAR *buf, TCHAR *ret)
 
 		case TEXT('n'):
 		case TEXT('N'):
-			// ‚PŒ…‚Ì”š
+			// ï¼‘æ¡ã®æ•°å­—
 			*(ret++) = TEXT('0') + num % 10;
 			break;
 
 		case TEXT('a'):
-			// ƒAƒ‹ƒtƒ@ƒxƒbƒg (¬•¶š)
+			// ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ (å°æ–‡å­—)
 			*(ret++) = TEXT('a') + num % 26;
 			break;
 
 		case TEXT('A'):
-			// ƒAƒ‹ƒtƒ@ƒxƒbƒg
+			// ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ
 			*(ret++) = TEXT('A') + num % 26;
 			break;
 
 		case TEXT('b'):
-			// ƒAƒ‹ƒtƒ@ƒxƒbƒg + ”š (¬•¶š)
+			// ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ + æ•°å­— (å°æ–‡å­—)
 			i = num % (26 + 10);
 			*(ret++) = (i < 26) ? TEXT('a') + i : TEXT('0') + i - 26;
 			break;
 
 		case TEXT('B'):
-			// ƒAƒ‹ƒtƒ@ƒxƒbƒg + ”š
+			// ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ + æ•°å­—
 			i = num % (26 + 10);
 			*(ret++) = (i < 26) ? TEXT('A') + i : TEXT('0') + i - 26;
 			break;
 
 		case TEXT('c'):
-			// ”š + ƒAƒ‹ƒtƒ@ƒxƒbƒg (¬•¶š)
+			// æ•°å­— + ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ (å°æ–‡å­—)
 			i = num % (26 + 10);
 			*(ret++) = (i < 10) ? TEXT('0') + i : TEXT('a') + i - 10;
 			break;
 
 		case TEXT('C'):
-			// ”š + ƒAƒ‹ƒtƒ@ƒxƒbƒg
+			// æ•°å­— + ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ
 			i = num % (26 + 10);
 			*(ret++) = (i < 10) ? TEXT('0') + i : TEXT('A') + i - 10;
 			break;
 
 		case TEXT('t'):
 		case TEXT('T'):
-			// ƒ^ƒCƒgƒ‹
+			// ã‚¿ã‚¤ãƒˆãƒ«
 			lstrcpyn(ret, buf, BUF_SIZE);
 			ret += lstrlen(ret);
 			break;
@@ -398,7 +615,7 @@ static void menu_create_text(const int index, const TCHAR *buf, TCHAR *ret)
 }
 
 /*
- * menu_get_keyname - ƒL[–¼‚ğæ“¾
+ * menu_get_keyname - ã‚­ãƒ¼åã‚’å–å¾—
  */
 TCHAR *menu_get_keyname(const UINT modifiers, const UINT virtkey)
 {
@@ -420,7 +637,7 @@ TCHAR *menu_get_keyname(const UINT modifiers, const UINT virtkey)
 		lstrcat(buf, TEXT("Win+"));
 	}
 	if (virtkey == 0 || (scan_code = MapVirtualKey(virtkey, 0)) <= 0) {
-		// ‚È‚µ
+		// ãªã—
 		return NULL;
 	}
 	if (virtkey == VK_APPS ||
@@ -442,7 +659,7 @@ TCHAR *menu_get_keyname(const UINT modifiers, const UINT virtkey)
 }
 
 /*
- * menu_create_datainfo - ƒƒjƒ…[î•ñ‚Éƒf[ƒ^‚ğ“WŠJ
+ * menu_create_datainfo - ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã«ãƒ‡ãƒ¼ã‚¿ã‚’å±•é–‹
  */
 static BOOL menu_create_datainfo(DATA_INFO *set_di,
 								MENU_ITEM_INFO *mii, int menu_index, int *id,
@@ -458,16 +675,16 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 	int i, j;
 	int m, n;
 
-	// ‰ŠúˆÊ’uˆÚ“®
+	// åˆæœŸä½ç½®ç§»å‹•
 	for (m = 0; set_di != NULL && min > 0 && m < min - 1; set_di = set_di->next, m++)
 		;
 	if (step < 0) {
-		// ~‡
+		// é™é †
 		for (di = set_di, i = 0, n = m; di != NULL && (max <= 0 || n < max); di = di->next, i++, n++)
 			;
 		i += menu_index - 1;
 	} else {
-		// ¸‡
+		// æ˜‡é †
 		i = menu_index;
 	}
 
@@ -478,13 +695,13 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 
 		switch (di->type) {
 		case TYPE_FOLDER:
-			// ŠK‘w•\¦
+			// éšå±¤è¡¨ç¤º
 			(mii + i)->flag = MF_POPUP | MF_OWNERDRAW;
 			(mii + i)->show_di = di;
 
 			for (cdi = di->child, cnt = 0; cdi != NULL; cdi = cdi->next, cnt++)
 				;
-			// ƒƒjƒ…[€–Úî•ñ‚ÌŠm•Û
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®æƒ…å ±ã®ç¢ºä¿
 			if ((cmi = mem_calloc(sizeof(MENU_ITEM_INFO) * cnt)) == NULL) {
 				return FALSE;
 			}
@@ -494,24 +711,24 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 			break;
 
 		case TYPE_ITEM:
-			// ƒAƒCƒeƒ€
+			// ã‚¢ã‚¤ãƒ†ãƒ 
 			(mii + i)->flag = MF_OWNERDRAW;
 			(mii + i)->show_di = format_get_priority_highest(di);
 			break;
 
 		case TYPE_DATA:
-			// ƒf[ƒ^
+			// ãƒ‡ãƒ¼ã‚¿
 			(mii + i)->flag = MF_OWNERDRAW;
 			(mii + i)->show_di = di;
 			break;
 		}
 
-		// ƒƒjƒ…[‚É•\¦‚·‚éƒ^ƒCƒgƒ‹‚ğæ“¾
+		// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¡¨ç¤ºã™ã‚‹ã‚¿ã‚¤ãƒˆãƒ«ã‚’å–å¾—
 		format_get_menu_title((mii + i)->show_di);
-		// ƒ^ƒCƒgƒ‹‚ğİ’è
+		// ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®š
 		if (di->title != NULL) {
 			if (lstrcmp(di->title, TEXT("-")) == 0) {
-				// ‹æØ‚è
+				// åŒºåˆ‡ã‚Š
 				(mii + i)->id = 0;
 				(mii + i)->flag = MF_SEPARATOR | MF_OWNERDRAW;
 				(mii + i)->item = (LPCTSTR)(mii + i);
@@ -528,7 +745,7 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 			(mii + i)->text = alloc_copy(buf);
 
 		} else if ((mii + i)->show_di->format_name != NULL) {
-			// Œ`®–¼
+			// å½¢å¼å
 			p = tmp;
 			*(p++) = TEXT('(');
 			lstrcpyn(p, (mii + i)->show_di->format_name, BUF_SIZE - 3);
@@ -544,21 +761,21 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 		}
 
 		if (option.menu_show_hotkey == 1) {
-			// ƒzƒbƒgƒL[æ“¾
+			// ãƒ›ãƒƒãƒˆã‚­ãƒ¼å–å¾—
 			(mii + i)->hkey = menu_get_keyname(di->op_modifiers, di->op_virtkey);
 		}
 
 		if (option.menu_show_icon == 1) {
-			// ƒƒjƒ…[‚É•\¦‚·‚éƒAƒCƒRƒ“‚ğæ“¾
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¡¨ç¤ºã™ã‚‹ã‚¢ã‚¤ã‚³ãƒ³ã‚’å–å¾—
 			format_get_menu_icon((mii + i)->show_di);
 			if ((mii + i)->show_di->menu_icon == NULL) {
-				(mii + i)->icon = (di->type == TYPE_FOLDER) ? icon_menu_folder : icon_menu_default;
+				(mii + i)->icon = (di->type == TYPE_FOLDER) ? menu_icon_folder : menu_icon_default;
 			} else {
 				(mii + i)->icon = (mii + i)->show_di->menu_icon;
 			}
 			(mii + i)->free_icon = FALSE;
 
-			// ƒƒjƒ…[‚É•\¦‚·‚éƒrƒbƒgƒ}ƒbƒv‚ğæ“¾
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¡¨ç¤ºã™ã‚‹ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã‚’å–å¾—
 			if (option.menu_show_bitmap == 1) {
 				format_get_menu_bitmap((mii + i)->show_di);
 			}
@@ -570,7 +787,7 @@ static BOOL menu_create_datainfo(DATA_INFO *set_di,
 }
 
 /*
- * menu_create_info - ƒƒjƒ…[î•ñ‚Ìì¬
+ * menu_create_info - ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã®ä½œæˆ
  */
 static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt,
 										DATA_INFO *history_di, DATA_INFO *regist_di,
@@ -581,7 +798,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 	int i, j, t;
 	int cnt;
 
-	// ƒƒjƒ…[€–Ú”‚Ìæ“¾
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®æ•°ã®å–å¾—
 	for (i = 0, *ret_cnt = 0; i < menu_cnt; i++) {
 		switch ((menu_info + i)->content) {
 		case MENU_CONTENT_SEPARATOR:
@@ -626,17 +843,17 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 		}
 	}
 
-	// ƒƒjƒ…[€–Úî•ñ‚ÌŠm•Û
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®æƒ…å ±ã®ç¢ºä¿
 	if ((mii = mem_calloc(sizeof(MENU_ITEM_INFO) * (*ret_cnt))) == NULL) {
 		*ret_cnt = 0;
 		return NULL;
 	}
 
-	// ƒƒjƒ…[€–Úî•ñ‚Ìì¬
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®æƒ…å ±ã®ä½œæˆ
 	for (i = 0, j = 0; i < menu_cnt; i++) {
 		switch ((menu_info + i)->content) {
 		case MENU_CONTENT_SEPARATOR:
-			// ‹æØ‚è
+			// åŒºåˆ‡ã‚Š
 			(mii + j)->id = 0;
 			(mii + j)->flag = MF_SEPARATOR | MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
@@ -644,7 +861,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_HISTORY:
-			// —š—ğ (¸‡)
+			// å±¥æ­´ (æ˜‡é †)
 			if (menu_create_datainfo(history_di, mii, j, id, 1, (menu_info + i)->min, (menu_info + i)->max) == TRUE) {
 				for (di = history_di, cnt = 0; di != NULL &&
 					(menu_info + i)->min > 0 && cnt < (menu_info + i)->min - 1; di = di->next, cnt++);
@@ -654,7 +871,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_HISTORY_DESC:
-			// —š—ğ (~‡)
+			// å±¥æ­´ (é™é †)
 			if (menu_create_datainfo(history_di, mii, j, id, -1, (menu_info + i)->min, (menu_info + i)->max) == TRUE) {
 				for (di = history_di, cnt = 0; di != NULL &&
 					(menu_info + i)->min > 0 && cnt < (menu_info + i)->min - 1; di = di->next, cnt++)
@@ -666,7 +883,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_REGIST:
-			// “o˜^ƒAƒCƒeƒ€ (¸‡)
+			// ç™»éŒ²ã‚¢ã‚¤ãƒ†ãƒ  (æ˜‡é †)
 			di = regist_path_to_item(regist_di, (menu_info + i)->path);
 			if (di != NULL && menu_create_datainfo(di, mii, j, id, 1, 0, 0) == TRUE) {
 				for (; di != NULL; di = di->next, j++)
@@ -675,7 +892,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_REGIST_DESC:
-			// “o˜^ƒAƒCƒeƒ€ (~‡)
+			// ç™»éŒ²ã‚¢ã‚¤ãƒ†ãƒ  (é™é †)
 			di = regist_path_to_item(regist_di, (menu_info + i)->path);
 			if (di != NULL && menu_create_datainfo(di, mii, j, id, -1, 0, 0) == TRUE) {
 				for (; di != NULL; di = di->next, j++)
@@ -684,11 +901,11 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_POPUP:
-			// ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[
+			// ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 			(mii + j)->flag = MF_POPUP | MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
 			(mii + j)->text = alloc_copy((menu_info + i)->title);
-			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, option.menu_icon_size);
+			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, MENU_ICON_SIZE);
 			(mii + j)->free_icon = TRUE;
 			(mii + j)->mii = menu_create_info(
 				(menu_info + i)->mi, (menu_info + i)->mi_cnt,
@@ -697,43 +914,43 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_VIEWER:
-			// ƒrƒ…[ƒA
+			// ãƒ“ãƒ¥ãƒ¼ã‚¢
 			(mii + j)->id = ID_MENUITEM_VIEWER;
 			(mii + j)->flag = MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
 			(mii + j)->text = alloc_copy(((menu_info + i)->title == NULL || *(menu_info + i)->title == TEXT('\0')) ?
 				message_get_res(IDS_MENU_VIEWER) : (menu_info + i)->title);
-			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, option.menu_icon_size);
+			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, MENU_ICON_SIZE);
 			(mii + j)->free_icon = TRUE;
 			j++;
 			break;
 
 		case MENU_CONTENT_OPTION:
-			// ƒIƒvƒVƒ‡ƒ“
+			// ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 			(mii + j)->id = ID_MENUITEM_OPTION;
 			(mii + j)->flag = MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
 			(mii + j)->text = alloc_copy(((menu_info + i)->title == NULL || *(menu_info + i)->title == TEXT('\0')) ?
 				message_get_res(IDS_MENU_OPTION) : (menu_info + i)->title);
-			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, option.menu_icon_size);
+			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, MENU_ICON_SIZE);
 			(mii + j)->free_icon = TRUE;
 			j++;
 			break;
 
 		case MENU_CONTENT_CLIPBOARD_WATCH:
-			// ƒNƒŠƒbƒvƒ{[ƒhŠÄ‹Ø‚è‘Ö‚¦
+			// ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ç›£è¦–åˆ‡ã‚Šæ›¿ãˆ
 			(mii + j)->id = ID_MENUITEM_CLIPBOARD_WATCH;
 			(mii + j)->flag = MF_OWNERDRAW | ((option.main_clipboard_watch == 1) ? MF_CHECKED : 0);
 			(mii + j)->item = (LPCTSTR)(mii + j);
 			(mii + j)->text = alloc_copy(((menu_info + i)->title == NULL || *(menu_info + i)->title == TEXT('\0')) ?
 				message_get_res(IDS_MENU_CLIPBOARD_WATCH) : (menu_info + i)->title);
-			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, option.menu_icon_size);
+			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, MENU_ICON_SIZE);
 			(mii + j)->free_icon = TRUE;
 			j++;
 			break;
 
 		case MENU_CONTENT_TOOL:
-			// ƒc[ƒ‹
+			// ãƒ„ãƒ¼ãƒ«
 			if ((menu_info + i)->path != NULL && *(menu_info + i)->path != TEXT('\0')) {
 				if ((t = tool_title_to_index((menu_info + i)->path)) != -1) {
 					(mii + j)->id = ID_MENUITEM_DATA + ((*id)++);
@@ -747,7 +964,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 					if (option.menu_show_hotkey == 1) {
 						(mii + j)->hkey = menu_get_keyname((option.tool_info + t)->modifiers, (option.tool_info + t)->virtkey);
 					}
-					(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, option.menu_icon_size);
+					(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, MENU_ICON_SIZE);
 					(mii + j)->free_icon = TRUE;
 					(mii + j)->ti = option.tool_info + t;
 					j++;
@@ -777,42 +994,42 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			break;
 
 		case MENU_CONTENT_APP:
-			// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“Às
+			// ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³å®Ÿè¡Œ
 			(mii + j)->id = ID_MENUITEM_DATA + ((*id)++);
 			(mii + j)->flag = MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
 			(mii + j)->text = alloc_copy((menu_info + i)->title);
 			if (*(menu_info + i)->icon_path != TEXT('\0')) {
-				(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, option.menu_icon_size);
+				(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, MENU_ICON_SIZE);
 			} else {
-				(mii + j)->icon = menu_read_icon((menu_info + i)->path, 0, option.menu_icon_size);
+				(mii + j)->icon = menu_read_icon((menu_info + i)->path, 0, MENU_ICON_SIZE);
 			}
 			(mii + j)->free_icon = TRUE;
-			// ƒƒjƒ…[î•ñ‚ğİ’è
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ±ã‚’è¨­å®š
 			(mii + j)->mi = menu_info + i;
 			j++;
 			break;
 
 		case MENU_CONTENT_CANCEL:
-			// ƒLƒƒƒ“ƒZƒ‹
+			// ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 			(mii + j)->id = IDCANCEL;
 			(mii + j)->flag = MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
 			(mii + j)->text = alloc_copy(((menu_info + i)->title == NULL || *(menu_info + i)->title == TEXT('\0')) ?
 				message_get_res(IDS_MENU_CANCEL) : (menu_info + i)->title);
-			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, option.menu_icon_size);
+			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, MENU_ICON_SIZE);
 			(mii + j)->free_icon = TRUE;
 			j++;
 			break;
 
 		case MENU_CONTENT_EXIT:
-			// I—¹
+			// çµ‚äº†
 			(mii + j)->id = ID_MENUITEM_EXIT;
 			(mii + j)->flag = MF_OWNERDRAW;
 			(mii + j)->item = (LPCTSTR)(mii + j);
 			(mii + j)->text = alloc_copy(((menu_info + i)->title == NULL || *(menu_info + i)->title == TEXT('\0')) ?
 				message_get_res(IDS_MENU_EXIT) : (menu_info + i)->title);
-			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, option.menu_icon_size);
+			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, MENU_ICON_SIZE);
 			(mii + j)->free_icon = TRUE;
 			j++;
 			break;
@@ -822,7 +1039,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 }
 
 /*
- * menu_set_item - ƒƒjƒ…[‚É€–Ú‚ğİ’è
+ * menu_set_item - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«é …ç›®ã‚’è¨­å®š
  */
 static BOOL menu_set_item(const HDC hdc, const HMENU hMenu, MENU_ITEM_INFO *mii, const int cnt)
 {
@@ -833,11 +1050,11 @@ static BOOL menu_set_item(const HDC hdc, const HMENU hMenu, MENU_ITEM_INFO *mii,
 	int menu_flag;
 	int i;
 
-	// ƒƒjƒ…[€–Ú‚Ì’Ç‰Á
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®è¿½åŠ 
 	for (i = 0; i < cnt; i++) {
-		// ƒƒjƒ…[‚Ì‚‚³‚ğæ“¾
+		// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é«˜ã•ã‚’å–å¾—
 		if ((mii + i)->flag & MF_SEPARATOR) {
-			item_height = option.menu_separator_height;
+			item_height = MENU_SEPARATOR_HEIGHT;
 		} else if ((mii + i)->flag & MF_OWNERDRAW) {
 			if ((mii + i)->text != NULL && GetTextExtentPoint32(hdc,
 				(mii + i)->text, lstrlen((mii + i)->text), &size) == TRUE) {
@@ -852,10 +1069,10 @@ static BOOL menu_set_item(const HDC hdc, const HMENU hMenu, MENU_ITEM_INFO *mii,
 		} else {
 			item_height = GetSystemMetrics(SM_CYMENU);
 		}
-		// Ü‚è•Ô‚µİ’è
+		// æŠ˜ã‚Šè¿”ã—è¨­å®š
 		menu_flag = 0;
 		height += item_height;
-		if (option.menu_break == 1 && height >= GetSystemMetrics(SM_CYSCREEN)) {
+		if (option.menu_break == 1 && height >= (menu_monitor_rect.bottom - menu_monitor_rect.top)) {
 			height = item_height;
 			menu_flag = MF_MENUBARBREAK;
 		}
@@ -863,10 +1080,10 @@ static BOOL menu_set_item(const HDC hdc, const HMENU hMenu, MENU_ITEM_INFO *mii,
 		if ((mii + i)->flag & MF_POPUP) {
 			hPopupMenu = CreatePopupMenu();
 			menu_set_item(hdc, hPopupMenu, (mii + i)->mii, (mii + i)->mii_cnt);
-			// ƒƒjƒ…[€–Ú‚Ì’Ç‰Á
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®è¿½åŠ 
 			AppendMenu(hMenu, (mii + i)->flag | menu_flag, (UINT)hPopupMenu, (mii + i)->item);
 		} else {
-			// ƒƒjƒ…[€–Ú‚Ì’Ç‰Á
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®è¿½åŠ 
 			AppendMenu(hMenu, (mii + i)->flag | menu_flag, (mii + i)->id, (mii + i)->item);
 		}
 	}
@@ -874,7 +1091,7 @@ static BOOL menu_set_item(const HDC hdc, const HMENU hMenu, MENU_ITEM_INFO *mii,
 }
 
 /*
- * menu_create - ƒƒjƒ…[‚Ìì¬
+ * menu_create - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
  */
 HMENU menu_create(const HWND hWnd, MENU_INFO *menu_info, const int menu_cnt,
 				  DATA_INFO *history_di, DATA_INFO *regist_di)
@@ -884,7 +1101,17 @@ HMENU menu_create(const HWND hWnd, MENU_INFO *menu_info, const int menu_cnt,
 	HFONT hFont, hRetFont;
 	int id = 0;
 
-	// ƒƒjƒ…[ì¬
+	// è¡¨ç¤ºã™ã‚‹ãƒ¢ãƒ‹ã‚¿ã®DPIã«åˆã‚ã›ã‚‹
+	if (IsRectEmpty(&menu_monitor_rect) != FALSE) {
+		menu_set_dpi(NULL);
+	}
+	// æ—¢å®šã®ã‚¢ã‚¤ã‚³ãƒ³ã®èª­ã¿è¾¼ã¿
+	menu_load_icons();
+#ifdef OP_XP_STYLE
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«ãƒ†ãƒ¼ãƒã‚’é–‹ã
+	menu_theme_open(hWnd);
+#endif	// OP_XP_STYLE
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ä½œæˆ
 	if ((hMenu = CreatePopupMenu()) == NULL) {
 		return NULL;
 	}
@@ -894,19 +1121,30 @@ HMENU menu_create(const HWND hWnd, MENU_INFO *menu_info, const int menu_cnt,
 		DestroyMenu(hMenu);
 		return NULL;
 	}
-	// ƒtƒHƒ“ƒgİ’è
+	// ãƒ•ã‚©ãƒ³ãƒˆè¨­å®š
 	hFont = menu_create_font();
 	hRetFont = SelectObject(hdc, hFont);
-	// ƒƒjƒ…[‚É€–Ú‚ğİ’è
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«é …ç›®ã‚’è¨­å®š
 	menu_set_item(hdc, hMenu, menu_item_info, menu_item_cnt);
 	SelectObject(hdc, hRetFont);
 	DeleteObject(hFont);
 	ReleaseDC(hWnd, hdc);
+
+	if (dark_mode_is_dark() == TRUE) {
+		MENUINFO mi;
+
+		// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®èƒŒæ™¯è‰²ã®è¨­å®š
+		ZeroMemory(&mi, sizeof(mi));
+		mi.cbSize = sizeof(mi);
+		mi.fMask = MIM_BACKGROUND | MIM_APPLYTOSUBMENUS;
+		mi.hbrBack = dark_mode_get_brush(COLOR_MENU);
+		SetMenuInfo(hMenu, &mi);
+	}
 	return hMenu;
 }
 
 /*
- * menu_destory - ƒƒjƒ…[‚Ì”jŠü
+ * menu_destory - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ç ´æ£„
  */
 void menu_destory(HMENU hMenu)
 {
@@ -924,7 +1162,7 @@ void menu_destory(HMENU hMenu)
 }
 
 /*
- * menu_set_drawitem - ƒƒjƒ…[•`‰æİ’è
+ * menu_set_drawitem - ãƒ¡ãƒ‹ãƒ¥ãƒ¼æç”»è¨­å®š
  */
 BOOL menu_set_drawitem(MEASUREITEMSTRUCT *ms)
 {
@@ -933,7 +1171,7 @@ BOOL menu_set_drawitem(MEASUREITEMSTRUCT *ms)
 }
 
 /*
- * menu_draw_bitmap - ƒƒjƒ…[‚Éƒrƒbƒgƒ}ƒbƒv‚ğ•`‰æ
+ * menu_draw_bitmap - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã‚’æç”»
  */
 static int menu_draw_bitmap(const HDC draw_dc, const DATA_INFO *di, const int height)
 {
@@ -951,26 +1189,26 @@ static int menu_draw_bitmap(const HDC draw_dc, const DATA_INFO *di, const int he
 	}
 
 	if (di->menu_bmp_width == 0 && di->menu_bmp_height == 0) {
-		bmp_width = option.menu_bitmap_width;
-		bmp_height = option.menu_bitmap_height;
+		bmp_width = MENU_BITMAP_WIDTH;
+		bmp_height = MENU_BITMAP_HEIGHT;
 	} else {
 		bmp_width = di->menu_bmp_width;
 		bmp_height = di->menu_bmp_height;
 	}
 
 	BitBlt(draw_dc,
-		option.menu_icon_margin,
+		MENU_ICON_MARGIN,
 		height / 2 - bmp_height / 2,
 		bmp_width, height,
 		hdc, 0, 0, SRCCOPY);
 
 	SelectObject(hdc, hRetBmp);
 	DeleteDC(hdc);
-	return option.menu_icon_margin + bmp_width;
+	return MENU_ICON_MARGIN + bmp_width;
 }
 
 /*
- * menu_draw_ckeck - ƒƒjƒ…[‚Ìƒ`ƒFƒbƒNƒ}[ƒN‚ğ•`‰æ
+ * menu_draw_ckeck - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒã‚§ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚’æç”»
  */
 static BOOL menu_draw_ckeck(const HDC draw_dc, const int left, const int top, const int right, const int bottom)
 {
@@ -981,7 +1219,7 @@ static BOOL menu_draw_ckeck(const HDC draw_dc, const int left, const int top, co
 	HANDLE hBrush;
 	RECT draw_rect;
 
-	// ì‹Æ—pDC‚Ìì¬
+	// ä½œæ¥­ç”¨DCã®ä½œæˆ
 	if ((hdc = CreateCompatibleDC(draw_dc)) == NULL) {
 		return FALSE;
 	}
@@ -1008,12 +1246,12 @@ static BOOL menu_draw_ckeck(const HDC draw_dc, const int left, const int top, co
 
 	SetRect(&draw_rect, 0, 0, right - left, bottom - top);
 	
-	// ƒ}ƒXƒN‚Ì•`‰æ
+	// ãƒã‚¹ã‚¯ã®æç”»
 	DrawFrameControl(hdc, &draw_rect, DFC_MENU, DFCS_MENUCHECK);
 	BitBlt(hdc, 0, 0, right - left, bottom - top, hdc, 0, 0, DSTINVERT);
 	BitBlt(draw_dc, left, top, right, bottom, hdc, 0, 0, SRCPAINT);
 
-	// ƒ`ƒFƒbƒNƒ}[ƒN‚Ì•`‰æ
+	// ãƒã‚§ãƒƒã‚¯ãƒãƒ¼ã‚¯ã®æç”»
 	hBrush = CreateSolidBrush(GetTextColor(draw_dc));
 	FillRect(hdc, &draw_rect, hBrush);
 	DeleteObject(hBrush);
@@ -1031,7 +1269,46 @@ static BOOL menu_draw_ckeck(const HDC draw_dc, const int left, const int top, co
 }
 
 /*
- * menu_drawitem - ƒƒjƒ…[€–Ú‚ğ•`‰æ
+ * menu_get_arrow_size - ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®çŸ¢å°ã®é ˜åŸŸã®å¹…ã‚’å–å¾—
+ */
+static int menu_get_arrow_size(void)
+{
+	int size = GetSystemMetrics(SM_CXMENUCHECK);
+	int dpi_size = GetSystemMetricsDpi(SM_CXMENUCHECK);
+
+	return (size < dpi_size) ? dpi_size : size;
+}
+
+/*
+ * menu_draw_arrow - ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®çŸ¢å°ã‚’æç”»
+ */
+static void menu_draw_arrow(const HDC draw_dc, const RECT *rect, const COLORREF color)
+{
+	LOGFONT lf;
+	HFONT hFont, hRetFont;
+	int width = rect->right - rect->left;
+	int height = rect->bottom - rect->top;
+	int size = (width < height) ? width : height;
+
+	ZeroMemory(&lf, sizeof(lf));
+	lf.lfHeight = size;
+	lf.lfWeight = FW_NORMAL;
+	lf.lfCharSet = DEFAULT_CHARSET;
+	lstrcpy(lf.lfFaceName, TEXT("Marlett"));
+	if ((hFont = CreateFontIndirect(&lf)) == NULL) {
+		return;
+	}
+	hRetFont = SelectObject(draw_dc, hFont);
+	SetTextColor(draw_dc, color);
+	SetBkMode(draw_dc, TRANSPARENT);
+	// Marlettã®'8'ãŒã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®çŸ¢å°
+	TextOut(draw_dc, rect->left + (width - size) / 2, rect->top + (height - size) / 2, TEXT("8"), 1);
+	SelectObject(draw_dc, hRetFont);
+	DeleteObject(hFont);
+}
+
+/*
+ * menu_drawitem - ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã‚’æç”»
  */
 BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 {
@@ -1043,28 +1320,33 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 	HPEN hPen, hRetPen;
 	RECT draw_rect;
 	SIZE sz;
+	COLORREF text_color;
+	int arrow_size = 0;
 	int left_margin;
 	int width, height;
 #ifdef MENU_COLOR
 	DWORD menu_color_back = (*option.menu_color_back.color_str != TEXT('\0')) ?
-		option.menu_color_back.color : GetSysColor(COLOR_MENU);
+		option.menu_color_back.color : dark_mode_get_color(COLOR_MENU);
 	DWORD menu_color_text = (*option.menu_color_text.color_str != TEXT('\0')) ?
-		option.menu_color_text.color : GetSysColor(COLOR_MENUTEXT);
+		option.menu_color_text.color : dark_mode_get_color(COLOR_MENUTEXT);
 	DWORD menu_color_highlight = (*option.menu_color_highlight.color_str != TEXT('\0')) ?
-		option.menu_color_highlight.color : GetSysColor(COLOR_HIGHLIGHT);
+		option.menu_color_highlight.color : dark_mode_get_color(COLOR_HIGHLIGHT);
 	DWORD menu_color_highlighttext = (*option.menu_color_highlighttext.color_str != TEXT('\0')) ?
-		option.menu_color_highlighttext.color : GetSysColor(COLOR_HIGHLIGHTTEXT);
+		option.menu_color_highlighttext.color : dark_mode_get_color(COLOR_HIGHLIGHTTEXT);
+	DWORD menu_color_format = (*option.menu_color_highlight.color_str != TEXT('\0')) ?
+		option.menu_color_highlight.color : dark_mode_get_accent_color();
 	DWORD menu_color_3d_shadow = (*option.menu_color_3d_shadow.color_str != TEXT('\0')) ?
-		option.menu_color_3d_shadow.color : GetSysColor(COLOR_3DSHADOW);
+		option.menu_color_3d_shadow.color : dark_mode_get_color(COLOR_3DSHADOW);
 	DWORD menu_color_3d_highlight = (*option.menu_color_3d_highlight.color_str != TEXT('\0')) ?
-		option.menu_color_3d_highlight.color : GetSysColor(COLOR_3DHIGHLIGHT);
+		option.menu_color_3d_highlight.color : dark_mode_get_color(COLOR_3DHIGHLIGHT);
 #else	// MENU_COLOR
-	DWORD menu_color_back = GetSysColor(COLOR_MENU);
-	DWORD menu_color_text = GetSysColor(COLOR_MENUTEXT);
-	DWORD menu_color_highlight = GetSysColor(COLOR_HIGHLIGHT);
-	DWORD menu_color_highlighttext = GetSysColor(COLOR_HIGHLIGHTTEXT);
-	DWORD menu_color_3d_shadow = GetSysColor(COLOR_3DSHADOW);
-	DWORD menu_color_3d_highlight = GetSysColor(COLOR_3DHIGHLIGHT);
+	DWORD menu_color_back = dark_mode_get_color(COLOR_MENU);
+	DWORD menu_color_text = dark_mode_get_color(COLOR_MENUTEXT);
+	DWORD menu_color_highlight = dark_mode_get_color(COLOR_HIGHLIGHT);
+	DWORD menu_color_highlighttext = dark_mode_get_color(COLOR_HIGHLIGHTTEXT);
+	DWORD menu_color_format = dark_mode_get_accent_color();
+	DWORD menu_color_3d_shadow = dark_mode_get_color(COLOR_3DSHADOW);
+	DWORD menu_color_3d_highlight = dark_mode_get_color(COLOR_3DHIGHLIGHT);
 #endif	// MENU_COLOR
 
 	mii = (MENU_ITEM_INFO *)ds->itemData;
@@ -1072,7 +1354,7 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 	width = ds->rcItem.right - ds->rcItem.left;
 	height = ds->rcItem.bottom - ds->rcItem.top;
 
-	// •`‰æ—pDC‚Ìì¬
+	// æç”»ç”¨DCã®ä½œæˆ
 	if ((draw_dc = CreateCompatibleDC(ds->hDC)) == NULL) {
 		return FALSE;
 	}
@@ -1082,25 +1364,38 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 	}
 	hrBmp = SelectObject(draw_dc, hDrawBmp);
 
-	// ”wŒi
+	// èƒŒæ™¯
 	SetRect(&draw_rect, 0, 0, width, height);
+#ifdef OP_XP_STYLE
+	if (menu_theme != NULL) {
+		// ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«ã§æç”»
+		_MenuDrawThemeBackground(menu_theme, draw_dc, MENU_POPUPBACKGROUND, 0, &draw_rect, NULL);
+		if (ds->itemState & ODS_SELECTED) {
+			_MenuDrawThemeBackground(menu_theme, draw_dc, MENU_POPUPITEM, MPI_HOT, &draw_rect, NULL);
+			text_color = menu_theme_text_color(MPI_HOT, menu_color_highlighttext);
+		} else {
+			text_color = (mii->show_format == TRUE) ?
+				menu_color_format : menu_theme_text_color(MPI_NORMAL, menu_color_text);
+		}
+		SetTextColor(draw_dc, text_color);
+		SetBkMode(draw_dc, TRANSPARENT);
+	} else
+#endif	// OP_XP_STYLE
 	if (ds->itemState & ODS_SELECTED) {
 		hBrush = CreateSolidBrush(menu_color_highlight);
 		FillRect(draw_dc, &draw_rect, hBrush);
 		DeleteObject(hBrush);
 
-		SetTextColor(draw_dc, menu_color_highlighttext);
+		text_color = menu_color_highlighttext;
+		SetTextColor(draw_dc, text_color);
 		SetBkColor(draw_dc, menu_color_highlight);
 	} else {
 		hBrush = CreateSolidBrush(menu_color_back);
 		FillRect(draw_dc, &draw_rect, hBrush);
 		DeleteObject(hBrush);
 
-		if (mii->show_format == TRUE) {
-			SetTextColor(draw_dc, menu_color_highlight);
-		} else {
-			SetTextColor(draw_dc, menu_color_text);
-		}
+		text_color = (mii->show_format == TRUE) ? menu_color_format : menu_color_text;
+		SetTextColor(draw_dc, text_color);
 		SetBkColor(draw_dc, menu_color_back);
 	}
 
@@ -1108,37 +1403,47 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 		left_margin = -1;
 		if (mii->show_bitmap == TRUE &&
 			mii->show_di->menu_bitmap != NULL) {
-			// ƒrƒbƒgƒ}ƒbƒv
+			// ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—
 			left_margin = menu_draw_bitmap(draw_dc, mii->show_di, height);
 		}
 		if (left_margin == -1) {
-			// ƒAƒCƒRƒ“
+			// ã‚¢ã‚¤ã‚³ãƒ³
 			if (mii->icon != NULL) {
-				DrawIconEx(draw_dc, option.menu_icon_margin,
-					height / 2 - option.menu_icon_size / 2, mii->icon,
-					option.menu_icon_size, option.menu_icon_size, 0, NULL, DI_NORMAL);
+				DrawIconEx(draw_dc, MENU_ICON_MARGIN,
+					height / 2 - MENU_ICON_SIZE / 2, mii->icon,
+					MENU_ICON_SIZE, MENU_ICON_SIZE, 0, NULL, DI_NORMAL);
 			} else if (mii->flag & MF_CHECKED) {
-				menu_draw_ckeck(draw_dc, option.menu_icon_margin,
-					height / 2 - option.menu_icon_size / 2,
-					option.menu_icon_size, option.menu_icon_size);
+#ifdef OP_XP_STYLE
+				if (menu_draw_check_theme(draw_dc, MENU_ICON_MARGIN,
+					height / 2 - MENU_ICON_SIZE / 2,
+					MENU_ICON_MARGIN + MENU_ICON_SIZE,
+					height / 2 - MENU_ICON_SIZE / 2 + MENU_ICON_SIZE) == FALSE)
+#endif	// OP_XP_STYLE
+				menu_draw_ckeck(draw_dc, MENU_ICON_MARGIN,
+					height / 2 - MENU_ICON_SIZE / 2,
+					MENU_ICON_SIZE, MENU_ICON_SIZE);
 			}
-			left_margin = option.menu_icon_margin + option.menu_icon_size;
+			left_margin = MENU_ICON_MARGIN + MENU_ICON_SIZE;
 		}
 	} else {
 		if (mii->flag & MF_CHECKED) {
-			menu_draw_ckeck(draw_dc, option.menu_icon_margin, 0,
-				option.menu_icon_size, height);
+#ifdef OP_XP_STYLE
+			if (menu_draw_check_theme(draw_dc, MENU_ICON_MARGIN, 0,
+				MENU_ICON_MARGIN + MENU_ICON_SIZE, height) == FALSE)
+#endif	// OP_XP_STYLE
+			menu_draw_ckeck(draw_dc, MENU_ICON_MARGIN, 0,
+				MENU_ICON_SIZE, height);
 		}
-		left_margin = option.menu_icon_margin + GetSystemMetrics(SM_CXMENUCHECK);
+		left_margin = MENU_ICON_MARGIN + GetSystemMetrics(SM_CXMENUCHECK);
 	}
 
 	if (mii->text != NULL) {
-		// ƒeƒLƒXƒg
+		// ãƒ†ã‚­ã‚¹ãƒˆ
 		hFont = menu_create_font();
 		hRetFont = SelectObject(draw_dc, hFont);
 
-		left_margin += option.menu_text_margin_left;
-		SetRect(&draw_rect, left_margin, 0, width - option.menu_text_margin_right, height);
+		left_margin += MENU_TEXT_MARGIN_LEFT;
+		SetRect(&draw_rect, left_margin, 0, width - MENU_TEXT_MARGIN_RIGHT, height);
 		if (mii->hkey == NULL) {
 			DrawText(draw_dc,
 				mii->text, lstrlen(mii->text),
@@ -1149,11 +1454,16 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 			DrawText(draw_dc,
 				mii->text, lstrlen(mii->text),
 				&draw_rect, DT_VCENTER | DT_SINGLELINE | DT_NOCLIP | DT_WORD_ELLIPSIS);
-			// ƒzƒbƒgƒL[•\¦
+			// ãƒ›ãƒƒãƒˆã‚­ãƒ¼è¡¨ç¤º
 			if (!(ds->itemState & ODS_SELECTED) && mii->show_format == TRUE) {
+#ifdef OP_XP_STYLE
+				if (menu_theme != NULL) {
+					SetTextColor(draw_dc, menu_theme_text_color(MPI_NORMAL, menu_color_text));
+				} else
+#endif	// OP_XP_STYLE
 				SetTextColor(draw_dc, menu_color_text);
 			}
-			draw_rect.right = width - option.menu_text_margin_right;
+			draw_rect.right = width - MENU_TEXT_MARGIN_RIGHT;
 			DrawText(draw_dc,
 				mii->hkey, lstrlen(mii->hkey),
 				&draw_rect, DT_VCENTER | DT_SINGLELINE | DT_NOCLIP | DT_RIGHT);
@@ -1162,31 +1472,62 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 		DeleteObject(hFont);
 
 	} else if (mii->flag & MF_SEPARATOR) {
-		// ‹æØ‚è
+		// åŒºåˆ‡ã‚Š
+#ifdef OP_XP_STYLE
+		if (menu_theme != NULL) {
+			SIZE size;
+
+			SetRect(&draw_rect, MENU_SEPARATOR_MARGIN_LEFT, 0,
+				width - MENU_SEPARATOR_MARGIN_RIGHT, height);
+			if (_MenuGetThemePartSize(menu_theme, draw_dc, MENU_POPUPSEPARATOR, 0,
+				NULL, TS_TRUE, &size) == S_OK && size.cy < height) {
+				draw_rect.top = (height - size.cy) / 2;
+				draw_rect.bottom = draw_rect.top + size.cy;
+			}
+			_MenuDrawThemeBackground(menu_theme, draw_dc, MENU_POPUPSEPARATOR, 0, &draw_rect, NULL);
+		} else {
+#endif	// OP_XP_STYLE
 		hPen = CreatePen(PS_SOLID, 1, menu_color_3d_shadow);
 		hRetPen = SelectObject(draw_dc, hPen);
-		MoveToEx(draw_dc, option.menu_separator_margin_left,
-			option.menu_separator_height / 2 - 1, NULL);
-		LineTo(draw_dc, width - option.menu_separator_margin_right,
-			option.menu_separator_height / 2 - 1);
+		MoveToEx(draw_dc, MENU_SEPARATOR_MARGIN_LEFT,
+			MENU_SEPARATOR_HEIGHT / 2 - 1, NULL);
+		LineTo(draw_dc, width - MENU_SEPARATOR_MARGIN_RIGHT,
+			MENU_SEPARATOR_HEIGHT / 2 - 1);
 		SelectObject(draw_dc, hRetPen);
 		DeleteObject(hPen);
 
 		hPen = CreatePen(PS_SOLID, 1, menu_color_3d_highlight);
 		hRetPen = SelectObject(draw_dc, hPen);
-		MoveToEx(draw_dc, option.menu_separator_margin_left,
-			option.menu_separator_height / 2, NULL);
-		LineTo(draw_dc, width - option.menu_separator_margin_right,
-			option.menu_separator_height / 2);
+		MoveToEx(draw_dc, MENU_SEPARATOR_MARGIN_LEFT,
+			MENU_SEPARATOR_HEIGHT / 2, NULL);
+		LineTo(draw_dc, width - MENU_SEPARATOR_MARGIN_RIGHT,
+			MENU_SEPARATOR_HEIGHT / 2);
 		SelectObject(draw_dc, hRetPen);
 		DeleteObject(hPen);
+#ifdef OP_XP_STYLE
+		}
+#endif	// OP_XP_STYLE
 	}
 
-	// ƒƒjƒ…[‚É•`‰æ
+	if (mii->flag & MF_POPUP) {
+		// ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®çŸ¢å°
+		arrow_size = menu_get_arrow_size();
+		SetRect(&draw_rect, width - arrow_size, 0, width, height);
+		menu_draw_arrow(draw_dc, &draw_rect, text_color);
+	}
+
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æç”»
 	BitBlt(ds->hDC,
 		ds->rcItem.left, ds->rcItem.top,
 		ds->rcItem.right, ds->rcItem.bottom,
 		draw_dc, 0, 0, SRCCOPY);
+
+	if (mii->flag & MF_POPUP) {
+		// çŸ¢å°ã®é ˜åŸŸã‚’ã‚¯ãƒªãƒƒãƒ—ã—ã¦ã€æç”»å¾Œã«ã‚·ã‚¹ãƒ†ãƒ ãŒæç”»ã™ã‚‹çŸ¢å°ã‚’è¡¨ç¤ºã—ãªã„ã‚ˆã†ã«ã™ã‚‹
+		ExcludeClipRect(ds->hDC,
+			ds->rcItem.right - arrow_size, ds->rcItem.top,
+			ds->rcItem.right, ds->rcItem.bottom);
+	}
 
 	SelectObject(draw_dc, hrBmp);
 	DeleteObject(hDrawBmp);
@@ -1195,7 +1536,7 @@ BOOL menu_drawitem(const DRAWITEMSTRUCT *ds)
 }
 
 /*
- * menu_get_accelerator - ƒƒjƒ…[‚ÌƒAƒNƒZƒ‰ƒŒ[ƒ^ƒL[‚ğæ“¾
+ * menu_get_accelerator - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ã‚­ãƒ¼ã‚’å–å¾—
  */
 static TCHAR menu_get_accelerator(TCHAR *str)
 {
@@ -1215,7 +1556,7 @@ static TCHAR menu_get_accelerator(TCHAR *str)
 		if (*(p + 1) == TEXT('&')) {
 			p++;
 		} else {
-			// ƒAƒNƒZƒ‰ƒŒ[ƒ^ƒL[
+			// ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ã‚­ãƒ¼
 			ret = *(p + 1);
 		}
 	}
@@ -1223,7 +1564,7 @@ static TCHAR menu_get_accelerator(TCHAR *str)
 }
 
 /*
- * menu_accelerator - ƒƒjƒ…[ƒAƒNƒZƒ‰ƒŒ[ƒ^
+ * menu_accelerator - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿
  */
 LRESULT menu_accelerator(const HMENU hMenu, const TCHAR key)
 {
@@ -1235,7 +1576,7 @@ LRESULT menu_accelerator(const HMENU hMenu, const TCHAR key)
 
 	cnt = GetMenuItemCount(hMenu);
 
-	// ‘I‘ğˆÊ’uæ“¾
+	// é¸æŠä½ç½®å–å¾—
 	for (sel = 0; sel < cnt; sel++) {
 		if (GetMenuState(hMenu, sel, MF_BYPOSITION) & MF_HILITE) {
 			break;
@@ -1245,7 +1586,7 @@ LRESULT menu_accelerator(const HMENU hMenu, const TCHAR key)
 		sel = -1;
 	}
 
-	// ƒAƒNƒZƒ‰ƒŒ[ƒ^ˆÊ’uæ“¾
+	// ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ä½ç½®å–å¾—
 	for (i = sel + 1; i < cnt; i++) {
 		ZeroMemory(&mii, sizeof(mii));
 		mii.cbSize = sizeof(mii);
@@ -1260,7 +1601,7 @@ LRESULT menu_accelerator(const HMENU hMenu, const TCHAR key)
 			continue;
 		}
 		if (ret != -1) {
-			// ‘I‘ğ
+			// é¸æŠ
 			return MAKELRESULT(ret, MNC_SELECT);
 		}
 		ret = i;
@@ -1279,7 +1620,7 @@ LRESULT menu_accelerator(const HMENU hMenu, const TCHAR key)
 			continue;
 		}
 		if (ret != -1) {
-			// ‘I‘ğ
+			// é¸æŠ
 			return MAKELRESULT(ret, MNC_SELECT);
 		}
 		ret = i;

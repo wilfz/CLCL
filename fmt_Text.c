@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * CLCL
  *
  * fmt_Text.c
@@ -29,36 +29,56 @@
 
 /* Global Variables */
 static HICON txt_icon;
+// èª­ã¿è¾¼ã¿æ¸ˆã¿ã®ã‚¢ã‚¤ã‚³ãƒ³ã®ã‚µã‚¤ã‚º
+static int txt_icon_size;
 static HWND hTxtWnd;
 
 extern HINSTANCE hInst;
 extern OPTION_INFO option;
 
 /* Local Function Prototypes */
+static HICON text_load_icon(const int icon_size);
 
 /*
- * text_initialize - ‰Šú‰»
+ * text_initialize - åˆæœŸåŒ–
  */
 __declspec(dllexport) BOOL CALLBACK text_initialize(void)
 {
-	if (txt_icon == NULL) {
-		txt_icon = LoadImage(hInst, MAKEINTRESOURCE(IDI_ICON_TEXT), IMAGE_ICON, Scale(16), Scale(16), 0);
-	}
+	text_load_icon(GetSystemMetricsDpi(SM_CXSMICON));
 	txtview_regist(hInst);
 	return TRUE;
 }
 
 /*
- * text_get_icon - Œ`®—p‚ÌƒAƒCƒRƒ“‚ğæ“¾
+ * text_load_icon - å½¢å¼ç”¨ã®ã‚¢ã‚¤ã‚³ãƒ³ã®èª­ã¿è¾¼ã¿
  */
-__declspec(dllexport) HICON CALLBACK text_get_icon(const int icon_size, BOOL *free_icon)
+static HICON text_load_icon(const int icon_size)
 {
-	*free_icon = FALSE;
+	if (icon_size <= 0) {
+		return txt_icon;
+	}
+	if (txt_icon != NULL && txt_icon_size == icon_size) {
+		return txt_icon;
+	}
+	if (txt_icon != NULL) {
+		DestroyIcon(txt_icon);
+	}
+	txt_icon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDI_ICON_TEXT), IMAGE_ICON, icon_size, icon_size, 0);
+	txt_icon_size = icon_size;
 	return txt_icon;
 }
 
 /*
- * text_free - I—¹ˆ—
+ * text_get_icon - å½¢å¼ç”¨ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’å–å¾—
+ */
+__declspec(dllexport) HICON CALLBACK text_get_icon(const int icon_size, BOOL *free_icon)
+{
+	*free_icon = FALSE;
+	return text_load_icon(icon_size);
+}
+
+/*
+ * text_free - çµ‚äº†å‡¦ç†
  */
 __declspec(dllexport) BOOL CALLBACK text_free(void)
 {
@@ -66,11 +86,12 @@ __declspec(dllexport) BOOL CALLBACK text_free(void)
 		DestroyIcon(txt_icon);
 		txt_icon = NULL;
 	}
+	txt_icon_size = 0;
 	return TRUE;
 }
 
 /*
- * text_initialize_item - ƒAƒCƒeƒ€î•ñ‚Ì‰Šú‰»
+ * text_initialize_item - ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®åˆæœŸåŒ–
  */
 __declspec(dllexport) BOOL CALLBACK text_initialize_item(DATA_INFO *di, const BOOL set_init_data)
 {
@@ -78,7 +99,7 @@ __declspec(dllexport) BOOL CALLBACK text_initialize_item(DATA_INFO *di, const BO
 }
 
 /*
- * text_copy_data - ƒf[ƒ^‚ÌƒRƒs[
+ * text_copy_data - ãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ”ãƒ¼
  */
 __declspec(dllexport) HANDLE CALLBACK text_copy_data(const TCHAR *format_name, const HANDLE data, DWORD *ret_size)
 {
@@ -86,7 +107,7 @@ __declspec(dllexport) HANDLE CALLBACK text_copy_data(const TCHAR *format_name, c
 }
 
 /*
- * text_data_to_bytes - ƒf[ƒ^‚ğƒoƒCƒg—ñ‚É•ÏŠ·
+ * text_data_to_bytes - ãƒ‡ãƒ¼ã‚¿ã‚’ãƒã‚¤ãƒˆåˆ—ã«å¤‰æ›
  */
 __declspec(dllexport) BYTE* CALLBACK text_data_to_bytes(const DATA_INFO *di, DWORD *ret_size)
 {
@@ -94,7 +115,7 @@ __declspec(dllexport) BYTE* CALLBACK text_data_to_bytes(const DATA_INFO *di, DWO
 }
 
 /*
- * text_bytes_to_data - ƒoƒCƒg—ñ‚ğƒf[ƒ^‚É•ÏŠ·
+ * text_bytes_to_data - ãƒã‚¤ãƒˆåˆ—ã‚’ãƒ‡ãƒ¼ã‚¿ã«å¤‰æ›
  */
 __declspec(dllexport) HANDLE CALLBACK text_bytes_to_data(const TCHAR *format_name, const BYTE *data, DWORD *size)
 {
@@ -102,7 +123,7 @@ __declspec(dllexport) HANDLE CALLBACK text_bytes_to_data(const TCHAR *format_nam
 }
 
 /*
- * text_get_file_info - ƒRƒ‚ƒ“ƒ_ƒCƒAƒƒOî•ñ‚Ìæ“¾
+ * text_get_file_info - ã‚³ãƒ¢ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°æƒ…å ±ã®å–å¾—
  */
 __declspec(dllexport) int CALLBACK text_get_file_info(const TCHAR *format_name, const DATA_INFO *di, OPENFILENAME *of, const BOOL mode)
 {
@@ -125,7 +146,7 @@ __declspec(dllexport) int CALLBACK text_get_file_info(const TCHAR *format_name, 
 }
 
 /*
- * text_data_to_file - ƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚É•Û‘¶
+ * text_data_to_file - ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
  */
 __declspec(dllexport) BOOL CALLBACK text_data_to_file(DATA_INFO *di, const TCHAR *file_name, const int filter_index, TCHAR *err_str)
 {
@@ -138,7 +159,7 @@ __declspec(dllexport) BOOL CALLBACK text_data_to_file(DATA_INFO *di, const TCHAR
 		message_get_error(GetLastError(), err_str);
 		return FALSE;
 	}
-	// ƒtƒ@ƒCƒ‹‚É‘‚«‚Ş
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã‚€
 	if (di->format == CF_UNICODETEXT) {
 		if (file_write_buf(file_name, tmp, di->size - sizeof(WCHAR), err_str) == FALSE) {
 			GlobalUnlock(di->data);
@@ -155,7 +176,7 @@ __declspec(dllexport) BOOL CALLBACK text_data_to_file(DATA_INFO *di, const TCHAR
 }
 
 /*
- * text_file_to_data - ƒtƒ@ƒCƒ‹‚©‚çƒf[ƒ^‚ğì¬
+ * text_file_to_data - ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆ
  */
 __declspec(dllexport) HANDLE CALLBACK text_file_to_data(const TCHAR *file_name, const TCHAR *format_name, DWORD *ret_size, TCHAR *err_str)
 {
@@ -164,11 +185,11 @@ __declspec(dllexport) HANDLE CALLBACK text_file_to_data(const TCHAR *file_name, 
 	BYTE *mem;
 	DWORD size;
 
-	// ƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
 	if ((data = file_read_buf(file_name, &size, err_str)) == NULL) {
 		return NULL;
 	}
-	// ƒRƒs[æŠm•Û
+	// ã‚³ãƒ”ãƒ¼å…ˆç¢ºä¿
 	if (lstrcmp(format_name, TEXT("UNICODE TEXT")) == 0) {
 		if ((ret = GlobalAlloc(GHND, size + sizeof(WCHAR))) == NULL) {
 			message_get_error(GetLastError(), err_str);
@@ -182,14 +203,14 @@ __declspec(dllexport) HANDLE CALLBACK text_file_to_data(const TCHAR *file_name, 
 			return NULL;
 		}
 	}
-	// ƒRƒs[æƒƒbƒN
+	// ã‚³ãƒ”ãƒ¼å…ˆãƒ­ãƒƒã‚¯
 	if ((mem = GlobalLock(ret)) == NULL) {
 		message_get_error(GetLastError(), err_str);
 		GlobalFree(ret);
 		mem_free(&data);
 		return NULL;
 	}
-	// ƒRƒs[
+	// ã‚³ãƒ”ãƒ¼
 	CopyMemory(mem, data, size);
 	if (lstrcmp(format_name, TEXT("UNICODE TEXT")) == 0) {
 		*((WCHAR *)mem + (size / sizeof(WCHAR))) = L'\0';
@@ -202,14 +223,14 @@ __declspec(dllexport) HANDLE CALLBACK text_file_to_data(const TCHAR *file_name, 
 			*ret_size = size;
 		}
 	}
-	// ƒƒbƒN‰ğœ
+	// ãƒ­ãƒƒã‚¯è§£é™¤
 	GlobalUnlock(ret);
 	mem_free(&data);
 	return ret;
 }
 
 /*
- * text_free_data - ƒf[ƒ^‚Ì‰ğ•ú
+ * text_free_data - ãƒ‡ãƒ¼ã‚¿ã®è§£æ”¾
  */
 __declspec(dllexport) BOOL CALLBACK text_free_data(const TCHAR *format_name, HANDLE data)
 {
@@ -223,7 +244,7 @@ __declspec(dllexport) BOOL CALLBACK text_free_data(const TCHAR *format_name, HAN
 }
 
 /*
- * text_free_item - ƒAƒCƒeƒ€î•ñ‚Ì‰ğ•ú
+ * text_free_item - ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®è§£æ”¾
  */
 __declspec(dllexport) BOOL CALLBACK text_free_item(DATA_INFO *di)
 {
@@ -231,7 +252,7 @@ __declspec(dllexport) BOOL CALLBACK text_free_item(DATA_INFO *di)
 }
 
 /*
- * text_get_menu_title - ƒƒjƒ…[ƒ^ƒCƒgƒ‹‚Ìæ“¾
+ * text_get_menu_title - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚¿ã‚¤ãƒˆãƒ«ã®å–å¾—
  */
 __declspec(dllexport) BOOL CALLBACK text_get_menu_title(DATA_INFO *di)
 {
@@ -254,7 +275,7 @@ __declspec(dllexport) BOOL CALLBACK text_get_menu_title(DATA_INFO *di)
 		return TRUE;
 	}
 
-	// ƒƒjƒ…[—p•¶š—ñ
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”¨æ–‡å­—åˆ—
 	if (di->format == CF_UNICODETEXT) {
 #ifdef UNICODE
 		p = (WCHAR *)mem;
@@ -312,17 +333,17 @@ __declspec(dllexport) BOOL CALLBACK text_get_menu_title(DATA_INFO *di)
 }
 
 /*
- * text_get_menu_icon - ƒƒjƒ…[—pƒAƒCƒRƒ“‚Ìæ“¾
+ * text_get_menu_icon - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”¨ã‚¢ã‚¤ã‚³ãƒ³ã®å–å¾—
  */
 __declspec(dllexport) BOOL CALLBACK text_get_menu_icon(DATA_INFO *di, const int icon_size)
 {
-	di->menu_icon = txt_icon;
+	di->menu_icon = text_load_icon(icon_size);
 	di->free_icon = FALSE;
 	return TRUE;
 }
 
 /*
- * text_get_menu_bitmap - ƒƒjƒ…[—pƒrƒbƒgƒ}ƒbƒv‚Ìæ“¾
+ * text_get_menu_bitmap - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”¨ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®å–å¾—
  */
 __declspec(dllexport) BOOL CALLBACK text_get_menu_bitmap(DATA_INFO *di, const int width, const int height)
 {
@@ -330,7 +351,7 @@ __declspec(dllexport) BOOL CALLBACK text_get_menu_bitmap(DATA_INFO *di, const in
 }
 
 /*
- * text_get_tooltip_text - ƒƒjƒ…[—pƒc[ƒ‹ƒ`ƒbƒvƒeƒLƒXƒg
+ * text_get_tooltip_text - ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”¨ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ãƒ†ã‚­ã‚¹ãƒˆ
  */
 __declspec(dllexport) TCHAR* CALLBACK text_get_tooltip_text(DATA_INFO *di)
 {
@@ -382,7 +403,7 @@ __declspec(dllexport) TCHAR* CALLBACK text_get_tooltip_text(DATA_INFO *di)
 }
 
 /*
- * text_window_create - ƒf[ƒ^•\¦ƒEƒBƒ“ƒhƒE‚Ìì¬
+ * text_window_create - ãƒ‡ãƒ¼ã‚¿è¡¨ç¤ºã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½œæˆ
  */
 __declspec(dllexport) HWND CALLBACK text_window_create(const HWND parent_wnd)
 {
@@ -400,7 +421,7 @@ __declspec(dllexport) HWND CALLBACK text_window_create(const HWND parent_wnd)
 }
 
 /*
- * text_window_destroy - ƒf[ƒ^•\¦ƒEƒBƒ“ƒhƒE‚Ì”jŠü
+ * text_window_destroy - ãƒ‡ãƒ¼ã‚¿è¡¨ç¤ºã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç ´æ£„
  */
 __declspec(dllexport) BOOL CALLBACK text_window_destroy(const HWND hWnd)
 {
@@ -409,7 +430,7 @@ __declspec(dllexport) BOOL CALLBACK text_window_destroy(const HWND hWnd)
 }
 
 /*
- * text_window_show_data - ƒf[ƒ^‚Ì•\¦
+ * text_window_show_data - ãƒ‡ãƒ¼ã‚¿ã®è¡¨ç¤º
  */
 __declspec(dllexport) BOOL CALLBACK text_window_show_data(const HWND hWnd, DATA_INFO *di, const BOOL lock)
 {
@@ -457,7 +478,7 @@ __declspec(dllexport) BOOL CALLBACK text_window_show_data(const HWND hWnd, DATA_
 }
 
 /*
- * text_window_save_data - ƒf[ƒ^‚Ì•Û‘¶
+ * text_window_save_data - ãƒ‡ãƒ¼ã‚¿ã®ä¿å­˜
  */
 __declspec(dllexport) BOOL CALLBACK text_window_save_data(const HWND hWnd, DATA_INFO *di)
 {
@@ -477,7 +498,7 @@ __declspec(dllexport) BOOL CALLBACK text_window_save_data(const HWND hWnd, DATA_
 		di->size = 0;
 	}
 	size = SendMessage(hWnd, WM_GETTEXTLENGTH, 0, 0);
-	// ƒf[ƒ^‚Ìì¬
+	// ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 	if (di->format == CF_UNICODETEXT) {
 #ifdef UNICODE
 		if ((data = GlobalAlloc(GHND, sizeof(WCHAR) * (size + 1))) == NULL) {
@@ -489,7 +510,7 @@ __declspec(dllexport) BOOL CALLBACK text_window_save_data(const HWND hWnd, DATA_
 		}
 		SendMessage(hWnd, WM_GETTEXT, size + 1, (LPARAM)to_mem);
 #else
-		// Œ»İ•\¦‚³‚ê‚Ä‚¢‚é“à—e‚Ìæ“¾
+		// ç¾åœ¨è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹å†…å®¹ã®å–å¾—
 		if ((buf = mem_alloc(sizeof(TCHAR) * (size + 1))) == NULL) {
 			return FALSE;
 		}
@@ -511,7 +532,7 @@ __declspec(dllexport) BOOL CALLBACK text_window_save_data(const HWND hWnd, DATA_
 		GlobalUnlock(data);
 	} else {
 #ifdef UNICODE
-		// Œ»İ•\¦‚³‚ê‚Ä‚¢‚é“à—e‚Ìæ“¾
+		// ç¾åœ¨è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹å†…å®¹ã®å–å¾—
 		if ((buf = mem_alloc(sizeof(TCHAR) * (size + 1))) == NULL) {
 			return FALSE;
 		}
@@ -541,7 +562,7 @@ __declspec(dllexport) BOOL CALLBACK text_window_save_data(const HWND hWnd, DATA_
 #endif
 		GlobalUnlock(data);
 	}
-	// V‚µ‚¢ƒf[ƒ^‚ğİ’è
+	// æ–°ã—ã„ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®š
 	di->data = data;
 	if (di->format == CF_UNICODETEXT) {
 		di->size = sizeof(WCHAR) * (size + 1);
@@ -553,7 +574,7 @@ __declspec(dllexport) BOOL CALLBACK text_window_save_data(const HWND hWnd, DATA_
 }
 
 /*
- * text_window_hide_data - ƒf[ƒ^‚Ì”ñ•\¦
+ * text_window_hide_data - ãƒ‡ãƒ¼ã‚¿ã®éè¡¨ç¤º
  */
 __declspec(dllexport) BOOL CALLBACK text_window_hide_data(const HWND hWnd, DATA_INFO *di)
 {

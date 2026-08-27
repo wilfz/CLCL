@@ -354,10 +354,11 @@ CLCL.exe [/vwnx]
 
 * Update history
 
-- Ver 2.1.3 -> Ver 2.1.4
+- Ver 2.1.3 -> Ver 2.2.0
+	- Added support for the Windows dark mode.
+	- Improved to support for high-DPI displays.
 	- Added an option to show the menu without taking the focus away
-	  from the window you are working in. (Options - Menu - Attach to
-	  the process to show the menu)
+	  from the window you are working in. 
 	- Improved the save processing performed on exit.
 	- Added UNICODE support to Binary View.
 	- Fixed CLCL so that data a password manager saves to the
