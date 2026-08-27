@@ -31,6 +31,7 @@ PowerShell で以下を実行すると、CLCL 本体のビルドからインス�
 作成したインストーラは Installer\out に出力されます。
 出力するファイル名は clcl<バージョン>.exe です。Ver 2.2.0 なら clcl220.exe に
 なります。バージョンは CLCL.rc の FILEVERSION から取得します。
+インストーラに含まれるのは Release 構成でビルドした CLCL.exe などです。
 
 ビルド済みのファイルからインストーラだけを作成する場合は -SkipBuild を指定しま
 す。
@@ -55,6 +56,10 @@ CLCL 本体のビルドの後にインストーラが作成されます。Instal
 instinfo.h の生成を行い、ビルド後のイベントで prepare.ps1 が Installer\out へ
 clcl<バージョン>.exe として出力します。build.ps1 はこのプロジェクトを msbuild で
 ビルドしているだけなので、どちらの方法でも結果は同じです。
+
+Installer\out に出力するのは Release 構成のときだけです。Debug 構成でビルドした
+インストーラは Installer\Debug\CLCLInst.exe になります。Debug 構成では Debug 構成
+の CLCL.exe などを収集するため、配布するインストーラと混ざらないようにしています。
 
 プロジェクトの設定は msbuild のプロパティで変更できます。build.ps1 のオプション
 はこれらに対応しています。フォルダは末尾に \ を付けないでください。

@@ -56,6 +56,8 @@
   </PropertyGroup>
   <!--
     prepare.ps1 に渡す追加の設定。msbuild の /p: で上書きできる。
+    ClclOutDir には Release 構成のインストーラだけを出力する。
+    Debug 構成の出力は Installer\Debug\CLCLInst.exe のみ。
     フォルダは末尾に \ を付けないこと (コマンドラインの引用符を壊すため)。
       ClclVersion    バージョン (既定: CLCL.rc の FILEVERSION)
       ClclSourceDir  インストールするファイルの収集元
@@ -95,10 +97,6 @@
       <Message>インストールするファイルを収集しています...</Message>
       <Command>powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(ProjectDir)prepare.ps1" -Mode Prepare -OutDir "$(IntDir)." -Configuration "$(Configuration)" $(ClclPrepareArgs)</Command>
     </PreBuildEvent>
-    <PostBuildEvent>
-      <Message>インストーラを出力しています...</Message>
-      <Command>powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(ProjectDir)prepare.ps1" -Mode Publish -TargetPath "$(TargetPath)" -OutDir "$(ClclOutDir)" $(ClclExtraArgs)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
