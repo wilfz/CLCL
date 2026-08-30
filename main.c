@@ -988,9 +988,52 @@ static BOOL action_execute(const HWND hWnd, const int type, const int id, const 
 		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_EXIT, 0);
 		break;
 
-	case ACTION_QUICKSEARCH:
-		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_QUICKSEARCH, 0);
+	case ACTION_QUICKSEARCH: {
+		ACTION_INFO* ai = option.action_info + i;
+		FOCUS_INFO fi;
+		BOOL caret_flag = caret;
+		CopyMemory(&fi, &focus_info, sizeof(FOCUS_INFO));
+		if (caret == TRUE || fi.active_wnd == NULL) {
+			// フォーカス情報取得
+			get_focus_info(&fi, (ai->caret != 0) ? caret : FALSE);
+		}
+		if (ai->caret == 0 || fi.caret == FALSE) {
+			caret_flag = FALSE;
+		}
+		// Display menu
+		_SetForegroundWindow(hWnd);
+		ShowWindow(hWnd, SW_HIDE);
+
+		POINT pt;
+		if (fi.caret)
+			pt = fi.cpos;
+		else
+			GetCursorPos((LPPOINT)&pt);
+
+		// クイックサーチ - enter text and show items like in a menu
+		DATA_INFO* di = (DATA_INFO*)quicksearch(hWnd, pt);
+		// クリップボードにデータを設定
+		// Set the data on the clipboard
+		set_focus_info(&fi);
+		if (di) {
+			SendMessage(hWnd, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)di);
+			// キーを離すまで待機
+			// Wait until key is released
+			key_wait();
+			// ホットキーの解除
+			// Cancel hotkey
+			unregist_hotkey(hWnd);
+			// 貼り付け
+			// paste
+			sendkey_paste(fi.active_wnd);
+			// ホットキーの登録
+			// Register the hotkey
+			regist_hotkey(hWnd, FALSE);
+		}
+		ZeroMemory(&focus_info, sizeof(FOCUS_INFO));
+
 		break;
+	}
 
 	}
 	return TRUE;
@@ -1862,9 +1905,10 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 
 			// クイックサーチ - enter text and show items like in a menu
 			DATA_INFO* di = (DATA_INFO*)quicksearch(hWnd, pt);
+			set_focus_info(&fi);
+
 			// クリップボードにデータを設定
 			// Set the data on the clipboard
-			set_focus_info(&fi);
 			if (di) {
 				SendMessage(hWnd, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)di);
 				// キーを離すまで待機

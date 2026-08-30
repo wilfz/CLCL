@@ -423,11 +423,6 @@ HWND CreateDynamicPopupMenu(HWND hwndOwner, int x, int y, int width)
     int initialListHeight = 0; //ITEM_HEIGHT * 3;
     int totalHeight = editHeight + initialListHeight;
 
-    // center the popup horizontally around the x coordinate
-    x -= width / 2;
-    // show the popup above the y coordinate
-    y -= editHeight;
-
     // 1. Das übergeordnete POPUP-Fenster erstellen
     HWND hwndFrame = CreateWindowEx(
         WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
@@ -613,11 +608,25 @@ void ActivateDynamicPopup(HWND hwndFrame)
 
     // Initial befüllen
     UpdateListContent(pData);
-    // Select the very first item
-    SendMessage(pData->hwndList, LB_SETCURSEL, (WPARAM)0, (LPARAM)0);
 
     ShowWindow(pData->hwndFrame, SW_SHOW);
     SetFocus(pData->hwndEdit);
+
+    // Select the first item
+    int sel = 0;
+    LRESULT ret = SendMessage(pData->hwndList, LB_SETCURSEL, (WPARAM)sel, (LPARAM)0);
+    if (ret >= 0 && pData->tooltipCallback != NULL) {
+        // Show tooltip for the selected item
+        RECT itemrect;
+        ret = SendMessage(pData->hwndList, LB_GETITEMRECT, (WPARAM)sel, (LPARAM)&itemrect);
+        if (ret >= 0) {
+            POINT pt;
+            pt.x = (itemrect.left + itemrect.right) / 2;
+            pt.y = (itemrect.top + itemrect.bottom) / 2;
+            if (ClientToScreen(pData->hwndList, &pt))
+                ShowTooltipForItem(pData, sel, pt);
+        }
+    }
 
     return;
 }
