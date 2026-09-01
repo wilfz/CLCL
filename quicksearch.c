@@ -265,6 +265,15 @@ UINT_PTR quicksearch(HWND hWnd, POINT pt)
 	int icon_margin = option.menu_icon_margin ? Scale(option.menu_icon_margin) : Scale(2);
 	int text_margin = option.menu_text_margin_left ? Scale(option.menu_text_margin_left) : Scale(4);
 	int menu_width = option.menu_max_width ? Scale(option.menu_max_width) : Scale(200);
+	int font_size = option.menu_font_size;
+
+	NONCLIENTMETRICS ncMetrics;
+	HFONT menu_font = NULL;
+	if (option.menu_font_name && option.menu_font_size && option.menu_font_charset)
+		menu_font = font_create(option.menu_font_name, option.menu_font_size, option.menu_font_charset, option.menu_font_weight, (option.menu_font_italic == 0) ? FALSE : TRUE, FALSE);
+	else if (GetNonClientMetricsDpi(&ncMetrics) != FALSE)
+		menu_font = CreateFontIndirect(&ncMetrics.lfMenuFont);
+
 	StringCbPrintf(ini_path, BUF_SIZE, TEXT("%s\\%s"), work_path, USER_INI);
 	static unsigned int max_visible_items = 0;
 	if (max_visible_items == 0)
@@ -287,6 +296,8 @@ UINT_PTR quicksearch(HWND hWnd, POINT pt)
 	SetTextMargin(hwndPopup, text_margin);
 	SetMaxVisibleItems(hwndPopup, max_visible_items);
 	SetUserData(hwndPopup, (void*)NULL);
+	if (menu_font)
+		SetMenuFont(hwndPopup, menu_font);
 
 	// Step 3: Track the popup modally and get the result
 	UINT_PTR itemData = TrackDynamicPopup(hwndPopup);

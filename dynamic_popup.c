@@ -21,6 +21,12 @@
 #define IDC_TOOLTIP_WINDOW 51004
 #endif
 
+// data after select or losing focus
+typedef struct {
+    UINT_PTR selectedItemData;
+    BOOL selectionMade;
+} ModalPopupState;
+
 // Zustandskontrolle für das dynamische Popup
 typedef struct {
     HWND hwndFrame;           // Das neue unsichtbare Container-Fenster (hat den Schatten!)
@@ -33,6 +39,7 @@ typedef struct {
     OnPopupSelectCallback selectCallback;
     OnPopupTooltipCallback tooltipCallback;  // Neuer Callback für Multiline-Tooltips
     unsigned int max_visible_items;
+	ModalPopupState* pModalState;
     void* pUserData;
     BOOL isClosing;
     BOOL listAboveEdit;
@@ -478,6 +485,7 @@ HWND CreateDynamicPopupMenu(HWND hwndOwner, int x, int y, int width)
     pData->populateCallback = NULL;
     pData->selectCallback = NULL;
     pData->tooltipCallback = NULL;
+	pData->pModalState = NULL;
     pData->max_visible_items = MAX_VISIBLE_ITEMS;
     pData->hImageList = (HIMAGELIST) NULL;
     pData->icon_size = 0;
@@ -631,6 +639,15 @@ void ActivateDynamicPopup(HWND hwndFrame)
     return;
 }
 
+static void SetModalState(DynamicPopupData* pData, const PopupItemData* pSelectedItem)
+{
+    if (!pData || !pData->pModalState) return;
+    if (pSelectedItem) {
+        pData->pModalState->selectedItemData = pSelectedItem->itemData;
+        pData->pModalState->selectionMade = TRUE;
+    }
+}
+
 // Fensterprozedur für das äußere Frame-Fenster
 LRESULT CALLBACK PopupFrameWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     DynamicPopupData* pData = (DynamicPopupData*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
@@ -753,11 +770,13 @@ LRESULT CALLBACK DynamicEditSubclass(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
             }
             if (wParam == VK_RETURN) {
                 int index = (int)SendMessage(pData->hwndList, LB_GETCURSEL, 0, 0);
+                PopupItemData* pItem = NULL;
                 if (index != LB_ERR) {
-                    PopupItemData* pItem = (PopupItemData*)SendMessage(pData->hwndList, LB_GETITEMDATA, index, 0);
-                    if (pItem && pData->selectCallback) {
-                        pData->selectCallback(pItem, pData->pUserData);
-                    }
+                    pItem = (PopupItemData*)SendMessage(pData->hwndList, LB_GETITEMDATA, index, 0);
+                }
+				SetModalState(pData, pItem);
+                if (pItem && pData->selectCallback) {
+                    pData->selectCallback(pItem, pData->pUserData);
                 }
                 DestroyPopupLayout(pData);
                 return 0;
@@ -800,22 +819,16 @@ LRESULT CALLBACK DynamicListSubclass(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
         break;
     }
 
-    //case WM_KILLFOCUS: {
-    //    HWND hwndNewFocus = (HWND)wParam;
-    //    if (hwndNewFocus != pData->hwndFrame && hwndNewFocus != pData->hwndEdit && hwndNewFocus != hWnd) {
-    //        DestroyPopupLayout(pData);
-    //    }
-    //    break;
-    //}
-
     case WM_LBUTTONUP: {
         LRESULT res = DefSubclassProc(hWnd, uMsg, wParam, lParam);
         int index = (int)SendMessage(hWnd, LB_GETCURSEL, 0, 0);
+        PopupItemData* pItem = NULL;
         if (index != LB_ERR) {
-            PopupItemData* pItem = (PopupItemData*)SendMessage(hWnd, LB_GETITEMDATA, index, 0);
-            if (pItem && pData->selectCallback) {
-                pData->selectCallback(pItem, pData->pUserData);
-            }
+            pItem = (PopupItemData*)SendMessage(pData->hwndList, LB_GETITEMDATA, index, 0);
+        }
+        SetModalState(pData, pItem);
+        if (pItem && pData->selectCallback) {
+            pData->selectCallback(pItem, pData->pUserData);
         }
         DestroyPopupLayout(pData);
         return res;
@@ -823,20 +836,6 @@ LRESULT CALLBACK DynamicListSubclass(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 
     }
     return DefSubclassProc(hWnd, uMsg, wParam, lParam);
-}
-
-typedef struct {
-    UINT_PTR selectedItemData;
-    BOOL selectionMade;
-} ModalPopupState;
-
-static void TrackDynamicPopup_InternalSelectCallback(const PopupItemData* pSelectedItem, void* pUserData)
-{
-    ModalPopupState* pState = (ModalPopupState*)pUserData;
-    if (pState && pSelectedItem) {
-        pState->selectedItemData = pSelectedItem->itemData;
-        pState->selectionMade = TRUE;
-    }
 }
 
 UINT_PTR TrackDynamicPopup(HWND hwndFrame)
@@ -850,15 +849,13 @@ UINT_PTR TrackDynamicPopup(HWND hwndFrame)
         return 0;
     }
 
-    ModalPopupState modalState = { 0 };
+    // local variable stays alive in this scope, even after pUserData is destroyed
+    ModalPopupState modalState = { 0, FALSE };
     modalState.selectedItemData = 0;
     modalState.selectionMade = FALSE;
 
-    OnPopupSelectCallback pOriginalSelectCallback = pData->selectCallback;
-    pData->selectCallback = TrackDynamicPopup_InternalSelectCallback;
-    
-    void* pOriginalUserData = pData->pUserData;
-    pData->pUserData = (void*)&modalState;
+    // pointer to local variable modalState
+	pData->pModalState = &modalState;
 
     ActivateDynamicPopup(hwndFrame);
 
@@ -867,6 +864,7 @@ UINT_PTR TrackDynamicPopup(HWND hwndFrame)
 
     while (bContinue && GetMessage(&msg, NULL, 0, 0)) {
         if (!IsWindow(hwndFrame)) {
+			// The popup window has been destroyed, exit the loop
             bContinue = FALSE;
             break;
         }

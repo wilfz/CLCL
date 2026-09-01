@@ -65,6 +65,8 @@ void SetTextMargin(HWND hwndFrame, int text_margin);
 
 void SetMaxVisibleItems(HWND hwndFrame, unsigned int max_visible_items);
 
+void SetMenuFont(HWND hwndFrame, HFONT hFont);
+
 void SetUserData(HWND hwndFrame, void* pUserData);
 
 void ActivateDynamicPopup(HWND hwndFrame);
