@@ -130,7 +130,7 @@ static void ShowTooltipForItem(DynamicPopupData* pData, int itemIndex, POINT ptM
 
         HINSTANCE hInstance = (HINSTANCE)GetWindowLongPtr(pData->hwndList, GWLP_HINSTANCE);
         pData->hwndTooltip = CreateWindowEx(
-            WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_TRANSPARENT | WS_EX_NOACTIVATE,
+            WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE,
             szTooltipClass, NULL,
             WS_POPUP | WS_BORDER,
             ptMouse.x + 15, ptMouse.y + 15, 300, 100,

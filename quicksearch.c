@@ -51,7 +51,7 @@ typedef struct {
 /* Local Function Prototypes */
 static int get_icon_index_for_data(DATA_INFO* di);
 static int listbox_add_matches(HWND hListBox, DATA_INFO* item, const TCHAR* srch, int max_cnt);
-int listbox_add_matches(HWND hListBox, DATA_INFO* start, const TCHAR* srch, int max_cnt)
+static int listbox_add_matches(HWND hListBox, DATA_INFO* start, const TCHAR* srch, int max_cnt)
 {
 	int cnt = 0;
 	int idx = 0;
@@ -141,26 +141,6 @@ int listbox_add_matches(HWND hListBox, DATA_INFO* start, const TCHAR* srch, int 
 
 	cnt = (int)SendMessage(hListBox, LB_GETCOUNT, 0, 0);
 	return cnt;
-}
-
-/*
- * menu_create_font - メニュー用フォントの作成
- */
-static HFONT menu_create_font(void)
-{
-	NONCLIENTMETRICS ncMetrics;
-
-	if (*option.menu_font_name != TEXT('\0')) {
-		return font_create(option.menu_font_name, option.menu_font_size, option.menu_font_charset,
-			option.menu_font_weight, (option.menu_font_italic == 0) ? FALSE : TRUE, FALSE);
-	}
-
-	ncMetrics.cbSize = sizeof(NONCLIENTMETRICS);
-	if (SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS), &ncMetrics, 0) == FALSE) {
-		return NULL;
-	}
-	return CreateFontIndirect(&ncMetrics.lfMenuFont);
 }
 
 /*
@@ -302,18 +282,18 @@ UINT_PTR quicksearch(HWND hWnd, POINT pt)
 	// Step 3: Track the popup modally and get the result
 	UINT_PTR itemData = TrackDynamicPopup(hwndPopup);
 
-	// Step 4: Process the result
+	// Step 4: Clean-up and return the result
+	if (hImageList)
+		ImageList_Destroy(hImageList);
+	if (menu_font)
+		DeleteObject(menu_font);
+
 	return itemData; // Return the selected item's data or 0 if no selection is made
 }
 
 // 1. DIESER CALLBACK BEFÜLLT DIE LISTBOX DYNAMISCH
 void MyPopupPopulateHandler(const TCHAR* editText, HWND hwndListBox, void* pUserData) 
 {
-	// Wenn das Textfeld leer ist, gibt's auch nichts zu zeigen
-	//if (_tcslen(editText) == 0) {
-	//	return;
-	//}
-
 	// Add matching items to the listbox
 	static int max_cnt = 0;
 	if (max_cnt == 0)

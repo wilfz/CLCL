@@ -16,30 +16,30 @@
 #include <windows.h>
 #include <commctrl.h>
 
-// Eindeutige IDs für die Controls
+// Eindeutige IDs fÃ¼r die Controls
 #define IDC_DYNAMIC_EDIT    51001
 #define IDC_DYNAMIC_LISTBOX 51002
 
-// Struktur für jedes Element in der Owner-Draw Listbox
+// Struktur fÃ¼r jedes Element in der Owner-Draw Listbox
 typedef struct {
     TCHAR* pszText;       // Der anzuzeigende Text
-    int iIconIndex;       // Index des Icons in einer ImageList (oder -1 für kein Icon)
+    int iIconIndex;       // Index des Icons in einer ImageList (oder -1 fÃ¼r kein Icon)
     UINT_PTR itemData;    // Anwenderspezifische Daten (z.B. ID oder Pointer)
 } PopupItemData;
 
-// Callback für die Anzeige von Tooltips beim Hovern
-// Rückgabe: Zeiger auf Tooltip-Text (wird vom Aufrufer NICHT freigegeben)
+// Callback fÃ¼r die Anzeige von Tooltips beim Hovern
+// RÃ¼ckgabe: Zeiger auf Tooltip-Text (wird vom Aufrufer NICHT freigegeben)
 // oder NULL falls kein Tooltip
 typedef TCHAR* (*OnPopupTooltipCallback)(const PopupItemData* pItem, void* pUserData);
 
-// Callback für die Auswahl eines Elements
+// Callback fÃ¼r die Auswahl eines Elements
 typedef void (*OnPopupSelectCallback)(const PopupItemData* pSelectedItem, void* pUserData);
 
-// Callback zum dynamischen Befüllen der Listbox abhängig vom Edit-Text
+// Callback zum dynamischen BefÃ¼llen der Listbox abhÃ¤ngig vom Edit-Text
 typedef void (*OnPopupPopulateCallback)(const TCHAR* editText, HWND hwndListBox, void* pUserData);
 
 /**
- * Erzeugt ein temporäres, kontextabhängiges Popup-Menü mit Edit-Feld und Listbox.
+ * Erzeugt ein temporÃ¤res, kontextabhÃ¤ngiges Popup-MenÃ¼ mit Edit-Feld und Listbox.
  *
  * @param hwndOwner         Das Hauptfenster, das dieses Popup besitzt.
  * @param x                 X-Koordinate auf dem Bildschirm (Bildschirmkoordinaten).
@@ -72,16 +72,16 @@ void SetUserData(HWND hwndFrame, void* pUserData);
 void ActivateDynamicPopup(HWND hwndFrame);
 
 /**
- * Zeigt ein Popup-Menü modal an und wartet auf eine Auswahl oder Abbruch.
- * Diese Funktion blockiert, bis der Benutzer eine Auswahl trifft oder das Popup verlässt.
+ * Zeigt ein Popup-MenÃ¼ modal an und wartet auf eine Auswahl oder Abbruch.
+ * Diese Funktion blockiert, bis der Benutzer eine Auswahl trifft oder das Popup verlÃ¤sst.
  * 
  * Der Workflow:
  * 1. Rufe CreateDynamicPopupMenu() auf, um das Popup zu erstellen
  * 2. Verwende SetImageList(), SetIconSize(), SetIconMargin() etc. zum Konfigurieren
  * 3. Rufe TrackDynamicPopup() auf, um modal auf eine Auswahl zu warten
  *
- * @param hwndFrame         Das von CreateDynamicPopupMenu() zurückgegebene Fenster-Handle.
- * @return UINT_PTR         Die itemData der ausgewählten Zeile oder 0 bei Abbruch.
+ * @param hwndFrame         Das von CreateDynamicPopupMenu() zurÃ¼ckgegebene Fenster-Handle.
+ * @return UINT_PTR         Die itemData der ausgewÃ¤hlten Zeile oder 0 bei Abbruch.
  *
  * Beispiel:
  *   HWND hwndPopup = CreateDynamicPopupMenu(hWnd, x, y, width);
@@ -92,7 +92,7 @@ void ActivateDynamicPopup(HWND hwndFrame);
 UINT_PTR TrackDynamicPopup(HWND hwndFrame);
 
 /**
- * Hilfsfunktion: Fügt der Owner-Draw Listbox einen Eintrag hinzu.
+ * Hilfsfunktion: FÃ¼gt der Owner-Draw Listbox einen Eintrag hinzu.
  * Muss innerhalb des OnPopupPopulateCallback aufgerufen werden.
  */
 void PopupAddString(HWND hwndListBox, const TCHAR* pszText, int iIconIndex, UINT_PTR itemData);
