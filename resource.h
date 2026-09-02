@@ -1,4 +1,4 @@
-//{{NO_DEPENDENCIES}}
+﻿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ で生成されたインクルード ファイル。
 // CLCL.rc で使用
 //
@@ -9,6 +9,7 @@
 #define IDS_MENU_OPTION                 5
 #define IDS_MENU_CLIPBOARD_WATCH        6
 #define IDS_MENU_HELP                   7
+#define IDS_MENU_QUICKSEARCH            8
 #define IDS_TREEITEM_CLIPBOARD          10
 #define IDS_TREEITEM_HISTORY            11
 #define IDS_TREEITEM_REGIST             12
@@ -154,6 +155,8 @@
 #define ID_MENUITEM_SHOWBINARY          40067
 #define ID_MENUITEM_SEARCH              40068
 #define ID_MENUITEM_FINDNEXT            40069
+#define ID_MENUITEM_QUICKSEARCH         40070
+#define ID_MENUITEM_PASTE_UNFORMATTED   40071
 #define ID_MENUITEM_CLIPBOARD_TB        50000
 #define ID_MENUITEM_PASTE_TB            50001
 #define ID_MENUITEM_REGIST_ADD_TB       50002
@@ -167,8 +170,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        140
-#define _APS_NEXT_COMMAND_VALUE         40070
-#define _APS_NEXT_CONTROL_VALUE         1016
+#define _APS_NEXT_COMMAND_VALUE         40072
+#define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

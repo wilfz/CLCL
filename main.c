@@ -1,4 +1,4 @@
-/*
+﻿/*
  * CLCL
  *
  * main.c
@@ -628,6 +628,8 @@ static BOOL show_tool_menu(const HWND hWnd, DATA_INFO *di, const int paste, cons
 	if (popup_menu != NULL) {
 		return FALSE;
 	}
+	// 表示するモニタのDPIに合わせる
+	menu_set_dpi(NULL);
 	// メニュー作成
 	ZeroMemory(&mi, sizeof(MENU_INFO));
 	mi.content = MENU_CONTENT_TOOL;
@@ -703,7 +705,9 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 
 	if (popup_menu != NULL) {
 		// ポップアップメニュー表示中
+		if (menu_attach_tid == 0) {
 		_SetForegroundWindow(hWnd);
+		}
 		return FALSE;
 	}
 	if (attach == TRUE && option.menu_attach_process == 1) {
@@ -722,6 +726,8 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 	// キー初期化
 	GetAsyncKeyState(VK_RBUTTON);
 
+	// 表示するモニタのDPIに合わせる
+	menu_set_dpi((caret_flag == TRUE) ? &fi.cpos : NULL);
 	// メニュー作成
 	popup_menu = menu_create(hWnd, ai->menu_info, ai->menu_cnt, history_data.child, regist_data.child);
 	if (popup_menu == NULL) {
@@ -767,7 +773,7 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 
 	} else if (mii->set_di != NULL) {
 		// アイテム
-		if ((GetAsyncKeyState(VK_RBUTTON) == 1 || GetKeyState(VK_CONTROL) < 0) &&
+		if ((GetAsyncKeyState(VK_RBUTTON) == 1 || ctrl_key == TRUE) &&
 			option.menu_show_tool_menu == 1) {
 			DATA_INFO *di = mii->set_di;
 			BOOL tool_ret;
@@ -783,9 +789,11 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 			return TRUE;
 		}
 		// クリップボードにデータを設定
+		if (attached == FALSE) {
 		set_focus_info(&fi);
+		}
 		SendMessage(hWnd, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)mii->set_di);
-		if (ai->paste == 1 && GetKeyState(VK_SHIFT) >= 0) {
+		if (ai->paste == 1 && shift_key == FALSE) {
 			// キーを離すまで待機
 			key_wait();
 			// ホットキーの解除
@@ -798,11 +806,13 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 
 	} else if (mii->ti != NULL) {
 		// ツール
+		if (attached == FALSE) {
 		set_focus_info(&fi);
+		}
 		if (mii->ti->copy_paste == 1) {
 			tmi.enable = TRUE;
 			tmi.ti = mii->ti;
-			tmi.paste = (GetKeyState(VK_SHIFT) >= 0) ? ai->paste : 0;
+			tmi.paste = (shift_key == FALSE) ? ai->paste : 0;
 			// キーを離すまで待機
 			key_wait();
 			SetTimer(hWnd, ID_TOOL_TIMER, option.tool_valid_interval, NULL);
@@ -916,7 +926,7 @@ static BOOL action_execute(const HWND hWnd, const int type, const int id, const 
 		// ホットキーからの表示のみアクティブなプロセスにアタッチする
 		ret = show_popup_menu(hWnd, option.action_info + i, caret,
 			(type == ACTION_TYPE_HOTKEY || type == ACTION_TYPE_CTRL_CTRL ||
-			type == ACTION_TYPE_SHIFT_SHIFT || type == ACTION_TYPE_ALT_ALT));
+			type == ACTION_TYPE_SHIFT_SHIFT || type == ACTION_TYPE_ALT_ALT) ? TRUE : FALSE);
 		ZeroMemory(&focus_info, sizeof(FOCUS_INFO));
 		return ret;
 
@@ -2119,12 +2129,17 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 
 	case WM_REGIST_CHANGED:
 		// 登録アイテムの内容変化
+		{
+			LRESULT ret = 0;
+
 		if (hViewerWnd != NULL) {
-			return SendMessage(hViewerWnd, msg, wParam, lParam);
+				ret = SendMessage(hViewerWnd, msg, wParam, lParam);
 		} else {
 			data_adjust(&regist_data.child);
 		}
-		break;
+			save_regist(hWnd);
+			return ret;
+		}
 
 	case WM_REGIST_GET_ROOT:
 		// 登録アイテムの取得
