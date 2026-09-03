@@ -1,4 +1,4 @@
-/*
+﻿/*
  * CLCL
  *
  * fmt_Text.c

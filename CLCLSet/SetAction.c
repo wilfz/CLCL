@@ -1,4 +1,4 @@
-/*
+﻿/*
  * CLCLSet
  *
  * SetAction.c
@@ -458,6 +458,7 @@ static void set_enable_control(const HWND hDlg)
 		i == MENU_CONTENT_CLIPBOARD_WATCH ||
 		i == MENU_CONTENT_TOOL ||
 		i == MENU_CONTENT_APP ||
+		i == MENU_CONTENT_QUICKSEARCH ||
 		i == MENU_CONTENT_HELP ||
 		i == MENU_CONTENT_CANCEL ||
 		i == MENU_CONTENT_EXIT);
@@ -550,6 +551,11 @@ static TCHAR *get_tree_text(const MENU_INFO *menu_info)
 	case MENU_CONTENT_APP:
 		ret = (menu_info->title == NULL || *menu_info->title == TEXT('\0')) ?
 			message_get_res(IDS_ACTION_CONTENT_APP) : menu_info->title;
+		break;
+
+	case MENU_CONTENT_QUICKSEARCH:
+		ret = (menu_info->title == NULL || *menu_info->title == TEXT('\0')) ?
+			message_get_res(IDS_MENU_QUICKSEARCH) : menu_info->title;
 		break;
 
 	case MENU_CONTENT_HELP:
@@ -807,6 +813,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		SET_COMBO_ITEM(IDC_COMBO_ACTION, message_get_res(IDS_ACTION_OPTION));
 		SET_COMBO_ITEM(IDC_COMBO_ACTION, message_get_res(IDS_ACTION_CLIPBOARD_WATCH));
 		SET_COMBO_ITEM(IDC_COMBO_ACTION, message_get_res(IDS_ACTION_EXIT));
+		SET_COMBO_ITEM(IDC_COMBO_ACTION, message_get_res(IDS_ACTION_QUICKSEARCH));
 
 		SET_COMBO_ITEM(IDC_COMBO_TYPE, message_get_res(IDS_ACTION_TYPE_HOTKEY));
 		SET_COMBO_ITEM(IDC_COMBO_TYPE, message_get_res(IDS_ACTION_TYPE_CTRL_CTRL));
@@ -834,6 +841,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_APP));
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_CANCEL));
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_EXIT));
+		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_QUICKSEARCH));
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_HELP));
 
 		if (lParam == 0) {
@@ -1259,6 +1267,13 @@ static void listview_set_text(const HWND hListView, const int i)
 	case ACTION_EXIT:
 		p = message_get_res(IDS_ACTION_EXIT);
 		break;
+
+	case ACTION_QUICKSEARCH:
+		p = message_get_res(IDS_ACTION_QUICKSEARCH);
+		break;
+
+	default:
+		p = TEXT("Not yet implemented");
 	}
 	ListView_SetItemText(hListView, i, 0, p);
 

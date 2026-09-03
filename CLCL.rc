@@ -1857,7 +1857,7 @@ BEGIN
     IDS_MENU_OPTION         "&Options..."
     IDS_MENU_CLIPBOARD_WATCH "Clipboard &Watch"
     IDS_MENU_HELP           "&Help"
-    IDS_MENU_QUICKSEARCH    "Quick Search"
+    IDS_MENU_QUICKSEARCH    "&Quick Search"
     IDS_TREEITEM_CLIPBOARD  "Clipboard"
     IDS_TREEITEM_HISTORY    "History"
     IDS_TREEITEM_REGIST     "Template"

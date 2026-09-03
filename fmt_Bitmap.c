@@ -1,4 +1,4 @@
-/*
+﻿/*
  * CLCL
  *
  * fmt_Bitmap.c
@@ -13,10 +13,6 @@
 #include <windows.h>
 #undef  _INC_OLE
 #include <shlwapi.h>
-
-#if (defined(_MSC_VER) && _MSC_VER >=  1930)
-#include <versionhelpers.h>
-#endif
 
 #pragma comment(lib, "shlwapi.lib")
 

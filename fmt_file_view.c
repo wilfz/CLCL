@@ -1,4 +1,4 @@
-/*
+﻿/*
  * CLCL
  *
  * fmt_file_view.c
@@ -14,10 +14,6 @@
 #undef  _INC_OLE
 #include <shlobj.h>
 #include <commctrl.h>
-
-#if (defined(_MSC_VER) && _MSC_VER >=  1930)
-#include <versionhelpers.h>
-#endif
 
 #include "General.h"
 #include "Memory.h"
