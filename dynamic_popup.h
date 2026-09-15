@@ -30,7 +30,7 @@ typedef struct {
 // Callback für die Anzeige von Tooltips beim Hovern
 // Rückgabe: Zeiger auf Tooltip-Text (wird vom Aufrufer NICHT freigegeben)
 // oder NULL falls kein Tooltip
-typedef TCHAR* (*OnPopupTooltipCallback)(const PopupItemData* pItem, void* pUserData);
+typedef TCHAR* (*OnPopupTooltipCallback)(POINT pt, const PopupItemData* pItem, void* pUserData);
 
 // Callback für die Auswahl eines Elements
 typedef void (*OnPopupSelectCallback)(const PopupItemData* pSelectedItem, void* pUserData);

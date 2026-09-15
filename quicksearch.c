@@ -24,6 +24,7 @@
 #include "Profile.h"
 #include "dpi.h"
 #include "Font.h"
+#include "ToolTip.h"
 
 #include "dynamic_popup.h"
 
@@ -32,6 +33,7 @@
 
 /* Global Variables */
 HWND hWndClcl = NULL; // the one and only application window handle
+HWND hWndTooltip = NULL; // the tooltip window handle
 TCHAR ini_path[MAX_PATH] = TEXT("");
 
 // extern
@@ -159,12 +161,15 @@ static int get_icon_index_for_data(DATA_INFO* di)
 		return 1; // Main icon
 	case TYPE_FOLDER:
 		return 3; // Folder icon
-	case TYPE_ITEM:
-		// TODO:  find default format
-		if (di->format >= 0 && (int)di->format < option.format_cnt) {
-			return 6 + di->format;  // Format-specific icons start at index 6
+	case TYPE_ITEM: {
+		// find default format
+		DATA_INFO* highest_di = format_get_priority_highest(di);
+		int icon_idx = format_get_index(highest_di->format_name, highest_di->format_name_hash);
+		if (icon_idx >= 0 && icon_idx >= 0 && icon_idx < option.format_cnt) {
+			return 6 + icon_idx;  // Format-specific icons start at index 6
 		}
 		return 5; // Default icon
+	}
 	default:
 		return 5; // Default icon
 	}
@@ -198,49 +203,58 @@ static int listbox_add_item_with_icon(HWND hListBox, const TCHAR* text, DATA_INF
 void MyPopupPopulateHandler(const TCHAR* editText, HWND hwndListBox, void* pUserData);
 void MyPopupSelectionHandler(const PopupItemData* pSelectedItem, void* pUserData);
 
-// NEW: DIESER CALLBACK GIBT DEN TOOLTIP-TEXT BEIM HOVERN ZURÜCK
-TCHAR* MyPopupTooltipHandler(const PopupItemData* pSelectedItem, void* pUserData)
+// The callback can be used in two ways:
+// - Either it uses the tooltip handling of the hosting application (hWndTooltip != NULL)
+//   -> then it must always return NULL.
+// - Or it uses internal tooltip handling of dynamic_popup control 
+//   -> then it should return the appropriate tooltip text for pSelectItem, 
+//      respectively an empty string or NULL to hide the tooltip window.
+TCHAR* MyPopupTooltipHandler(POINT pt, const PopupItemData* pSelectedItem, void* pUserData)
 {
-	/*
-	TOOLTIP_INFO ti;
-
-	ti.buf = tip_text;
-	ti.pt.x = x;
-	ti.pt.y = y;
-	ti.top = top;
-	SendMessage(hToolTip, WM_TOOLTIP_SHOW, option.tooltip_show_delay, (LPARAM)&ti);
-	*/
-
-	if (!pSelectedItem) return NULL;
+	if (!pSelectedItem) {
+		if (hWndTooltip)
+			tooltip_hide(hWndTooltip);
+		return NULL;
+	}
 
 	DATA_INFO* di = (DATA_INFO*)pSelectedItem->itemData;
-	if (!di) return NULL;
-
-	// Hier können Sie einen Multiline-Tooltip generieren
-	// Beispiel: Rückgabe des Datums, der Kategorie oder des Inhalts
-	static TCHAR tooltip_buffer[512];
+	if (!di) {
+		if (hWndTooltip)
+			tooltip_hide(hWndTooltip);
+		return NULL;
+	}
 
 	// Wenn es ein TYPE_ITEM ist, können wir zusätzliche Infos abrufen
 	if (di->type == TYPE_ITEM) {
-		//TCHAR* buf = format_get_tooltip_text(di);
-
-		{
-			StringCchPrintf(tooltip_buffer, 512,
-				TEXT("Titel: %s\nFormat: %d"),
-				pSelectedItem->pszText,
-				di->format
-			);
+		DATA_INFO* highest_di = format_get_priority_highest(di);
+		TCHAR* buf = format_get_tooltip_text(highest_di);
+		if (hWndTooltip) {
+			tooltip_show(hWndTooltip, buf, pt.x, pt.y, 0);
+			mem_free(&buf);
+			return NULL;
 		}
-		return tooltip_buffer;
+		else {
+			static TCHAR tooltip_buffer[512];
+			StringCchCopy(tooltip_buffer, 512, buf ? buf : TEXT(""));
+			mem_free(&buf);
+			return tooltip_buffer;
+		}
 	}
 
 	// Falls kein spezieller Tooltip-Text verfügbar
-	return pSelectedItem->pszText;
+	if (hWndTooltip) {
+		tooltip_show(hWndTooltip, pSelectedItem->pszText, pt.x, pt.y, 0);
+		return NULL;
+	}
+	else {
+		return pSelectedItem->pszText;
+	}
 }
 
-UINT_PTR quicksearch(HWND hWnd, POINT pt)
+UINT_PTR quicksearch(HWND hWnd, POINT pt, HWND hToolTip)
 {
 	hWndClcl = hWnd;
+	hWndTooltip = hToolTip;
 	int icon_size = option.menu_icon_size ? Scale(option.menu_icon_size) : Scale(16);
 	int icon_margin = option.menu_icon_margin ? Scale(option.menu_icon_margin) : Scale(2);
 	int text_margin = option.menu_text_margin_left ? Scale(option.menu_text_margin_left) : Scale(4);

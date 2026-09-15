@@ -1020,7 +1020,7 @@ static BOOL action_execute(const HWND hWnd, const int type, const int id, const 
 			GetCursorPos((LPPOINT)&pt);
 
 		// クイックサーチ - enter text and show items like in a menu
-		DATA_INFO* di = (DATA_INFO*)quicksearch(hWnd, pt);
+		DATA_INFO* di = (DATA_INFO*)quicksearch(hWnd, pt, hToolTip);
 		// クリップボードにデータを設定
 		// Set the data on the clipboard
 		set_focus_info(&fi);
@@ -1920,7 +1920,7 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 				GetCursorPos((LPPOINT)&pt);
 
 			// クイックサーチ - enter text and show items like in a menu
-			DATA_INFO* di = (DATA_INFO*)quicksearch(hWnd, pt);
+			DATA_INFO* di = (DATA_INFO*)quicksearch(hWnd, pt, hToolTip);
 			set_focus_info(&fi);
 
 			// クリップボードにデータを設定
