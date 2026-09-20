@@ -20,7 +20,7 @@
 /* Struct */
 
 /* Function Prototypes */
-UINT_PTR quicksearch(HWND hWnd, POINT pt);
+UINT_PTR quicksearch(HWND hWnd, POINT pt, HWND hToolTip);
 
 #endif
 /* End of source */

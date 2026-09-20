@@ -81,6 +81,7 @@ static void ShowTooltipForItem(DynamicPopupData* pData, int itemIndex, POINT ptM
     }
 
     if (itemIndex == LB_ERR) {
+        pData->tooltipCallback(ptMouse, NULL, pData->pUserData);
         HideTooltip(pData);
         return;
     }
@@ -100,12 +101,13 @@ static void ShowTooltipForItem(DynamicPopupData* pData, int itemIndex, POINT ptM
 
     PopupItemData* pItem = (PopupItemData*)SendMessage(pData->hwndList, LB_GETITEMDATA, itemIndex, 0);
     if (!pItem || pItem == (PopupItemData*)LB_ERR) {
+        pData->tooltipCallback(ptMouse, NULL, pData->pUserData);
         HideTooltip(pData);
         return;
     }
 
     // Tooltip-Text vom Callback abrufen
-    TCHAR* tooltipText = pData->tooltipCallback(pItem, pData->pUserData);
+    TCHAR* tooltipText = pData->tooltipCallback(ptMouse, pItem, pData->pUserData);
     if (!tooltipText || *tooltipText == TEXT('\0')) {
         HideTooltip(pData);
         return;
