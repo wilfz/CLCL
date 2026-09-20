@@ -156,6 +156,9 @@
     <ClCompile Include="quicksearch.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="search.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinView.h">
@@ -291,6 +294,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="quicksearch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="search.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
