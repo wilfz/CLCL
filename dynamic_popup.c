@@ -12,6 +12,7 @@
 #include "dynamic_popup.h"
 #include <tchar.h>
 #include <stdio.h>
+#include <windowsx.h>
 
 #define SUBCLASS_ID_POPUP 202
 #define ITEM_HEIGHT 20
@@ -106,12 +107,17 @@ static void ShowTooltipForItem(DynamicPopupData* pData, int itemIndex, POINT ptM
         return;
     }
 
-    // Tooltip-Text vom Callback abrufen
+    // Get tooltip text from callback, respectively let the host application show the tooltip
     TCHAR* tooltipText = pData->tooltipCallback(ptMouse, pItem, pData->pUserData);
     if (!tooltipText || *tooltipText == TEXT('\0')) {
         HideTooltip(pData);
         return;
     }
+
+    // Either the hosting application handles tooltips itself, 
+    // then the callback returned NULL and we are already done,
+    // or it returned us a tooltip text, 
+    // then we have to do the tooltip handling right here.
 
     // Tooltip-Fenster erstellen, falls nicht vorhanden
     if (!pData->hwndTooltip) {
@@ -632,7 +638,7 @@ void ActivateDynamicPopup(HWND hwndFrame)
         if (ret >= 0) {
             POINT pt;
             pt.x = (itemrect.left + itemrect.right) / 2;
-            pt.y = (itemrect.top + itemrect.bottom) / 2;
+            pt.y = itemrect.bottom + 1;
             if (ClientToScreen(pData->hwndList, &pt))
                 ShowTooltipForItem(pData, sel, pt);
         }
@@ -763,7 +769,7 @@ LRESULT CALLBACK DynamicEditSubclass(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
                 if (ret >= 0) {
                     POINT pt;
                     pt.x = (itemrect.left + itemrect.right) / 2;
-                    pt.y = (itemrect.top + itemrect.bottom) / 2;
+                    pt.y = itemrect.bottom + 1;
                     if (ClientToScreen(pData->hwndList,&pt))
                          ShowTooltipForItem(pData, sel, pt);
                 }
@@ -798,7 +804,9 @@ LRESULT CALLBACK DynamicListSubclass(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
         // Therefore we comapare with the previous position, to avoid false alarms. 
         static POINT oldpos = { 0, 0 };
         POINT pt;
-        GetCursorPos(&pt);
+        pt.x = GET_X_LPARAM(lParam);
+        pt.y = GET_Y_LPARAM(lParam);
+        ClientToScreen(hWnd, &pt);
         if (pt.x == oldpos.x && pt.y == oldpos.y)
             break;
         // memorize the position
@@ -808,10 +816,10 @@ LRESULT CALLBACK DynamicListSubclass(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
         // If mouse has really been moved and a different item is under the mouse cursor, select that item.
         if (index != LB_ERR && index != sel) {
             SendMessage(hWnd, LB_SETCURSEL, index, 0);
-        }
-        // Show tooltip for the new selected item
-        if (pData && pData->tooltipCallback && index != LB_ERR) {
-            ShowTooltipForItem(pData, index, pt);
+            // Show tooltip for the new selected item
+            if (pData && pData->tooltipCallback && index != LB_ERR) {
+                ShowTooltipForItem(pData, index, pt);
+            }
         }
         break;
     }

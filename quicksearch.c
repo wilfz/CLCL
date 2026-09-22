@@ -209,6 +209,7 @@ void MyPopupSelectionHandler(const PopupItemData* pSelectedItem, void* pUserData
 // - Or it uses internal tooltip handling of dynamic_popup control 
 //   -> then it should return the appropriate tooltip text for pSelectItem, 
 //      respectively an empty string or NULL to hide the tooltip window.
+// For CLCL we return NULL ands thus inherit all the nice features of CLCL's tooltips.
 TCHAR* MyPopupTooltipHandler(POINT pt, const PopupItemData* pSelectedItem, void* pUserData)
 {
 	if (!pSelectedItem) {
@@ -224,16 +225,29 @@ TCHAR* MyPopupTooltipHandler(POINT pt, const PopupItemData* pSelectedItem, void*
 		return NULL;
 	}
 
+	if (hWndTooltip) {
+		// In CLCL menu items selected by mouse require 0 for x and y coordinates.
+		POINT cp;
+		GetCursorPos(&cp);
+		// If pt is identical to the current mouse position, it's a mouse selection 
+		// and we set pt to { 0, 0 }, so that CLCL handles tooltip positioning.
+		if (cp.x == pt.x && cp.y == pt.y)
+			pt.x = pt.y = 0;
+	}
+
 	// Wenn es ein TYPE_ITEM ist, können wir zusätzliche Infos abrufen
-	if (di->type == TYPE_ITEM) {
-		DATA_INFO* highest_di = format_get_priority_highest(di);
+	DATA_INFO* highest_di = NULL;
+	if (di->type == TYPE_ITEM && (highest_di = format_get_priority_highest(di)) != NULL) {
 		TCHAR* buf = format_get_tooltip_text(highest_di);
 		if (hWndTooltip) {
-			tooltip_show(hWndTooltip, buf, pt.x, pt.y, 0);
+			// Global tooltip window is set and the hosting application CLCL handles the tooltips.
+			tooltip_show(hWndTooltip, buf ? buf : TEXT(""), pt.x, pt.y, 0);
 			mem_free(&buf);
 			return NULL;
 		}
 		else {
+			// Global tooltip windows is not set, we return a text buffer.
+			// DynamicPopupMenu will do the tooltip handling.
 			static TCHAR tooltip_buffer[512];
 			StringCchCopy(tooltip_buffer, 512, buf ? buf : TEXT(""));
 			mem_free(&buf);
