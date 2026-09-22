@@ -161,15 +161,17 @@ static int get_icon_index_for_data(DATA_INFO* di)
 		return 1; // Main icon
 	case TYPE_FOLDER:
 		return 3; // Folder icon
-	case TYPE_ITEM: {
-		// find default format
-		DATA_INFO* highest_di = format_get_priority_highest(di);
-		int icon_idx = format_get_index(highest_di->format_name, highest_di->format_name_hash);
-		if (icon_idx >= 0 && icon_idx >= 0 && icon_idx < option.format_cnt) {
-			return 6 + icon_idx;  // Format-specific icons start at index 6
+	case TYPE_ITEM:
+		{
+			// find default format
+			DATA_INFO* highest_di = format_get_priority_highest(di);
+			int icon_idx = format_get_index(highest_di->format_name, highest_di->format_name_hash);
+			if (icon_idx >= 0 && icon_idx >= 0 && icon_idx < option.format_cnt) {
+				return 6 + icon_idx;  // Format-specific icons start at index 6
+			}
 		}
 		return 5; // Default icon
-	}
+
 	default:
 		return 5; // Default icon
 	}
