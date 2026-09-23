@@ -664,7 +664,7 @@ static BOOL show_tool_menu(const HWND hWnd, DATA_INFO *di, const int paste, cons
 	// メニュー表示
 	attached = menu_attach_begin(hWnd, attach_wnd, (attach_wnd != NULL) ? TRUE : FALSE);
 	if (attached == FALSE) {
-	_SetForegroundWindow(hWnd);
+		_SetForegroundWindow(hWnd);
 	}
 	tick = GetTickCount();
 	ret = menu_show(hWnd, popup_menu, NULL);
@@ -725,7 +725,7 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 	if (popup_menu != NULL) {
 		// ポップアップメニュー表示中
 		if (menu_attach_tid == 0) {
-		_SetForegroundWindow(hWnd);
+			_SetForegroundWindow(hWnd);
 		}
 		return FALSE;
 	}
@@ -765,8 +765,8 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 	// Display menu
 	attached = menu_attach_begin(hWnd, fi.active_wnd, attach);
 	if (attached == FALSE) {
-	_SetForegroundWindow(hWnd);
-	ShowWindow(hWnd, SW_HIDE);
+		_SetForegroundWindow(hWnd);
+		ShowWindow(hWnd, SW_HIDE);
 	}
 	tick = GetTickCount();
 	ret = menu_show(hWnd, popup_menu, (caret_flag == TRUE) ? &fi.cpos : NULL);
@@ -816,7 +816,7 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 		// クリップボードにデータを設定
 		// Set the data on the clipboard
 		if (attached == FALSE) {
-		set_focus_info(&fi);
+			set_focus_info(&fi);
 		}
 		SendMessage(hWnd, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)mii->set_di);
 		if (ai->paste == 1 && shift_key == FALSE) {
@@ -838,7 +838,7 @@ static BOOL show_popup_menu(const HWND hWnd, const ACTION_INFO *ai, const BOOL c
 		// ツール
 		// tool
 		if (attached == FALSE) {
-		set_focus_info(&fi);
+			set_focus_info(&fi);
 		}
 		if (mii->ti->copy_paste == 1) {
 			tmi.enable = TRUE;
@@ -1043,7 +1043,7 @@ static BOOL action_execute(const HWND hWnd, const int type, const int id, const 
 			ZeroMemory(&focus_info, sizeof(FOCUS_INFO));
 		}
 		break;
- 
+
 	}
 	return TRUE;
 }
@@ -1900,7 +1900,7 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			SendMessage(hWnd, WM_SET_CLIPBOARD_WATCH, !option.main_clipboard_watch, 0);
 			break;
 
-		case ID_MENUITEM_QUICKSEARCH: 
+		case ID_MENUITEM_QUICKSEARCH:
 			{
 				FOCUS_INFO fi;
 				CopyMemory(&fi, &focus_info, sizeof(FOCUS_INFO));
@@ -2294,11 +2294,11 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 		{
 			LRESULT ret = 0;
 
-		if (hViewerWnd != NULL) {
+			if (hViewerWnd != NULL) {
 				ret = SendMessage(hViewerWnd, msg, wParam, lParam);
-		} else {
-			data_adjust(&regist_data.child);
-		}
+			} else {
+				data_adjust(&regist_data.child);
+			}
 			save_regist(hWnd);
 			return ret;
 		}
