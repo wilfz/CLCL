@@ -1,4 +1,4 @@
-/*
+﻿/*
  * CLCL
  *
  * Ini.h
@@ -76,7 +76,6 @@ typedef struct _OPTION_INFO {
 	// main
 	int main_clipboard_watch;			// クリップボード監視
 	int main_clipboard_rechain_minute;	// クリップボード再監視時間
-	int main_clipboard_access_delay;	// クリップボードアクセス遅延時間(ミリ秒)
 	int main_show_trayicon;				// タスクトレイにアイコンを表示
 	int main_show_viewer;				// 起動時にビューアを表示
 	TCHAR main_language[LOCALE_NAME_MAX_LENGTH+1];  // 言語設定 / Language settings
@@ -114,6 +113,7 @@ typedef struct _OPTION_INFO {
 	int menu_show_tooltip;				// ツールチップ表示
 	int menu_show_hotkey;				// ホットキーを表示
 	int menu_show_tool_menu;			// ツールメニュー表示
+	int menu_attach_process;			// プロセスにアタッチしてメニューを表示
 #ifdef MENU_LAYERER
 	int menu_alpha;						// 透明度
 #endif

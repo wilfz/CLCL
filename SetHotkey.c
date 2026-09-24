@@ -1,4 +1,4 @@
-/*
+Ôªø/*
  * CLCL
  *
  * SetHotkey.c
@@ -16,6 +16,7 @@
 
 #include "General.h"
 #include "Data.h"
+#include "DarkMode.h"
 
 #include "resource.h"
 
@@ -27,7 +28,7 @@
 static BOOL CALLBACK set_hotkey_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 /*
- * set_hotkey_proc - ÉzÉbÉgÉLÅ[ê›íËÉEÉBÉìÉhÉEÉvÉçÉVÅ[ÉWÉÉ
+ * set_hotkey_proc - „Éõ„ÉÉ„Éà„Ç≠„ÉºË®≠ÂÆö„Ç¶„Ç£„É≥„Éâ„Ç¶„Éó„É≠„Ç∑„Éº„Ç∏„É£
  */
 static BOOL CALLBACK set_hotkey_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -36,11 +37,13 @@ static BOOL CALLBACK set_hotkey_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM
 
 	switch (uMsg) {
 	case WM_INITDIALOG:
+		// „ÉÄ„Éº„ÇØ„É¢„Éº„Éâ„ÅÆË®≠ÂÆö
+		dark_mode_set_dialog(hDlg);
 		if ((di = (DATA_INFO *)lParam) == NULL) {
 			EndDialog(hDlg, FALSE);
 			break;
 		}
-		// ÉzÉbÉgÉLÅ[
+		// „Éõ„ÉÉ„Éà„Ç≠„Éº
 		i = 0;
 		if (di->op_modifiers & MOD_SHIFT) {
 			i |= HOTKEYF_SHIFT;
@@ -57,7 +60,7 @@ static BOOL CALLBACK set_hotkey_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM
 		if (di->op_virtkey != 0) {
 			SendDlgItemMessage(hDlg, IDC_HOTKEY_ITEM, HKM_SETHOTKEY,
 				(WPARAM)MAKEWORD(di->op_virtkey, i), 0);
-			// ì\ÇËïtÇØ
+			// Ë≤º„Çä‰ªò„Åë
 			CheckDlgButton(hDlg, IDC_CHECK_PASTE, di->op_paste);
 		} else {
 			CheckDlgButton(hDlg, IDC_CHECK_PASTE, 1);
@@ -82,7 +85,7 @@ static BOOL CALLBACK set_hotkey_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM
 				EndDialog(hDlg, FALSE);
 				break;
 			}
-			// ÉzÉbÉgÉLÅ[
+			// „Éõ„ÉÉ„Éà„Ç≠„Éº
 			i = SendDlgItemMessage(hDlg, IDC_HOTKEY_ITEM, HKM_GETHOTKEY, 0, 0);
 			di->op_virtkey = LOBYTE(i);
 			i = HIBYTE(i);
@@ -92,7 +95,7 @@ static BOOL CALLBACK set_hotkey_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM
 			if (IsDlgButtonChecked(hDlg, IDC_CHECK_WIN) == 1) {
 				di->op_modifiers |= MOD_WIN;
 			}
-			// ì\ÇËïtÇØ
+			// Ë≤º„Çä‰ªò„Åë
 			di->op_paste = IsDlgButtonChecked(hDlg, IDC_CHECK_PASTE);
 			EndDialog(hDlg, TRUE);
 			break;
@@ -106,7 +109,7 @@ static BOOL CALLBACK set_hotkey_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM
 }
 
 /*
- * set_hotkey - ÉzÉbÉgÉLÅ[ê›íË
+ * set_hotkey - „Éõ„ÉÉ„Éà„Ç≠„ÉºË®≠ÂÆö
  */
 BOOL set_hotkey(const HINSTANCE hInst, const HWND hWnd, DATA_INFO *di)
 {

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * CLCL
  *
  * TreeView.h
@@ -22,6 +22,7 @@
 /* Struct */
 
 /* Function Prototypes */
+void treeview_set_font(const HWND hTreeView);
 HWND treeview_create(const HINSTANCE hInstance, const HWND hWnd, const int id, const HIMAGELIST icon_list);
 BOOL treeview_set_init_item(const HWND hTreeView);
 void treeview_close(const HWND hTreeView);

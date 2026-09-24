@@ -1,4 +1,4 @@
-/*
+﻿/*
  * CLCL
  *
  * ListView.h
@@ -20,6 +20,7 @@
 /* Struct */
 
 /* Function Prototypes */
+void listview_set_font(const HWND hListView);
 HWND listview_create(const HINSTANCE hInstance, const HWND hWnd, const int id, const HIMAGELIST icon_list);
 void listview_close(const HWND hListView);
 LRESULT listview_notify_proc(const HWND hWnd, const LPARAM lParam);

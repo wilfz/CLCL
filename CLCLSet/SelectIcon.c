@@ -1,4 +1,4 @@
-/*
+﻿/*
  * CLCL
  *
  * SelectIcon.c
@@ -14,10 +14,16 @@
 #undef	_INC_OLE
 #include <commctrl.h>
 
+#include "..\dpi.h"
+#include "..\DarkMode.h"
+
 #include "resource.h"
 
 /* Define */
 #define BUF_SIZE						256
+
+// アイコン一覧に表示するアイコンのサイズ
+#define ICONSIZE						32
 
 #define WM_LV_EVENT						(WM_APP + 100)
 
@@ -150,8 +156,8 @@ static int set_list_icon(const HWND hListView, const TCHAR *path, const int inde
 
 	// イメージリストの作成、設定
 	if ((icon_list = ListView_GetImageList(hListView, LVSIL_NORMAL)) == NULL) {
-		icon_list = ImageList_Create(32, 32, ILC_COLOR16 | ILC_MASK, 0, 0);
-		ImageList_SetBkColor(icon_list, GetSysColor(COLOR_WINDOW));
+		icon_list = ImageList_Create(Scale(ICONSIZE), Scale(ICONSIZE), ILC_COLOR32 | ILC_MASK, 0, 0);
+		ImageList_SetBkColor(icon_list, dark_mode_get_color(COLOR_WINDOW));
 		ListView_SetImageList(hListView, icon_list, LVSIL_NORMAL);
 	} else {
 		ImageList_Remove(icon_list, -1);
@@ -200,6 +206,8 @@ static BOOL CALLBACK select_icon_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 
 	switch (uMsg) {
 	case WM_INITDIALOG:
+		// ダークモードの設定
+		dark_mode_set_dialog(hDlg);
 		icon_info = (ICON_INFO *)lParam;
 		SendDlgItemMessage(hDlg, IDC_EDIT_FILE, WM_SETTEXT, 0, (LPARAM)icon_info->path);
 		set_list_icon(GetDlgItem(hDlg, IDC_LIST_ICON), icon_info->path, icon_info->index);

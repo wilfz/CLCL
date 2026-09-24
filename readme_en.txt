@@ -245,29 +245,37 @@ The "Send copy and paste" option copies the marked data from the active window, 
 If this option is not checked, the tool is executed on the most recent history item and sent to the clipboard. In the tool menu that appears when you right-click an item in the action menu, the tool is executed on the selected item and sent to the clipboard.
 If "Paste" is not enabled in the action settings, pasting will not be performed after copying and executing the tool.
 
-Drag and drop a DLL into the tool list window to display a list of tools that can be registered, and you can select multiple tools to register them all at once.
+If you drag and drop a DLL onto the tool list window, the list of the tools that can be registered is displayed, and you can select several of them and register them all at once.
 
 ■ Command Line
-When starting CLCL, you can specify a command line to specify the operation after startup.
-If CLCL is already running, the command will be sent to the already running CLCL.
+You can specify a command line when starting CLCL, to specify a command that should be executed.
+If CLCL is already running, the command is sent to the running CLCL.
 
 [Format]
-CLCL.exe [/vownx]
-	/v Display viewer
-	/w Monitor clipboard
-	/n Cancel monitoring clipboard
+CLCL.exe [/vwnx]
+	/v Display the Viewer
+	/w Turn on Clipboard Watch
+	/n Turn off Clipboard Watch
 	/x Exit
-
-■ Special thanks
-K.Takata ( http://webs.to/ken/ )
 
 ■ Credits
 - CLCL main program and plugins tool_text, tool_utl and tool_test are Copyright (C) by Ohno Tomoaki, who made it open source and put it under MIT license in 2024
 - Installer created by WilfZim with Inno Setup ( https://jrsoftware.org/isinfo.php )
 - Tool_clip plugin by WilfZim depends on Niels Lohmann's JSON library ( https://github.com/nlohmann/json ) for import and export of data
-- ReadMe.html uses github.css Stylesheet,   Copyright (c) 2017 Chris Patuzzo
 
 ■ Update history
+
+・Ver 2.1.3 -> Ver 2.2.0
+	- Added support for the Windows dark mode.
+	- Improved to support for high-DPI displays.
+	- Added an option to show the menu without taking the focus away
+	  from the window you are working in. 
+	- Improved the save processing performed on exit.
+	- Added UNICODE support to Binary View.
+	- Fixed CLCL so that data a password manager saves to the
+	  clipboard is not kept in the history. (kashima-eyetech)
+	- Improved the wording of the English version.
+
 ・Ver 2.1.4 -> 2.1.5
 	- Added clipboard access delay setting (merge from Koichi-Kobayashi)
 	- OS version check with recommended method (merge from Koichi-Kobayashi)

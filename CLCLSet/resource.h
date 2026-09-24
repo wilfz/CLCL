@@ -1,4 +1,4 @@
-//{{NO_DEPENDENCIES}}
+﻿//{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
 // Used by CLCLSet.rc
 //
@@ -151,10 +151,9 @@
 #define IDC_RADIO_DEF_OPEN              1114
 #define IDC_RADIO_DEF_CLIPBOARD         1115
 #define IDC_RADIO_DEF_SAVE              1116
+#define IDC_CHECK_ATTACH_PROCESS        1117
 #define IDC_LIST_ICON                   1127
 #define IDC_EDIT_FILE                   1128
-#define IDC_EDIT_CLIPBOARD_DELAY        1129
-#define IDC_SPIN_CLIPBOARD_DELAY        1130
 #define IDC_UI_LANGUAGE                 1131
 #define IDS_MENU_FORMAT_1               2001
 #define IDS_MENU_FORMAT_2               2002

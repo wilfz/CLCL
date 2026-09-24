@@ -1,6 +1,6 @@
 # CLCL - Clipboard Manager
 
-**Version:** 2.1.6
+**Version:** 2.2.0
 
 ## Overview
 CLCL is a powerful Windows clipboard manager with plugin support and customizable hotkeys.
@@ -435,6 +435,16 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 
 
 ## Update History
+
+- Ver 2.1.7 -> Ver 2.2.0
+	- Added support for the Windows dark mode.
+	- Improved to support for high-DPI displays.
+	- Added an option to show the menu without taking the focus away from the window you are working in. 
+	- Improved the save processing performed on exit.
+	- Added UNICODE support to Binary View.
+	- Fixed CLCL so that data a password manager saves to the clipboard is not kept in the history. (kashima-eyetech)
+	- Improved the wording of the English version.
+
 - Ver 2.1.6 -> 2.1.7
 	- Added call types "When connect to session" and "When disconnect from session" to the tool conmfiguration
 	- Added Help Viewer to action menus
@@ -589,7 +599,7 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 
 The author is not responsible for any problems caused by this program. It is strongly recommended that you back up important files. 
 
-2025 - 2026 MIT License. Website https://linguversa.de/clcl, Sources and Releases under https://github.com/wilfz/CLCL
+Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/
 
-Copyright (C) 1996-2024 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/
+2025 - 2026 MIT License. Website https://linguversa.de/clcl, Sources and Releases under https://github.com/wilfz/CLCL
 
