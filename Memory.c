@@ -114,7 +114,7 @@ void mem_free(void **mem)
 
 /*
  * mem_debug - メモリ情報の表示
- * show memory information
+ * debug memory information
  */
 #ifdef _DEBUG
 void mem_debug(void)

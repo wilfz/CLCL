@@ -345,6 +345,7 @@ BOOL data_get_modified_string(const DATA_INFO *di, TCHAR *ret)
 		return FALSE;
 	}
 	// 日付文字列の取得
+	// Get date string
 	p = option.data_date_format;
 	if (p == NULL || *p == TEXT('\0')) {
 		p = NULL;

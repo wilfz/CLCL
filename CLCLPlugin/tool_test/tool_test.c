@@ -122,8 +122,8 @@ __declspec(dllexport) BOOL CALLBACK get_tool_info_w(const HWND hWnd, const int i
  *
  *	引数 / argument:
  *		hWnd - 呼び出し元ウィンドウ / the calling window
- *		index - 取得のインデックス (0～) / the index of the acquisition (from 0)
- *		tgi - ツール取得情報 / tool retrieval information
+ *		tei - ツール実行情報 / tool execution information
+ *		tdi - ツール用アイテム情報 / item information for tools
  *
  *	戻り値 / Return value:
  *		TOOL_ERROR						0				// ツールのエラー / tool error

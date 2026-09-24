@@ -7,7 +7,7 @@ name: MSBuild
 
 on:
   push:
-    branches: [ "main", "quicksearch", "merge_upstream" ]
+    branches: [ "main", "quicksearch", "merge_upstream", "nakka_main" ]
   pull_request:
     branches: [ "main" ]
 
