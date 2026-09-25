@@ -145,8 +145,8 @@ BEGIN
     POPUP "クリップボード"
     BEGIN
         MENUITEM "登録アイテムに追加(&R)...\tCtrl+R",    ID_MENUITEM_REGIST_ADD
-        MENUITEM "名前を付けて保存(&S)...\tCtrl+S",     ID_MENUITEM_DATA_SAVE
-        MENUITEM "バイナリとして表示",              ID_MENUITEM_SHOWBINARY
+        MENUITEM "名前を付けて保存(&S)...\tCtrl+S",      ID_MENUITEM_DATA_SAVE
+        MENUITEM "バイナリとして表示",                   ID_MENUITEM_SHOWBINARY
         MENUITEM SEPARATOR
         POPUP "設定(&O)"
         BEGIN
@@ -159,7 +159,7 @@ BEGIN
         MENUITEM "クリップボードに送る(&C)\tCtrl+C",      ID_MENUITEM_CLIPBOARD
         MENUITEM "クリップボードから貼り付け(&P)\tCtrl+V",   ID_MENUITEM_PASTE
         MENUITEM "登録アイテムに追加(&R)...\tCtrl+R",    ID_MENUITEM_REGIST_ADD
-        MENUITEM "バイナリとして表示",              ID_MENUITEM_SHOWBINARY
+        MENUITEM "バイナリとして表示",                   ID_MENUITEM_SHOWBINARY
         MENUITEM "ツール(&T)",                     ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
         MENUITEM "上へ(&U)\tAlt+↑",               ID_MENUITEM_UP
@@ -182,7 +182,7 @@ BEGIN
         MENUITEM "クリップボードに送る(&C)\tCtrl+C",      ID_MENUITEM_CLIPBOARD
         MENUITEM "クリップボードから貼り付け(&P)\tCtrl+V",   ID_MENUITEM_PASTE
         MENUITEM "登録アイテムに追加(&R)...\tCtrl+R",    ID_MENUITEM_REGIST_ADD
-        MENUITEM "バイナリとして表示",              ID_MENUITEM_SHOWBINARY
+        MENUITEM "バイナリとして表示",                   ID_MENUITEM_SHOWBINARY
         MENUITEM "ツール(&T)",                     ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
         MENUITEM "上へ(&U)\tAlt+↑",               ID_MENUITEM_UP
@@ -197,7 +197,7 @@ BEGIN
     BEGIN
         MENUITEM "クリップボードに送る(&C)\tCtrl+C",      ID_MENUITEM_CLIPBOARD
         MENUITEM "クリップボードから貼り付け(&P)\tCtrl+V",   ID_MENUITEM_PASTE
-        MENUITEM "バイナリとして表示",              ID_MENUITEM_SHOWBINARY
+        MENUITEM "バイナリとして表示",                   ID_MENUITEM_SHOWBINARY
         MENUITEM "ツール(&T)",                     ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
         MENUITEM "上へ(&U)\tAlt+↑",               ID_MENUITEM_UP
@@ -227,7 +227,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "クリップボードに送る(&C)\tCtrl+C",      ID_MENUITEM_CLIPBOARD
         MENUITEM "クリップボードから貼り付け(&P)\tCtrl+V",   ID_MENUITEM_PASTE
-        MENUITEM "バイナリとして表示",              ID_MENUITEM_SHOWBINARY
+        MENUITEM "バイナリとして表示",                   ID_MENUITEM_SHOWBINARY
         MENUITEM "ツール(&T)",                     ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
         MENUITEM "上へ(&U)\tAlt+↑",               ID_MENUITEM_UP
@@ -652,8 +652,8 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "选项(&O)"
         BEGIN
-            MENUITEM "格式设置(&F)...",                   ID_MENUITEM_SET_FORMAT
-            MENUITEM "筛选设置(&l)...",                   ID_MENUITEM_SET_FILTER
+            MENUITEM "格式设置(&F)...",                 ID_MENUITEM_SET_FORMAT
+            MENUITEM "筛选设置(&l)...",                 ID_MENUITEM_SET_FILTER
         END
     END
     POPUP "历史(TV)"
@@ -671,8 +671,8 @@ BEGIN
         MENUITEM "另存为(&S)...\tCtrl+S",          ID_MENUITEM_DATA_SAVE
         POPUP "选项(&O)"
         BEGIN
-            MENUITEM "格式设置(&F)...",                   ID_MENUITEM_SET_FORMAT
-            MENUITEM "筛选设置(&l)...",                   ID_MENUITEM_SET_FILTER
+            MENUITEM "格式设置(&F)...",                 ID_MENUITEM_SET_FORMAT
+            MENUITEM "筛选设置(&l)...",                 ID_MENUITEM_SET_FILTER
         END
         MENUITEM SEPARATOR
         MENUITEM "删除(&D)",                      ID_MENUITEM_DELETE
@@ -706,20 +706,20 @@ BEGIN
         MENUITEM "向下移动(&w)\tAlt+Down",          ID_MENUITEM_DOWN
         MENUITEM SEPARATOR
         MENUITEM "新项目(&N)...\tCtrl+N",          ID_MENUITEM_NEW_ITEM
-        MENUITEM "创建目录(&F)",                     ID_MENUITEM_CREATE_FOLDER
+        MENUITEM "创建目录(&F)",                    ID_MENUITEM_CREATE_FOLDER
         MENUITEM "另存为(&S)...\tCtrl+S",          ID_MENUITEM_DATA_SAVE
         MENUITEM "热键设置(&H)...",                 ID_MENUITEM_SET_HOTKEY
         POPUP "选项(&O)"
         BEGIN
-            MENUITEM "格式设置(&F)...",                   ID_MENUITEM_SET_FORMAT
-            MENUITEM "筛选设置(&l)...",                   ID_MENUITEM_SET_FILTER
+            MENUITEM "格式设置(&F)...",                 ID_MENUITEM_SET_FORMAT
+            MENUITEM "筛选设置(&l)...",                 ID_MENUITEM_SET_FILTER
         END
         MENUITEM SEPARATOR
         MENUITEM "创建副本(C&)...\tCtrl+R",         ID_MENUITEM_REGIST_ADD
         MENUITEM "挪动到(&e)...\tSCtrl+R",         ID_MENUITEM_REGIST_MOVE
         MENUITEM SEPARATOR
         MENUITEM "重命名(&m)",                     ID_MENUITEM_RENAME
-        MENUITEM "重置成原始名称(&a)",                    ID_MENUITEM_CLEAR_NAME
+        MENUITEM "重置成原始名称(&a)",                 ID_MENUITEM_CLEAR_NAME
         MENUITEM SEPARATOR
         MENUITEM "删除(&D)",                      ID_MENUITEM_DELETE
     END
@@ -736,7 +736,7 @@ BEGIN
         MENUITEM "向下移动(&w)\tAlt+Down",          ID_MENUITEM_DOWN
         MENUITEM SEPARATOR
         MENUITEM "新项目(&N)...\tCtrl+N",          ID_MENUITEM_NEW_ITEM
-        MENUITEM "创建目录",                         ID_MENUITEM_CREATE_FOLDER
+        MENUITEM "创建目录",                        ID_MENUITEM_CREATE_FOLDER
         MENUITEM "另存为(&S)...\tCtrl+S",          ID_MENUITEM_DATA_SAVE
         MENUITEM "热键设置(&H)...",                 ID_MENUITEM_SET_HOTKEY
         MENUITEM SEPARATOR
@@ -744,7 +744,7 @@ BEGIN
         MENUITEM "挪动到(&e)...\tSCtrl+R",         ID_MENUITEM_REGIST_MOVE
         MENUITEM SEPARATOR
         MENUITEM "重命名(&m)",                     ID_MENUITEM_RENAME
-        MENUITEM "重置成原始名称(&a)",                    ID_MENUITEM_CLEAR_NAME
+        MENUITEM "重置成原始名称(&a)",                 ID_MENUITEM_CLEAR_NAME
         MENUITEM SEPARATOR
         MENUITEM "删除(&D)",                      ID_MENUITEM_DELETE
     END
@@ -772,7 +772,7 @@ BEGIN
         MENUITEM "监视剪贴板(&W)",                   ID_MENUITEM_WATCH
         MENUITEM SEPARATOR
         MENUITEM "关闭窗口(&C)",                    ID_MENUITEM_CLOSE
-        MENUITEM "退出程序(&x)",                      ID_MENUITEM_EXIT
+        MENUITEM "退出程序(&x)",                    ID_MENUITEM_EXIT
     END
     POPUP "编辑(&E)"
     BEGIN
@@ -793,7 +793,7 @@ BEGIN
         MENUITEM "状态栏(&S)",                     ID_MENUITEM_SHOW_STATUSBAR
         MENUITEM SEPARATOR
         MENUITEM "格式(&F)",                      ID_MENUITEM_SHOW_FORMAT
-        MENUITEM "二进制形式显示(&D)",                       ID_MENUITEM_SHOW_BIN
+        MENUITEM "二进制形式显示(&D)",                 ID_MENUITEM_SHOW_BIN
         MENUITEM SEPARATOR
         MENUITEM "选项(&O)...",                   ID_MENUITEM_OPTION
     END
@@ -1677,7 +1677,6 @@ BEGIN
         MENUITEM "An Zwischenablage &senden\tCtrl+C", ID_MENUITEM_CLIPBOARD
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
         MENUITEM "Zu &Vorlagen hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
-        MENUITEM "Schnellsuche",                ID_MENUITEM_QUICKSEARCH
         MENUITEM SEPARATOR
         MENUITEM "Nach &oben\tAlt+Up",          ID_MENUITEM_UP
         MENUITEM "Nach &unten\tAlt+Down",       ID_MENUITEM_DOWN
@@ -2113,7 +2112,6 @@ BEGIN
         MENUITEM "Send to &Clipboard\tCtrl+C",  ID_MENUITEM_CLIPBOARD
         MENUITEM "&Paste from Clipboard\tCtrl+V", ID_MENUITEM_PASTE
         MENUITEM "Add to &Template...\tCtrl+R", ID_MENUITEM_REGIST_ADD
-        MENUITEM "Quick Search",                ID_MENUITEM_QUICKSEARCH
         MENUITEM SEPARATOR
         MENUITEM "Move &Up\tAlt+Up",            ID_MENUITEM_UP
         MENUITEM "Move Do&wn\tAlt+Down",        ID_MENUITEM_DOWN
@@ -2409,7 +2407,7 @@ BEGIN
     IDS_DIALOG_EXPORT       "Please select the folder to export."
 END
 
-#endif    // 英語 (米国) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

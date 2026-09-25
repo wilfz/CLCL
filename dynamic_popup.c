@@ -294,7 +294,13 @@ static void DestroyPopupLayout(DynamicPopupData* pData)
     HWND hList = pData->hwndList;
     HWND hTooltip = pData->hwndTooltip;
 
+    // Hide internal tooltip if active.
     HideTooltip(pData);
+    if (hTooltip == NULL && pData->tooltipCallback) {
+        POINT pt = { 0, 0 };
+        // If host application handles tooltip, this call will hide it.
+        pData->tooltipCallback(pt, NULL, pData->pUserData);
+    }
 
     RemoveWindowSubclass(hEdit, DynamicEditSubclass, SUBCLASS_ID_POPUP);
     RemoveWindowSubclass(hList, DynamicListSubclass, SUBCLASS_ID_POPUP);

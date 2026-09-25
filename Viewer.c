@@ -3022,10 +3022,11 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 		case ID_MENUITEM_ABOUT:
 			// バージョン情報
 		{
-			TCHAR var_msg[BUF_SIZE];
+			TCHAR var_msg[2*BUF_SIZE];
 			TCHAR path[MAX_PATH];
 			DWORD size;
 			lstrcpy(var_msg, APP_NAME);
+			lstrcat(var_msg, TEXT(" X"));
 			GetModuleFileName(NULL, path, sizeof(path));
 			size = GetFileVersionInfoSize(path, NULL);
 			if (size) {
@@ -3035,15 +3036,21 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 				if (buf != NULL) {
 					GetFileVersionInfo(path, 0, size, buf);
 					VerQueryValue(buf, TEXT("\\"), &FileInfo, &len);
-					wsprintf(var_msg + lstrlen(var_msg), TEXT(" Ver %d.%d.%d"),
+					wsprintf(var_msg + lstrlen(var_msg), TEXT(" Ver %d.%d.%d.%d"),
 						HIWORD(FileInfo->dwFileVersionMS),
 						LOWORD(FileInfo->dwFileVersionMS),
-						HIWORD(FileInfo->dwFileVersionLS));
+						HIWORD(FileInfo->dwFileVersionLS),
+						LOWORD(FileInfo->dwFileVersionLS));
 					mem_free(&buf);
 				}
 			}
-			lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.\n\n")
-				TEXT("WEB SITE: https://www.nakka.com/\nE-MAIL: nakka@nakka.com"));
+			lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.\n")
+				TEXT("WEB SITE: https://www.nakka.com/\nE-MAIL: nakka@nakka.com\n"));
+
+			lstrcat(var_msg, TEXT("\n2024-2026 MIT License.\n\n")
+				TEXT("Extended/experimental features:\n")
+				TEXT("https://linguversa.de/clcl\nDownload: https://github.com/wilfz/CLCL/releases\n\n"));
+
 			MessageBox(hWnd, var_msg, TEXT("About"), MB_OK | MB_ICONINFORMATION);
 		}
 			break;
