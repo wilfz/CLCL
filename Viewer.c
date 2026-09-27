@@ -3045,10 +3045,10 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 				}
 			}
 			lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.\n")
-				TEXT("WEB SITE: https://www.nakka.com/\nE-MAIL: nakka@nakka.com\n"));
+				TEXT("WEB SITE: https://www.nakka.com/\nE-MAIL: nakka@nakka.com"));
 
 			lstrcat(var_msg, TEXT("\n2024-2026 MIT License.\n\n")
-				TEXT("Extended/experimental features:\n")
+				TEXT("Extended / experimental features:\n")
 				TEXT("https://linguversa.de/clcl\nDownload: https://github.com/wilfz/CLCL/releases\n\n"));
 
 			MessageBox(hWnd, var_msg, TEXT("About"), MB_OK | MB_ICONINFORMATION);

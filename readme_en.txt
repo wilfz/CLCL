@@ -1,4 +1,4 @@
-CLCL Ver 2.1.4
+CLCL Ver 2.2.0
 --
 
 * Introduction
@@ -380,4 +380,5 @@ You are strongly advised to keep a backup of important files.
 Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 	https://www.nakka.com/
 
-2026/8/19
+
+2026/09/26
