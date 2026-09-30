@@ -788,7 +788,7 @@ LRESULT CALLBACK DynamicEditSubclass(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
                 if (index != LB_ERR) {
                     pItem = (PopupItemData*)SendMessage(pData->hwndList, LB_GETITEMDATA, index, 0);
                 }
-				SetModalState(pData, pItem);
+                SetModalState(pData, pItem);
                 if (pItem && pData->selectCallback) {
                     pData->selectCallback(pItem, pData->pUserData);
                 }
@@ -880,7 +880,7 @@ UINT_PTR TrackDynamicPopup(HWND hwndFrame)
 
     while (bContinue && GetMessage(&msg, NULL, 0, 0)) {
         if (!IsWindow(hwndFrame)) {
-			// The popup window has been destroyed, exit the loop
+            // The popup window has been destroyed, exit the loop
             bContinue = FALSE;
             break;
         }

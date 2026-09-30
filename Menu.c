@@ -391,11 +391,11 @@ static HICON menu_read_icon(const TCHAR *file_name, const int index, const int i
 	ExtractIconEx(expanded_name, index, &hIcon, &hsIcon, 1);
 	if (large_icon == TRUE) {
 		if (hsIcon != NULL) {
-		DestroyIcon(hsIcon);
+			DestroyIcon(hsIcon);
 		}
 	} else {
 		if (hIcon != NULL) {
-		DestroyIcon(hIcon);
+			DestroyIcon(hIcon);
 		}
 		hIcon = hsIcon;
 	}
