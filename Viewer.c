@@ -3026,6 +3026,7 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 			TCHAR path[MAX_PATH];
 			DWORD size;
 			lstrcpy(var_msg, APP_NAME);
+			lstrcat(var_msg, TEXT(" plus beta"));
 			GetModuleFileName(NULL, path, sizeof(path));
 			size = GetFileVersionInfoSize(path, NULL);
 			if (size) {
