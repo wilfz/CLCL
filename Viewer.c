@@ -2816,7 +2816,7 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 		if (IsWindowVisible(hWnd) != 0 && IsIconic(hWnd) == 0 && IsZoomed(hWnd) == 0) {
 			SetDpiFromWindow(hWnd);
 			GetWindowRect(hWnd, (LPRECT)&option.viewer_rect);
-				option.viewer_rect.right = UnScale(option.viewer_rect.right - option.viewer_rect.left);
+			option.viewer_rect.right = UnScale(option.viewer_rect.right - option.viewer_rect.left);
 			option.viewer_rect.bottom = UnScale(option.viewer_rect.bottom - option.viewer_rect.top);
 		}
 		break;
@@ -3045,7 +3045,7 @@ static LRESULT CALLBACK viewer_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 				}
 			}
 			lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.\n")
-				TEXT("WEB SITE: https://www.nakka.com/\nE-MAIL: nakka@nakka.com\n"));
+				TEXT("WEB SITE: https://www.nakka.com/\nE-MAIL: nakka@nakka.com"));
 
 			lstrcat(var_msg, TEXT("\n2024-2026 MIT License.\n\n")
 				TEXT("Extended/experimental features:\n")

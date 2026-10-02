@@ -717,6 +717,7 @@ BEGIN
     IDS_MENU_OPTION         "オプション(&O)..."
     IDS_MENU_CLIPBOARD_WATCH "クリップボード監視(&W)"
     IDS_MENU_HELP           "ヘルプ(&H)"
+    IDS_MENU_QUICKSEARCH    "Quick Search (&Q)"
     IDS_TREEITEM_REGIST     "登録アイテム"
 END
 
@@ -841,6 +842,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "パス(&H):"
     IDS_ACTION_TITLE_TOOL   "ツール(&H):"
     IDS_ACTION_CONTENT_HELP "ヘルプ"
+    IDS_ACTION_QUICKSEARCH  "Quick Search"
 END
 
 STRINGTABLE
@@ -1584,6 +1586,7 @@ BEGIN
     IDS_MENU_OPTION         "选项(&O)..."
     IDS_MENU_CLIPBOARD_WATCH "监视剪贴板(&W)"
     IDS_MENU_HELP           "帮助(&H)"
+    IDS_MENU_QUICKSEARCH    "Quick Search (&Q)"
     IDS_TREEITEM_REGIST     "模板"
 END
 
@@ -1708,6 +1711,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "路径(&h):"
     IDS_ACTION_TITLE_TOOL   "工具(&l):"
     IDS_ACTION_CONTENT_HELP "帮助"
+    IDS_ACTION_QUICKSEARCH  "Quick Search"
 END
 
 STRINGTABLE
@@ -2451,6 +2455,7 @@ BEGIN
     IDS_MENU_OPTION         "Параметри..."
     IDS_MENU_CLIPBOARD_WATCH "Спостереження за буфером"
     IDS_MENU_HELP           "Довідка"
+    IDS_MENU_QUICKSEARCH    "Quick Search"
     IDS_TREEITEM_REGIST     "Шаблон"
 END
 
@@ -2576,6 +2581,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "&Шлях:"
     IDS_ACTION_TITLE_TOOL   "Ін&струмент:"
     IDS_ACTION_CONTENT_HELP "Довідка"
+    IDS_ACTION_QUICKSEARCH  "Quick Search"
 END
 
 STRINGTABLE
@@ -3042,8 +3048,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,189,165,10
     CONTROL         "When data is sent to &clipboard",IDC_CHECK_CLIPBOARD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,201,165,10
-    CONTROL         "When sta&rt up",IDC_CHECK_START,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,213,106,10
-    CONTROL         "When e&xit",IDC_CHECK_END,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,225,106,10
+    CONTROL         "On sta&rtup",IDC_CHECK_START,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,213,165,10
+    CONTROL         "On e&xit",IDC_CHECK_END,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,225,165,10
     CONTROL         "When connect to Session",IDC_CHECK_ENTER_SESSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,135,213,100,10
     CONTROL         "When disconnect Session",IDC_CHECK_LEAVE_SESSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,135,225,100,10
     DEFPUSHBUTTON   "OK",IDOK,135,245,50,14
@@ -3285,6 +3291,7 @@ BEGIN
     IDS_MENU_OPTION         "&Options..."
     IDS_MENU_CLIPBOARD_WATCH "Clipboard &Watch"
     IDS_MENU_HELP           "&Help"
+    IDS_MENU_QUICKSEARCH    "&Quick Search"
     IDS_TREEITEM_REGIST     "Template"
 END
 
@@ -3409,6 +3416,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "Pat&h:"
     IDS_ACTION_TITLE_TOOL   "Too&l:"
     IDS_ACTION_CONTENT_HELP "Help"
+    IDS_ACTION_QUICKSEARCH  "Quick Search"
 END
 
 STRINGTABLE
@@ -4127,6 +4135,7 @@ BEGIN
     IDS_MENU_OPTION         "&Einstellungen..."
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage &überwachen"
     IDS_MENU_HELP           "&Hilfe"
+    IDS_MENU_QUICKSEARCH    "Schnellsuche"
     IDS_TREEITEM_REGIST     "Vorlagen"
 END
 
@@ -4251,6 +4260,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "Pfad:"
     IDS_ACTION_TITLE_TOOL   "Tool:"
     IDS_ACTION_CONTENT_HELP "Hilfe"
+    IDS_ACTION_QUICKSEARCH  "Schnellsuche"
 END
 
 STRINGTABLE

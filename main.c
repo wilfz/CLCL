@@ -48,6 +48,7 @@
 #include "Caret.h"
 #include "dpi.h"
 #include "DarkMode.h"
+#include "quicksearch.h"
 
 #include "resource.h"
 
@@ -995,9 +996,58 @@ static BOOL action_execute(const HWND hWnd, const int type, const int id, const 
 
 	case ACTION_EXIT:
 		// 終了
-		// EXIT
+		// exit
 		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_EXIT, 0);
 		break;
+
+	case ACTION_QUICKSEARCH:
+		{
+			ACTION_INFO* ai = option.action_info + i;
+			FOCUS_INFO fi;
+			BOOL caret_flag = caret;
+			CopyMemory(&fi, &focus_info, sizeof(FOCUS_INFO));
+			if (caret == TRUE || fi.active_wnd == NULL) {
+				// フォーカス情報取得
+				// Retrieve focus information
+				get_focus_info(&fi, (ai->caret != 0) ? caret : FALSE);
+			}
+			if (ai->caret == 0 || fi.caret == FALSE) {
+				caret_flag = FALSE;
+			}
+			// Display menu
+			_SetForegroundWindow(hWnd);
+			ShowWindow(hWnd, SW_HIDE);
+	
+			POINT pt;
+			if (fi.caret)
+				pt = fi.cpos;
+			else
+				GetCursorPos((LPPOINT)&pt);
+	
+			// クイックサーチ - enter text and show items like in a menu
+			DATA_INFO* di = (DATA_INFO*)quicksearch(hWnd, pt, hToolTip);
+			// クリップボードにデータを設定
+			// Set the data on the clipboard
+			set_focus_info(&fi);
+			if (di) {
+				SendMessage(hWnd, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)di);
+				// キーを離すまで待機
+				// Wait until key is released
+				key_wait();
+				// ホットキーの解除
+				// Cancel hotkey
+				unregist_hotkey(hWnd);
+				// 貼り付け
+				// paste
+				sendkey_paste(fi.active_wnd);
+				// ホットキーの登録
+				// Register the hotkey
+				regist_hotkey(hWnd, FALSE);
+			}
+			ZeroMemory(&focus_info, sizeof(FOCUS_INFO));
+		}
+		break;
+
 	}
 	return TRUE;
 }
@@ -1812,6 +1862,7 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			break;
 		}
 		// 履歴に追加
+		// Add to history (adds a short delay to avoid clipboard lock contention)
 		SetTimer(hWnd, ID_HISTORY_TIMER, option.history_add_interval, NULL);
 		SetTimer(hWnd, ID_RECHAIN_TIMER, RECHAIN_INTERVAL, NULL);
 		rechain_cnt = 0;
@@ -1854,6 +1905,49 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			SendMessage(hWnd, WM_SET_CLIPBOARD_WATCH, !option.main_clipboard_watch, 0);
 			break;
 
+		case ID_MENUITEM_QUICKSEARCH:
+			{
+				FOCUS_INFO fi;
+				CopyMemory(&fi, &focus_info, sizeof(FOCUS_INFO));
+				if (fi.active_wnd == NULL) {
+					// フォーカス情報取得
+					// Get focus information
+					get_focus_info(&fi, FALSE);
+				}
+				// Display menu
+				_SetForegroundWindow(hWnd);
+				ShowWindow(hWnd, SW_HIDE);
+	
+				POINT pt;
+				if (fi.caret)
+					pt = fi.cpos;
+				else
+					GetCursorPos((LPPOINT)&pt);
+	
+				// クイックサーチ - enter text and show items like in a menu
+				DATA_INFO* di = (DATA_INFO*)quicksearch(hWnd, pt, hToolTip);
+				set_focus_info(&fi);
+	
+				// クリップボードにデータを設定
+				// Set the data on the clipboard
+				if (di) {
+					SendMessage(hWnd, WM_ITEM_TO_CLIPBOARD, 0, (LPARAM)di);
+					// キーを離すまで待機
+					// Wait until key is released
+					key_wait();
+					// ホットキーの解除
+					// Cancel hotkey
+					unregist_hotkey(hWnd);
+					// 貼り付け
+					// paste
+					sendkey_paste(fi.active_wnd);
+					// ホットキーの登録
+					// Register the hotkey
+					regist_hotkey(hWnd, FALSE);
+				}
+			}
+			break; // end of case ID_MENUITEM_QUICKSEARCH
+
 		case ID_MENUITEM_HELP:
 			{
 				// english help as Compiled Help Module, generated from README.md
@@ -1873,7 +1967,7 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			break;
 
 		}
-		break;
+		break; // end of switch (LOWORD(wParam))
 
 	case WM_TIMER:
 		// タイマー
@@ -2205,11 +2299,11 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 		{
 			LRESULT ret = 0;
 
-		if (hViewerWnd != NULL) {
+			if (hViewerWnd != NULL) {
 				ret = SendMessage(hViewerWnd, msg, wParam, lParam);
-		} else {
-			data_adjust(&regist_data.child);
-		}
+			} else {
+				data_adjust(&regist_data.child);
+			}
 			save_regist(hWnd);
 			return ret;
 		}
@@ -2236,7 +2330,7 @@ static LRESULT CALLBACK main_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 		return item_to_clipboard(hWnd, (DATA_INFO *)lParam, (wParam == 0) ? TRUE : FALSE);
 
 	case WM_ITEM_CREATE:
-		// アイテムの作成 / create an item
+		// アイテムの作成
 		switch (wParam) {
 		case TYPE_DATA:
 			// データの作成

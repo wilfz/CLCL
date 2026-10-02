@@ -22,8 +22,9 @@ It provides quick access to recent clipboard items via a customizable pop-up men
 - **Unicode Support** - Full Unicode support for international text
 - **Multiple Language** - User interface language can be switched between English, Japanese, German, Simplified Chinese, and Ukrainian
 - **Binary Viewer** - View raw binary clipboard data in hex format
-- **History & Registry** - Persistent and automatically saving clipboard history and templates
-- **Free and Open Source** - Under active development on [github.com/wilfz/CLCL](https://github.com/wilfz/CLCL)
+- **History & Templates** - Persistent and automatically saving clipboard history and templates
+- **Free and Open Source** - Under active development on [github.com/nakkag/CLCL](https://github.com/nakkag/CLCL)
+- **Plugins and extended/experimantal features** at [github.com/wilfz/CLCL](https://github.com/wilfz/CLCL)
 
 ## Installation
 Works on current Windows OS.

@@ -1112,7 +1112,7 @@ static LRESULT CALLBACK binview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 				DeleteObject(bf->hfont_alt);
 			}
 			DeleteDC(bf->mdc);
-				mem_free(&bf->data);
+			mem_free(&bf->data);
 			mem_free(&bf->undo);
 			mem_free(&bf);
 		}

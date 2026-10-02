@@ -391,11 +391,11 @@ static HICON menu_read_icon(const TCHAR *file_name, const int index, const int i
 	ExtractIconEx(expanded_name, index, &hIcon, &hsIcon, 1);
 	if (large_icon == TRUE) {
 		if (hsIcon != NULL) {
-		DestroyIcon(hsIcon);
+			DestroyIcon(hsIcon);
 		}
 	} else {
 		if (hIcon != NULL) {
-		DestroyIcon(hIcon);
+			DestroyIcon(hIcon);
 		}
 		hIcon = hsIcon;
 	}
@@ -807,6 +807,7 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 		case MENU_CONTENT_OPTION:
 		case MENU_CONTENT_CLIPBOARD_WATCH:
 		case MENU_CONTENT_APP:
+		case MENU_CONTENT_QUICKSEARCH:
 		case MENU_CONTENT_HELP:
 		case MENU_CONTENT_CANCEL:
 		case MENU_CONTENT_EXIT:
@@ -1012,6 +1013,17 @@ static MENU_ITEM_INFO *menu_create_info(MENU_INFO *menu_info, const int menu_cnt
 			(mii + j)->free_icon = TRUE;
 			// メニュー情報を設定
 			(mii + j)->mi = menu_info + i;
+			j++;
+			break;
+
+		case MENU_CONTENT_QUICKSEARCH:
+			(mii + j)->id = ID_MENUITEM_QUICKSEARCH;
+			(mii + j)->flag = MF_OWNERDRAW;
+			(mii + j)->item = (LPCTSTR)(mii + j);
+			(mii + j)->text = alloc_copy(((menu_info + i)->title == NULL || *(menu_info + i)->title == TEXT('\0')) ?
+				message_get_res(IDS_MENU_QUICKSEARCH) : (menu_info + i)->title);
+			(mii + j)->icon = menu_read_icon((menu_info + i)->icon_path, (menu_info + i)->icon_index, option.menu_icon_size);
+			(mii + j)->free_icon = TRUE;
 			j++;
 			break;
 
