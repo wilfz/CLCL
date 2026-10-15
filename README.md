@@ -14,6 +14,7 @@ It provides quick access to recent clipboard items via a customizable pop-up men
 - **Custom Menu Support** - Fully customizable menu organization and appearance
 - **Image Previews** - Thumbnail display of bitmap content in menu
 - **Tooltip Hints** - Hover tooltips for clipboard items and tools
+- **Dark Mode** - According to Windows settings
 - **Format Control** - Selective saving of specific clipboard formats
 - **Window Filtering** - Ignore clipboard changes from specific applications
 - **Custom Paste Keys** - Per-window paste key configuration
@@ -23,18 +24,27 @@ It provides quick access to recent clipboard items via a customizable pop-up men
 - **Multiple Language** - User interface language can be switched between English, Japanese, German, Simplified Chinese, and Ukrainian
 - **Binary Viewer** - View raw binary clipboard data in hex format
 - **History & Templates** - Persistent and automatically saving clipboard history and templates
-- **Free and Open Source** - Under active development on [github.com/nakkag/CLCL](https://github.com/nakkag/CLCL)
-- **Plugins and extended/experimantal features** at [github.com/wilfz/CLCL](https://github.com/wilfz/CLCL)
+- **Free and Open Source** - on [github.com/nakkag/CLCL](https://github.com/nakkag/CLCL)
+
+__Additional Features only in Plus version__
+--
+
+- **Quicksearch** - in tray menu and with Hotkey
+- **Installer including optional Plugins** - with many additional functions
+- **Integrated Help** - Press `<F1>` in Settings or Viewer for English or German help
+- **Free and Open Source** - on  [github.com/wilfz/CLCL](https://github.com/wilfz/CLCL)
 
 ## Installation
-Works on current Windows OS.
+CLCL runs on Windows 7 and later.
 
-Download and launch [setup_clcl_2_1_6.exe](https://github.com/wilfz/CLCL/releases/download/v2.1.6/setup_clcl_2_1_6.exe).
+For "Nakka pure" download and install [clcl220.exe](https://www.linguversa.de/clcl/download/clcl220.exe).  
+
+For extended Plus version download and launch [setup_clcl_2_2_0.exe](https://www.linguversa.de/clcl/download/setup_clcl_2_2_0.exe).
 The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
 
 If you want to uninstall, do so from the Control Panel __after__ closing CLCL.
 
-Instead of the automatic installer, you can also download [CLCL_2_1_6.zip](https://github.com/wilfz/CLCL/releases/download/v2.1.6/CLCL_2_1_6.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
+Instead of the automatic installer, you can also download [clcl_2_2_0.zip](https://www.linguversa.de/clcl/download/clcl_2_2_0.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
 
 ### Data Storage
 By default, data and settings are stored in this folder (for Windows 10/11):
@@ -429,7 +439,6 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 
 ## Credits
 - CLCL main program and plugins tool_text, tool_utl and tool_test are Copyright (C) by [Ohno Tomoaki](https://nakka.com/), who made it open source and put it under MIT license in 2024
-- Special thanks: K.Takata
 - Installer created by WilfZim with [Inno Setup](https://jrsoftware.org/isinfo.php)
 - [Tool_clip plugin](https://github.com/wilfz/CLCL-tool_clip) by WilfZim depends on Niels Lohmann's JSON library ( https://github.com/nlohmann/json ) for import and export of data
 - Translation to Simplified Chinese by HeliusHao
@@ -437,7 +446,7 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 
 ## Update History
 
-- Ver 2.1.7 -> Ver 2.2.0
+- Ver 2.1.7 -> Ver 2.2.0 Plus
 	- Added support for the Windows dark mode.
 	- Improved to support for high-DPI displays.
 	- Added an option to show the menu without taking the focus away from the window you are working in. 
@@ -449,6 +458,8 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 - Ver 2.1.6 -> 2.1.7
 	- Added call types "When connect to session" and "When disconnect from session" to the tool conmfiguration
 	- Added Help Viewer to action menus
+	- Added "Search for Item" to context menus in Viewer
+	- Added "Quick Search" to menu items and actions
 
 - Ver 2.1.5 -> 2.1.6
 	- Integration of CHM help (Issue [nakkag#26](https://github.com/nakkag/CLCL/issues/26)) and invocation of MS Help Viewer
@@ -600,7 +611,10 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 
 The author is not responsible for any problems caused by this program. It is strongly recommended that you back up important files. 
 
-Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved. https://www.nakka.com/
+Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved. https://nakka.com/soft/clcl  
+Current sources: https://github.com/nakkag/CLCL  
 
-2025 - 2026 MIT License. Website https://linguversa.de/clcl, Sources and Releases under https://github.com/wilfz/CLCL
+2025 - 2026 MIT License.  
+Documentation and downloads: https://linguversa.de/clcl  
+More sources and current binaries: https://github.com/wilfz/CLCL  
 
