@@ -26,6 +26,7 @@
 #include "dpi.h"
 #include "Font.h"
 #include "ToolTip.h"
+#include "DarkMode.h"
 
 #include "dynamic_popup.h"
 
@@ -322,6 +323,24 @@ UINT_PTR quicksearch(HWND hWnd, POINT pt, HWND hToolTip)
 	SetTextMargin(hwndPopup, text_margin);
 	SetMaxVisibleItems(hwndPopup, max_visible_items);
 	SetUserData(hwndPopup, (void*)NULL);
+
+	// Colors: keep the popup visually in sync with CLCL's dark mode
+	if (dark_mode_is_dark()) {
+		SetPopupColors(hwndPopup,
+			dark_mode_get_color(COLOR_WINDOW),
+			dark_mode_get_color(COLOR_WINDOWTEXT),
+			dark_mode_get_color(COLOR_WINDOW),
+			dark_mode_get_color(COLOR_WINDOWTEXT),
+			dark_mode_get_color(COLOR_HIGHLIGHT),
+			dark_mode_get_color(COLOR_HIGHLIGHTTEXT));
+	}
+	else {
+		SetPopupColors(hwndPopup,
+			GetSysColor(COLOR_WINDOW), GetSysColor(COLOR_WINDOWTEXT),
+			GetSysColor(COLOR_WINDOW), GetSysColor(COLOR_WINDOWTEXT),
+			GetSysColor(COLOR_HIGHLIGHT), GetSysColor(COLOR_HIGHLIGHTTEXT));
+	}
+
 	if (menu_font)
 		SetMenuFont(hwndPopup, menu_font);
 
