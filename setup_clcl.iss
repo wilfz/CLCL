@@ -66,7 +66,7 @@ Name: "readme"; Description: "ReadMe"; Types: full
 [Files]
 Source: "Release\{#MyAppExeName}"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "Release\CLCLSet.exe"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "Release\CLCLHook.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+;Source: "Release\CLCLHook.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "Documentation\clcl.chm"; DestDir: "{app}"; Components: main help; Flags: ignoreversion
 Source: "Documentation\clcl_de.chm"; DestDir: "{app}"; Components: main help; Flags: ignoreversion
 Source: "LICENSE"; DestDir: "{app}"; Components: main; Flags: ignoreversion
@@ -78,8 +78,13 @@ Source: "CLCLPlugin\tool_clip\Release\tool_clip.dll"; DestDir: "{app}"; Componen
 Source: "CLCLPlugin\fmt_rtf\Release\fmt_rtf.dll"; DestDir: "{app}"; Components: fmt_rtf; Flags: ignoreversion
 Source: "readme_en.txt"; DestDir: "{app}"; Components: readme; Flags: ignoreversion 
 Source: "readme_jp.txt"; DestDir: "{app}"; Components: main help readme; Flags: ignoreversion
-Source: "readme_en.txt"; DestDir: "{app}"; Components: readme; Languages: english german ukrainian; Flags: ignoreversion isreadme
+Source: "readme_zh.txt"; DestDir: "{app}"; Components: main help readme; Flags: ignoreversion
+Source: "readme_uk.txt"; DestDir: "{app}"; Components: main help readme; Flags: ignoreversion
+Source: "readme_de.txt"; DestDir: "{app}"; Components: readme; Flags: ignoreversion 
+Source: "readme_en.txt"; DestDir: "{app}"; Components: readme; Languages: english; Flags: ignoreversion isreadme
 Source: "readme_jp.txt"; DestDir: "{app}"; Components: readme; Languages: japanese; Flags: ignoreversion isreadme
+Source: "readme_uk.txt"; DestDir: "{app}"; Components: readme; Languages: ukrainian; Flags: ignoreversion isreadme
+Source: "readme_de.txt"; DestDir: "{app}"; Components: readme; Languages: german; Flags: ignoreversion isreadme
 Source: "Release\clcl.html"; DestDir: "{app}"; Components: help; Flags: ignoreversion
 Source: "CLCLPlugin\tool_clip\Release\tool_clip.html"; DestDir: "{app}"; Components: tool_clip; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
