@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CLCL"
-#define MyAppVersion "2.1.6.0"
+#define MyAppVersion "2.2.0"
 #define MyAppPublisher "WilfZim"
 #define MyAppURL "https://www.linguversa.de/clcl/index.html"
 #define MyGitHubRepo "https://github.com/wilfz/CLCL"
