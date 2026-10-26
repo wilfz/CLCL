@@ -489,7 +489,6 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 	- Expand environment variables in tool paths
 
 - Ver 2.1.2 -> Ver 2.1.3
-	- Last release published under https://nakka.com/soft/clcl/index_eng.html
 	- Changed the system tray icon when not monitoring the clipboard.
 	- Improved the up and down movement buttons in the settings.
 	- Improved so that the main screen does not appear when displaying the menu.
@@ -613,8 +612,8 @@ The author is not responsible for any problems caused by this program. It is str
 
 Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved. https://nakka.com/soft/clcl  
 Current sources: https://github.com/nakkag/CLCL  
-
 2025 - 2026 MIT License.  
+
 Documentation and downloads: https://linguversa.de/clcl  
 More sources and current binaries: https://github.com/wilfz/CLCL  
 
