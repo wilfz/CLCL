@@ -20,6 +20,12 @@
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
 
+STRINGTABLE
+BEGIN
+    IDS_ERROR_PLUGIN_BLOCKED "Die folgenden Plug-ins wurden nicht geladen, da CLCL als Administrator ausgeführt wird und sie sich an einem Ort befinden, den Standardbenutzer ändern können.\nLegen Sie sie im Anwendungsordner oder in einem Ordner ab, in den Standardbenutzer nicht schreiben können."
+    IDS_ERROR_RUN_AS_USER   "Da CLCL als Administrator ausgeführt wird, sollte das Programm mit Standardbenutzerrechten gestartet werden, dies ist jedoch fehlgeschlagen.\nStellen Sie sicher, dass der Explorer ausgeführt wird."
+END
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
@@ -33,7 +39,7 @@ BEGIN
         MENUITEM "Speichern &unter...\tCtrl+S", ID_MENUITEM_DATA_SAVE
         MENUITEM "Hexadezimal anzeigen",        ID_MENUITEM_SHOWBINARY
         MENUITEM SEPARATOR
-        POPUP "&Einstellugen"
+        POPUP "&Einstellungen"
         BEGIN
             MENUITEM "&Format...",                  ID_MENUITEM_SET_FORMAT
             MENUITEM "Fi&lter...",                  ID_MENUITEM_SET_FILTER
@@ -45,14 +51,14 @@ BEGIN
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
         MENUITEM "Zu &Vorlagen hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
         MENUITEM "Hexadezimal anzeigen",        ID_MENUITEM_SHOWBINARY
-        MENUITEM "&Werkzeuge",                  ID_MENUITEM_TOOL_MENU
+        MENUITEM "&Tools",                      ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
         MENUITEM "Nach &oben\tAlt+Up",          ID_MENUITEM_UP
         MENUITEM "Nach &unten\tAlt+Down",       ID_MENUITEM_DOWN
         MENUITEM SEPARATOR
         MENUITEM "&Neu...\tCtrl+N",             ID_MENUITEM_NEW_ITEM
         MENUITEM "Speichern &unter...\tCtrl+S", ID_MENUITEM_DATA_SAVE
-        POPUP "&Einstellugen"
+        POPUP "&Einstellungen"
         BEGIN
             MENUITEM "&Format...",                  ID_MENUITEM_SET_FORMAT
             MENUITEM "Fi&lter...",                  ID_MENUITEM_SET_FILTER
@@ -68,7 +74,7 @@ BEGIN
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
         MENUITEM "Zu &Vorlagen hinzufügen...\tCtrl+R", ID_MENUITEM_REGIST_ADD
         MENUITEM "Hexadezimal anzeigen",        ID_MENUITEM_SHOWBINARY
-        MENUITEM "&Werkzeuge",                  ID_MENUITEM_TOOL_MENU
+        MENUITEM "&Tools",                             ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
         MENUITEM "Nach &oben\tAlt+Up",          ID_MENUITEM_UP
         MENUITEM "Nach &unten\tAlt+Down",       ID_MENUITEM_DOWN
@@ -83,7 +89,7 @@ BEGIN
         MENUITEM "An Zwischenablage &senden\tCtrl+C", ID_MENUITEM_CLIPBOARD
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
         MENUITEM "Hexadezimal anzeigen",        ID_MENUITEM_SHOWBINARY
-        MENUITEM "&Werkzeuge",                  ID_MENUITEM_TOOL_MENU
+        MENUITEM "&Tools",                             ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
         MENUITEM "Nach &oben\tAlt+Up",          ID_MENUITEM_UP
         MENUITEM "Nach &unten\tAlt+Down",       ID_MENUITEM_DOWN
@@ -92,7 +98,7 @@ BEGIN
         MENUITEM "Neuer &Ordner",               ID_MENUITEM_CREATE_FOLDER
         MENUITEM "Speichern &unter...\tCtrl+S", ID_MENUITEM_DATA_SAVE
         MENUITEM "Hotkey &setzen...",           ID_MENUITEM_SET_HOTKEY
-        POPUP "&Einstellugen"
+        POPUP "&Einstellungen"
         BEGIN
             MENUITEM "&Format...",                  ID_MENUITEM_SET_FORMAT
             MENUITEM "Fi&lter...",                  ID_MENUITEM_SET_FILTER
@@ -113,7 +119,7 @@ BEGIN
         MENUITEM "An Zwischenablage &senden\tCtrl+C", ID_MENUITEM_CLIPBOARD
         MENUITEM "&Aus Zwischenablage einfügen\tCtrl+V", ID_MENUITEM_PASTE
         MENUITEM "Hexadezimal anzeigen",        ID_MENUITEM_SHOWBINARY
-        MENUITEM "&Werkzeuge",                  ID_MENUITEM_TOOL_MENU
+        MENUITEM "&Tools",                             ID_MENUITEM_TOOL_MENU
         MENUITEM SEPARATOR
         MENUITEM "Nach &oben\tAlt+Up",          ID_MENUITEM_UP
         MENUITEM "Nach &unten\tAlt+Down",       ID_MENUITEM_DOWN
@@ -176,13 +182,13 @@ BEGIN
         MENUITEM "&Statusleiste",               ID_MENUITEM_SHOW_STATUSBAR
         MENUITEM SEPARATOR
         MENUITEM "&Format",                     ID_MENUITEM_SHOW_FORMAT
-        MENUITEM "&Dump",                       ID_MENUITEM_SHOW_BIN
+        MENUITEM "&Binärdaten-Anzeige",         ID_MENUITEM_SHOW_BIN
         MENUITEM SEPARATOR
-        MENUITEM "&Einstellugen...",            ID_MENUITEM_OPTION
+        MENUITEM "&Einstellungen...",           ID_MENUITEM_OPTION
     END
-    POPUP "&Werkzeuge"
+    POPUP "&Tools"
     BEGIN
-        MENUITEM "&Werkzeuge konfigurieren...", ID_MENUITEM_TOOL_SET
+        MENUITEM "&Tools konfigurieren...",     ID_MENUITEM_TOOL_SET
         MENUITEM SEPARATOR
     END
     POPUP "&Hilfe"
@@ -198,10 +204,10 @@ END
 // Dialog
 //
 
-IDD_DIALOG_SELECT_FOLDER DIALOG 0, 0, 232, 195
+IDD_DIALOG_SELECT_FOLDER DIALOGEX 0, 0, 232, 195
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ordner auswählen"
-FONT 8, "MS Shell Dlg"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "msg",IDC_STATIC_MSG,5,5,220,19
     CONTROL         "Tree1",IDC_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,5,25,220,145
@@ -213,7 +219,7 @@ IDD_DIALOG_SELECT_FORMAT DIALOGEX 0, 0, 227, 105
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_ACCEPTFILES
 CAPTION "Neues Element"
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Format zum &Hinzufügen:",IDC_STATIC,5,5,115,10
     COMBOBOX        IDC_COMBO_FORMAT,5,15,215,145,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
@@ -225,10 +231,10 @@ BEGIN
     PUSHBUTTON      "Abbrechen",IDCANCEL,171,85,50,14
 END
 
-IDD_DIALOG_SET_HOTKEY DIALOG 0, 0, 125, 72
+IDD_DIALOG_SET_HOTKEY DIALOGEX 0, 0, 125, 72
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Hotkey setzen"
-FONT 8, "MS Shell Dlg"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "&Hotkey:",IDC_STATIC,10,5,75,10
     CONTROL         "HotKey1",IDC_HOTKEY_ITEM,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,10,15,70,15
@@ -236,6 +242,26 @@ BEGIN
     CONTROL         "&Einfügen",IDC_CHECK_PASTE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,35,75,10
     DEFPUSHBUTTON   "OK",IDOK,10,50,50,14
     PUSHBUTTON      "Abbrechen",IDCANCEL,65,50,50,14
+END
+
+IDD_SEARCH_ITEM DIALOGEX 0, 0, 209, 141
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Suche Element"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Suchtext",IDC_STATIC,12,14,66,8
+    EDITTEXT        IDC_SEARCHTEXT,84,12,114,12,ES_AUTOHSCROLL
+    CONTROL         "mit Datum suchen",IDC_CHK_SRCHDATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,30,78,10
+    LTEXT           "von",IDC_STATIC,12,51,42,8
+    CONTROL         "",IDC_DATEFROM,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHORTDATECENTURYFORMAT | WS_DISABLED | WS_TABSTOP,54,48,54,15
+    CONTROL         "",IDC_TIMEFROM,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_DISABLED | WS_TABSTOP | 0x8,108,48,54,15,WS_EX_STATICEDGE
+    LTEXT           "bis",IDC_STATIC,12,75,42,8
+    CONTROL         "",IDC_DATEUNTIL,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHORTDATECENTURYFORMAT | WS_DISABLED | WS_TABSTOP,54,72,54,15
+    CONTROL         "",IDC_TIMEUNTIL,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_DISABLED | WS_TABSTOP | 0x8,108,72,54,15
+    LTEXT           "aus Anwendung",IDC_STATIC,12,98,66,8
+    EDITTEXT        IDC_FROM_APPLICATION,84,96,114,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,96,120,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,150,120,50,14
 END
 
 
@@ -270,8 +296,27 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 65
     END
+
+    IDD_SEARCH_ITEM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 202
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 122
+    END
 END
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_SEARCH_ITEM AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -285,8 +330,10 @@ BEGIN
     IDS_MENU_CANCEL         "&Abbrechen"
     IDS_MENU_EXIT           "&Beenden"
     IDS_MENU_VIEWER         "An&zeige..."
-    IDS_MENU_OPTION         "&Einstellugen..."
+    IDS_MENU_OPTION         "&Einstellungen..."
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage-&Überwachung"
+    IDS_MENU_HELP           "&Hilfe"
+    IDS_MENU_QUICKSEARCH    "Schnellsuche"
     IDS_TREEITEM_CLIPBOARD  "Zwischenablage"
     IDS_TREEITEM_HISTORY    "Verlauf"
     IDS_TREEITEM_REGIST     "Vorlagen"
