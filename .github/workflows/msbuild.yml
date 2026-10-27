@@ -70,6 +70,9 @@ jobs:
         cp LICENSE Setup/ 
         cp readme_en.txt Setup/ 
         cp readme_jp.txt Setup/ 
+        cp readme_zh.txt Setup/ 
+        cp readme_de.txt Setup/ 
+        cp readme_uk.txt Setup/ 
         cp clcl_app.ini Setup/ 
 
     - name: Publish Nakka's Installer
