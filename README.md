@@ -1,6 +1,6 @@
 # CLCL - Clipboard Manager
 
-**Version:** 2.2.0
+**Version:** 2.2.1
 
 ## Overview
 CLCL is a powerful Windows clipboard manager with plugin support and customizable hotkeys.
@@ -26,7 +26,7 @@ It provides quick access to recent clipboard items via a customizable pop-up men
 - **History & Templates** - Persistent and automatically saving clipboard history and templates
 - **Free and Open Source** - on [github.com/nakkag/CLCL](https://github.com/nakkag/CLCL)
 
-__Additional Features only in Plus version__
+__Additional Features only in extended/experimental version__
 --
 
 - **Quicksearch** - in tray menu and with Hotkey
@@ -37,14 +37,14 @@ __Additional Features only in Plus version__
 ## Installation
 CLCL runs on Windows 7 and later.
 
-For "Nakka pure" download and install [clcl220.exe](https://www.linguversa.de/clcl/download/clcl220.exe).  
+For "Nakka pure" download and install [clcl221.exe](https://www.linguversa.de/clcl/download/clcl221.exe) or [clcl221.zip](https://www.linguversa.de/clcl/download/clcl221.zip).  
 
-For extended Plus version download and launch [setup_clcl_2_2_0.exe](https://www.linguversa.de/clcl/download/setup_clcl_2_2_0.exe).
+For extended/experimental version download and launch [setup_clcl_2_2_1.exe](https://www.linguversa.de/clcl/download/setup_clcl_2_2_1.exe).
 The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
 
 If you want to uninstall, do so from the Control Panel __after__ closing CLCL.
 
-Instead of the automatic installer, you can also download [clcl_2_2_0.zip](https://www.linguversa.de/clcl/download/clcl_2_2_0.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
+Instead of the automatic installer, you can also download [clcl_2_2_1.zip](https://www.linguversa.de/clcl/download/clcl_2_2_1.zip), unpack it into a folder of your choice, and start `clcl.exe` from there.
 
 ### Data Storage
 By default, data and settings are stored in this folder (for Windows 10/11):
@@ -260,6 +260,28 @@ Utility tools:
 - Save CLCL templates to and load from an ODBC database 
 - To be continued ...
 
+### tool_python
+[`tool_python`](https://github.com/wilfz/CLCL-tool_python#python-plugin-for-clcl-clipboard-manager) enables users of CLCL to write their own text-based plugins in python and configure them.
+
+It comes with an example module _example.py_:
+```python
+#Python plugin functions must take string as 
+#input parameter and return a string:
+
+def main(input_text: str = ""):
+    ret = "Hello Python!"
+    return ret # return to CLCL
+
+def ToLower(s: str = ""):
+    return s.lower()
+
+def ToUpper(s: str = ""):
+    return s.upper()
+```
+These functions are not very fancy, but will give you the idea.  
+
+Unlike the other plugins `tool_python` is not part of the main setup, because it requires its own python runtime library and therefore underlies the python license.  
+But it has its own [setup program](https://www.linguversa.de/clcl/download/setup_tool_python.exe) and can easily be installed into the same folder as CLCL.
 
 ## Options
 
@@ -416,6 +438,25 @@ If CLCL is already running, the command will be sent to the already running CLCL
 
 ## Helpful Hints
 
+### QuickSearch
+
+Although CLCL can hold hundreds of items, it is difficult to keep an overview even with cascading popups.
+The same is true for template collections with dozens of folders and subfolders.
+
+Here comes the new QuickSearch control.  
+It has the look-and-feel of a classical popup menu, but with an additional edit part. If configured in CLCL it can be reached from any application with just a hotkey or from the system tray menu.
+
+While typing a substring of the desired item's content or title into the edit part, the choice of the displayed items in the control narrows down until the right one comes into view.  
+One click and it is pasted into the currently open application.  
+Watch the screen recording:
+![Quicksearch usage](img/quicksearch_demo.gif)
+
+Of course the selection can also be made with the up/down keys and the return key of the keyboard.
+
+#### Configuration
+Quicksearch can be easily added to the tray menu and or a hotkey of your choice. Click on the screen recording:
+![Quicksearch configuration](img/clcl_quicksearch_configuration.gif)
+
 ### More History Items and How to Organize the Popup Menu
 On the *History* tab of the options, you can increase the maximum number of history items to keep, e.g., from 30 to 100. But without further configuration, the popup menu will look rather crowded.
 
@@ -446,7 +487,10 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 
 ## Update History
 
-- Ver 2.1.7 -> Ver 2.2.0 Plus
+- Ver 2.2.0 -> Ver 2.2.1
+	- Fixed a crash when the Viewer is opened by double-clicking the system tray icon.
+
+- Ver 2.1.7 -> Ver 2.2.0
 	- Added support for the Windows dark mode.
 	- Improved to support for high-DPI displays.
 	- Added an option to show the menu without taking the focus away from the window you are working in. 
@@ -615,5 +659,5 @@ Current sources: https://github.com/nakkag/CLCL
 2025 - 2026 MIT License.  
 
 Documentation and downloads: https://linguversa.de/clcl  
-More sources and current binaries: https://github.com/wilfz/CLCL  
+Extended sources: https://github.com/wilfz/CLCL  
 
