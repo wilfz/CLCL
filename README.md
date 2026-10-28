@@ -37,7 +37,7 @@ __Additional Features only in extended/experimental version__
 ## Installation
 CLCL runs on Windows 7 and later.
 
-For "Nakka pure" download and install [clcl221.exe](https://www.linguversa.de/clcl/download/clcl221.exe) or [clcl221.zip](https://www.linguversa.de/clcl/download/clcl221.zip).  
+For "Nakka pure" download and install [clcl221.exe](https://nakka.com/soft/clcl/download/clcl221.exe) or [clcl221.zip](https://nakka.com/soft/clcl/download/clcl221.zip).  
 
 For extended/experimental version download and launch [setup_clcl_2_2_1.exe](https://www.linguversa.de/clcl/download/setup_clcl_2_2_1.exe).
 The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
