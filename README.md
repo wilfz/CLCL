@@ -286,7 +286,8 @@ But it has its own [setup program](https://www.linguversa.de/clcl/download/setup
 ## Options
 
 Invoke the Options window either by right-clicking on the CLCL clip in the taskbar, or by calling it from the Viewer's main menu with View -> Options.  
-In the various tabs of the Options window, you can customize CLCL according to your preferences and needs.
+In the various tabs of the Options window, you can customize CLCL according to your preferences and needs.  
+Extended/experimental edition: Type `F1` and get help for the currently open tab.
 
 ### History Settings
 

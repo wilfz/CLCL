@@ -38,7 +38,7 @@ __Zusätzliche Funktionen nur in der extended bzw experimentellen Version__
 ## Installation
 CLCL läuft auf Windows 7 und neuer.
 
-Für die "Nakka pure" Version laden Sie [clcl221.exe](https://www.linguversa.de/clcl/download/clcl221.exe) oder [clcl221.zip](https://www.linguversa.de/clcl/download/clcl221.zip) herunter und installieren Sie diese.
+Für die "Nakka pure" Version laden Sie [clcl221.exe](https://nakka.com/soft/clcl/download/clcl221.exe) oder [clcl221.zip](https://nakka.com/soft/clcl/download/clcl221.zip) herunter und installieren Sie diese.
 
 Für die erweiterte Plus-Version laden Sie [setup_clcl_2_2_1.exe](https://www.linguversa.de/clcl/download/setup_clcl_2_2_1.exe) herunter und starten Sie dieses.
 Möglicherweise zeigt das Installationsprogramm eine Warnung an. Dies bedeutet nicht automatisch ein Sicherheitsrisiko: als freies Open-Source-Projekt wurde CLCL aber nicht kostenpflichtig signiert.
@@ -263,8 +263,26 @@ Dienstprogramme:
 - Fortsetzung folgt ...
 
 ### tool_python
-Dieses Plugin dient dieses Plugin dazu, Funktionen in eigenen Python-Modulen einzubinden.  
-Da es eine Laufzeitumgebung für Python enthält, ist es relativ groß und unterliegt neben der MIT-Lizenz auch der Python-Lizenz. Deshalb ist es auch nicht im Setup- Programm enthalten, sondern liegt als separater Download mit einem eigenen Setup vor.
+[`tool_python`](https://github.com/wilfz/CLCL-tool_python#python-plugin-for-clcl-clipboard-manager) ermöglicht es Benutzern,  Python-Module mit eigenen Funktionen in CLCL einzubinden.  
+
+Das Plugin enthält ein Beispielmodul _example.py_:
+```python
+#Python plugin functions must take string as 
+#input parameter and return a string:
+
+def main(input_text: str = ""):
+    ret = "Hello Python!"
+    return ret # return to CLCL
+
+def ToLower(s: str = ""):
+    return s.lower()
+
+def ToUpper(s: str = ""):
+    return s.upper()
+```
+Diese Funktiuonen sind relativ simpel, sollten aber ausreichen um einen Eindruck zu vermitteln.  
+
+Da es eine Laufzeitumgebung für Python enthält, ist es relativ groß und unterliegt neben der MIT-Lizenz auch der Python-Lizenz. Deshalb ist es auch nicht im Setup- Programm enthalten, sondern liegt als separater Download mit einem eigenen [Setup](https://www.linguversa.de/clcl/download/setup_tool_python.exe) vor, um das Plugin in den gleichen Ordner wie CLCL zu installieren.
 
 ## Einstellungen
 
@@ -418,6 +436,25 @@ Wenn CLCL bereits ausgeführt wird, wird der Befehl an das bereits laufende CLCL
 		/x Beenden
 
 ## Nützliche Hinweise
+
+### QuickSearch
+
+Obwohl CLCL Hunderte von Einträgen speichern kann, ist es schwierig, den Überblick zu behalten – selbst bei Verwendung kaskadierender Pop-up-Menüs.
+Dasselbe gilt für Vorlagensammlungen, die Dutzende von Ordnern und Unterordnern umfassen.
+
+Hier kommt die neue „QuickSearch“-Funktion ins Spiel.
+Sie bietet das Look-and-Feel eines klassischen Popup-Menüs, ergänzt um ein Eingabefeld. Nach entsprechender Konfiguration in CLCL lässt sie sich aus jeder Anwendung heraus aufrufen, entweder per Tastenkombination (Hotkey) oder über das Tray-Icon.
+
+Beim Eintippen eines Teilstrings des Inhalts oder des Titels des gesuchten Elements in das Eingabefeld, engt sich die Liste der angezeigten Elemente automatisch ein.
+Sobald das gesuchte Element in der Liste sichtbar wird, genügt ein Klick, um es in die aktuell geöffnete Anwendung einzufügen.
+Sehen Sie sich dazu die Bildschirmaufnahme an:
+![Verwendung von QuickSearch](img/quicksearch_demo.gif)
+
+Die Auswahl lässt sich natürlich auch bequem über die Pfeiltasten (nach oben/unten) und die Eingabetaste (Return) Ihrer Tastatur treffen.
+
+#### Konfiguration
+QuickSearch lässt sich leicht in das System-Tray-Menü integrieren und/oder mit einer Tastenkombination Ihrer Wahl verknüpfen. Klicken Sie auf die Bildschirmaufnahme, um mehr zu erfahren:
+![Konfiguration von QuickSearch](img/clcl_quicksearch_configuration.gif)
 
 ### Größerer Verlauf und wie man das Popup-Menü organisiert
 Im Register *Verlauf* der Einstellungen können Sie die maximale Anzahl der Elemente ändern, die im Verlauf vorgehalten werden sollen, z.B. von 30 auf 100. Aber ohne weitere Konfiguration wird das Popup-Menü recht überladen aussehen und ggf. einen Großteil des Bildschirms in Anspruch nehmen.
@@ -615,7 +652,7 @@ Fahren Sie fort, so viele Popup-Menüs hinzuzufügen, wie Sie möchten. Sie kön
 
 Der Autor ist nicht verantwortlich für durch dieses Programm verursachte Probleme. Es wird dringend empfohlen, wichtige Dateien zu sichern. 
 
-Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved. https://nakka.com/soft/clcl  
+Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved. https://nakka.com/soft/clcl/index_eng.html  
 Quellcode: https://github.com/nakkag/CLCL  
 2025 - 2026 MIT License.  
 
