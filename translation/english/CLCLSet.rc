@@ -678,6 +678,7 @@ BEGIN
     IDS_MENU_EXIT           "E&xit"
     IDS_MENU_VIEWER         "&Viewer..."
     IDS_MENU_OPTION         "&Options..."
+    IDS_MENU_ABOUT          "&About..."
     IDS_MENU_CLIPBOARD_WATCH "Clipboard &Watch"
     IDS_TREEITEM_REGIST     "Template"
 END
@@ -757,6 +758,7 @@ BEGIN
     IDS_ACTION_CONTENT_APP  "External Application"
     IDS_ACTION_CONTENT_CANCEL "Cancel"
     IDS_ACTION_CONTENT_EXIT "Exit"
+    IDS_ACTION_CONTENT_ABOUT "About"
     IDS_ACTION_TREE_MENU    "Menu"
     IDS_ACTION_TREE_NEW     "(New content)"
     IDS_ACTION_TREE_SEP     "-------------------------"

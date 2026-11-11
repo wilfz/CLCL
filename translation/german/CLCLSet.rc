@@ -685,6 +685,7 @@ BEGIN
     IDS_MENU_EXIT           "&Beenden"
     IDS_MENU_VIEWER         "An&zeige..."
     IDS_MENU_OPTION         "&Einstellungen..."
+    IDS_MENU_ABOUT          "&Über..."
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage &überwachen"
     IDS_MENU_HELP           "&Hilfe"
     IDS_MENU_QUICKSEARCH    "Schnellsuche"
@@ -812,6 +813,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "Pfad:"
     IDS_ACTION_TITLE_TOOL   "Tool:"
     IDS_ACTION_CONTENT_HELP "Hilfe"
+    IDS_ACTION_CONTENT_ABOUT "Über"
     IDS_ACTION_QUICKSEARCH  "Schnellsuche"
 END
 

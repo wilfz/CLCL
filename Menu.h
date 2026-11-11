@@ -33,6 +33,7 @@
 #define MENU_CONTENT_EXIT				12
 #define MENU_CONTENT_QUICKSEARCH		13
 #define MENU_CONTENT_HELP				14
+#define MENU_CONTENT_ABOUT				15
 
 /* Struct */
 // menu item

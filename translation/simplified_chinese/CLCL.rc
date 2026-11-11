@@ -309,6 +309,7 @@ BEGIN
     IDS_MENU_VIEWER         "主窗口(&V)..."
     IDS_MENU_OPTION         "选项(&O)..."
     IDS_MENU_CLIPBOARD_WATCH "监视剪贴板(&W)"
+    IDS_MENU_ABOUT          "关于(&A)..."
     IDS_TREEITEM_CLIPBOARD  "剪贴板"
     IDS_TREEITEM_HISTORY    "历史"
     IDS_TREEITEM_REGIST     "模板"

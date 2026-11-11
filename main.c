@@ -2082,6 +2082,11 @@ static LRESULT CALLBACK main_message_proc(HWND hWnd, UINT msg, WPARAM wParam, LP
 			SendMessage(hWnd, WM_OPTION_SHOW, 0, 0);
 			break;
 
+		case ID_MENUITEM_ABOUT:
+			// About
+			show_about(hWnd);
+			break;
+
 		case ID_MENUITEM_CLIPBOARD_WATCH:
 			// クリップボード監視切り替え
 			SendMessage(hWnd, WM_SET_CLIPBOARD_WATCH, !option.main_clipboard_watch, 0);

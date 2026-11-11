@@ -727,6 +727,7 @@ BEGIN
     IDS_MENU_EXIT           "終了(&X)"
     IDS_MENU_VIEWER         "ビューア(&V)..."
     IDS_MENU_OPTION         "オプション(&O)..."
+    IDS_MENU_ABOUT          "バージョン情報(&A)..."
     IDS_MENU_CLIPBOARD_WATCH "クリップボード監視(&W)"
     IDS_TREEITEM_REGIST     "登録アイテム"
 END
@@ -806,6 +807,7 @@ BEGIN
     IDS_ACTION_CONTENT_APP  "外部アプリケーション"
     IDS_ACTION_CONTENT_CANCEL "キャンセル"
     IDS_ACTION_CONTENT_EXIT "終了"
+    IDS_ACTION_CONTENT_ABOUT "バージョン情報"
     IDS_ACTION_TREE_MENU    "メニュー"
     IDS_ACTION_TREE_NEW     "(新規作成)"
     IDS_ACTION_TREE_SEP     "------------------"

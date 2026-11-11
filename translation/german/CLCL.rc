@@ -334,6 +334,7 @@ BEGIN
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage-&Überwachung"
     IDS_MENU_HELP           "&Hilfe"
     IDS_MENU_QUICKSEARCH    "Schnellsuche"
+    IDS_MENU_ABOUT          "&Über..."
     IDS_TREEITEM_CLIPBOARD  "Zwischenablage"
     IDS_TREEITEM_HISTORY    "Verlauf"
     IDS_TREEITEM_REGIST     "Vorlagen"
