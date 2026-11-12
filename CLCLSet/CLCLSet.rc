@@ -722,6 +722,7 @@ BEGIN
     IDS_MENU_CLIPBOARD_WATCH "クリップボード監視(&W)"
     IDS_MENU_HELP           "ヘルプ(&H)"
     IDS_MENU_QUICKSEARCH    "Quick Search (&Q)"
+    IDS_MENU_ABOUT          "バージョン情報(&A)..."
     IDS_TREEITEM_REGIST     "登録アイテム"
 END
 
@@ -846,6 +847,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "パス(&H):"
     IDS_ACTION_TITLE_TOOL   "ツール(&H):"
     IDS_ACTION_CONTENT_HELP "ヘルプ"
+    IDS_ACTION_CONTENT_ABOUT "バージョン情報"
     IDS_ACTION_QUICKSEARCH  "Quick Search"
 END
 
@@ -1595,6 +1597,7 @@ BEGIN
     IDS_MENU_CLIPBOARD_WATCH "监视剪贴板(&W)"
     IDS_MENU_HELP           "帮助(&H)"
     IDS_MENU_QUICKSEARCH    "Quick Search (&Q)"
+    IDS_MENU_ABOUT          "关于(&A)..."
     IDS_TREEITEM_REGIST     "模板"
 END
 
@@ -1719,6 +1722,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "路径(&h):"
     IDS_ACTION_TITLE_TOOL   "工具(&l):"
     IDS_ACTION_CONTENT_HELP "帮助"
+    IDS_ACTION_CONTENT_ABOUT "关于"
     IDS_ACTION_QUICKSEARCH  "Quick Search"
 END
 
@@ -2468,6 +2472,7 @@ BEGIN
     IDS_MENU_CLIPBOARD_WATCH "Спостереження за буфером"
     IDS_MENU_HELP           "Довідка"
     IDS_MENU_QUICKSEARCH    "Quick Search"
+    IDS_MENU_ABOUT          "Про програму..."
     IDS_TREEITEM_REGIST     "Шаблон"
 END
 
@@ -2593,6 +2598,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "&Шлях:"
     IDS_ACTION_TITLE_TOOL   "Ін&струмент:"
     IDS_ACTION_CONTENT_HELP "Довідка"
+    IDS_ACTION_CONTENT_ABOUT "Про програму"
     IDS_ACTION_QUICKSEARCH  "Quick Search"
 END
 
@@ -3308,6 +3314,7 @@ BEGIN
     IDS_MENU_CLIPBOARD_WATCH "Clipboard &Watch"
     IDS_MENU_HELP           "&Help"
     IDS_MENU_QUICKSEARCH    "&Quick Search"
+    IDS_MENU_ABOUT          "&About..."
     IDS_TREEITEM_REGIST     "Template"
 END
 
@@ -3432,6 +3439,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "Pat&h:"
     IDS_ACTION_TITLE_TOOL   "Too&l:"
     IDS_ACTION_CONTENT_HELP "Help"
+    IDS_ACTION_CONTENT_ABOUT "About"
     IDS_ACTION_QUICKSEARCH  "Quick Search"
 END
 
@@ -4156,6 +4164,7 @@ BEGIN
     IDS_MENU_CLIPBOARD_WATCH "Zwischenablage &überwachen"
     IDS_MENU_HELP           "&Hilfe"
     IDS_MENU_QUICKSEARCH    "Schnellsuche"
+    IDS_MENU_ABOUT          "&Über..."
     IDS_TREEITEM_REGIST     "Vorlagen"
 END
 
@@ -4280,6 +4289,7 @@ BEGIN
     IDS_ACTION_TITLE_PATH   "Pfad:"
     IDS_ACTION_TITLE_TOOL   "Tool:"
     IDS_ACTION_CONTENT_HELP "Hilfe"
+    IDS_ACTION_CONTENT_ABOUT "Über"
     IDS_ACTION_QUICKSEARCH  "Schnellsuche"
 END
 

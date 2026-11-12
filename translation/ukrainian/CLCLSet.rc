@@ -617,6 +617,7 @@ BEGIN
     IDS_MENU_EXIT           "Вихід"
     IDS_MENU_VIEWER         "Переглядач..."
     IDS_MENU_OPTION         "Параметри..."
+    IDS_MENU_ABOUT          "Про програму..."
     IDS_MENU_CLIPBOARD_WATCH "Спостереження за буфером"
     IDS_TREEITEM_REGIST     "Шаблон"
 END
@@ -697,6 +698,7 @@ BEGIN
     IDS_ACTION_CONTENT_APP  "Зовнішній додаток"
     IDS_ACTION_CONTENT_CANCEL "Скасувати"
     IDS_ACTION_CONTENT_EXIT "Вихід"
+    IDS_ACTION_CONTENT_ABOUT "Про програму"
     IDS_ACTION_TREE_MENU    "Меню"
     IDS_ACTION_TREE_NEW     "(Новий вміст)"
     IDS_ACTION_TREE_SEP     "-------------------------"

@@ -309,6 +309,7 @@ BEGIN
     IDS_MENU_VIEWER         "Переглядач..."
     IDS_MENU_OPTION         "Параметри..."
     IDS_MENU_CLIPBOARD_WATCH "Спостереження за буфером"
+    IDS_MENU_ABOUT          "Про програму..."
     IDS_TREEITEM_CLIPBOARD  "Буфер обміну"
     IDS_TREEITEM_HISTORY    "Історія"
     IDS_TREEITEM_REGIST     "Шаблон"

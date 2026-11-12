@@ -2725,6 +2725,48 @@ static BOOL viewer_close(const HWND hWnd)
 }
 
 /*
+ * show_about - Show the About dialog
+ */
+void show_about(const HWND hWnd)
+{
+	TCHAR var_msg[2*BUF_SIZE];
+	TCHAR path[MAX_PATH];
+	DWORD size;
+
+	lstrcpyn(var_msg, APP_NAME, BUF_SIZE);
+	lstrcat(var_msg, TEXT(" plus beta"));
+	if (GetModuleFileName(NULL, path, MAX_PATH) == 0) {
+		*path = TEXT('\0');
+	}
+	size = (*path != TEXT('\0')) ? GetFileVersionInfoSize(path, NULL) : 0;
+	if (size) {
+		VS_FIXEDFILEINFO* FileInfo = NULL;
+		UINT len = 0;
+		BYTE* buf = mem_alloc(size);
+		if (buf != NULL) {
+			if (GetFileVersionInfo(path, 0, size, buf) != 0 &&
+				VerQueryValue(buf, TEXT("\\"), (LPVOID *)&FileInfo, &len) != 0 &&
+				FileInfo != NULL && len >= sizeof(VS_FIXEDFILEINFO)) {
+				wnsprintf(var_msg + lstrlen(var_msg), BUF_SIZE - lstrlen(var_msg), TEXT(" Ver %d.%d.%d.%d"),
+					HIWORD(FileInfo->dwFileVersionMS),
+					LOWORD(FileInfo->dwFileVersionMS),
+					HIWORD(FileInfo->dwFileVersionLS),
+					LOWORD(FileInfo->dwFileVersionLS));
+			}
+			mem_free(&buf);
+		}
+	}
+	lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.\n")
+		TEXT("WEB SITE: https://www.nakka.com/\nE-MAIL: nakka@nakka.com"));
+
+	lstrcat(var_msg, TEXT("\n2024-2026 MIT License.\n\n")
+		TEXT("Extended/experimental features:\n")
+		TEXT("https://linguversa.de/clcl\nDownload: https://github.com/wilfz/CLCL/releases\n\n"));
+
+	MessageBox(hWnd, var_msg, TEXT("About"), MB_OK | MB_ICONINFORMATION);
+}
+
+/*
  * viewer_proc - ウィンドウのプロシージャ
  *
  *	DPI や配色の変更、終了要求など別のプロセスから送られるメッセージの処理中も
@@ -3122,42 +3164,7 @@ static LRESULT CALLBACK viewer_message_proc(HWND hWnd, UINT msg, WPARAM wParam, 
 
 		case ID_MENUITEM_ABOUT:
 			// バージョン情報
-		{
-			TCHAR var_msg[2*BUF_SIZE];
-			TCHAR path[MAX_PATH];
-			DWORD size;
-			lstrcpyn(var_msg, APP_NAME, BUF_SIZE);
-			lstrcat(var_msg, TEXT(" plus beta"));
-			if (GetModuleFileName(NULL, path, MAX_PATH) == 0) {
-				*path = TEXT('\0');
-			}
-			size = (*path != TEXT('\0')) ? GetFileVersionInfoSize(path, NULL) : 0;
-			if (size) {
-				VS_FIXEDFILEINFO* FileInfo = NULL;
-				UINT len = 0;
-				BYTE* buf = mem_alloc(size);
-				if (buf != NULL) {
-					if (GetFileVersionInfo(path, 0, size, buf) != 0 &&
-						VerQueryValue(buf, TEXT("\\"), (LPVOID *)&FileInfo, &len) != 0 &&
-						FileInfo != NULL && len >= sizeof(VS_FIXEDFILEINFO)) {
-						wnsprintf(var_msg + lstrlen(var_msg), BUF_SIZE - lstrlen(var_msg), TEXT(" Ver %d.%d.%d.%d"),
-							HIWORD(FileInfo->dwFileVersionMS),
-							LOWORD(FileInfo->dwFileVersionMS),
-							HIWORD(FileInfo->dwFileVersionLS),
-							LOWORD(FileInfo->dwFileVersionLS));
-					}
-					mem_free(&buf);
-				}
-			}
-			lstrcat(var_msg, TEXT("\nCopyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.\n")
-				TEXT("WEB SITE: https://www.nakka.com/\nE-MAIL: nakka@nakka.com"));
-
-			lstrcat(var_msg, TEXT("\n2024-2026 MIT License.\n\n")
-				TEXT("Extended/experimental features:\n")
-				TEXT("https://linguversa.de/clcl\nDownload: https://github.com/wilfz/CLCL/releases\n\n"));
-
-			MessageBox(hWnd, var_msg, TEXT("About"), MB_OK | MB_ICONINFORMATION);
-		}
+			show_about(hWnd);
 			break;
 
 		case ID_MENUITEM_HELP_JP:
