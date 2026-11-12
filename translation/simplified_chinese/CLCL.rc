@@ -21,6 +21,12 @@
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 
+STRINGTABLE
+BEGIN
+    IDS_ERROR_PLUGIN_BLOCKED "由于 CLCL 以管理员身份运行，且以下插件位于普通用户可修改的位置，因此未加载这些插件。\n请将其放在应用程序文件夹或普通用户无法写入的文件夹中。"
+    IDS_ERROR_RUN_AS_USER   "由于 CLCL 以管理员身份运行，尝试以普通用户权限启动程序，但失败了。\n请确认资源管理器正在运行。"
+END
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
@@ -239,6 +245,26 @@ BEGIN
     PUSHBUTTON      "取消",IDCANCEL,65,50,50,14
 END
 
+IDD_SEARCH_ITEM DIALOGEX 0, 0, 209, 141
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Search Item"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Search text",IDC_STATIC,12,14,66,8
+    EDITTEXT        IDC_SEARCHTEXT,84,12,114,12,ES_AUTOHSCROLL
+    CONTROL         "Search for date",IDC_CHK_SRCHDATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,30,78,10
+    LTEXT           "from",IDC_STATIC,12,51,42,8
+    CONTROL         "",IDC_DATEFROM,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHORTDATECENTURYFORMAT | WS_DISABLED | WS_TABSTOP,54,48,54,15
+    CONTROL         "",IDC_TIMEFROM,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_DISABLED | WS_TABSTOP | 0x8,108,48,54,15,WS_EX_STATICEDGE
+    LTEXT           "until",IDC_STATIC,12,75,42,8
+    CONTROL         "",IDC_DATEUNTIL,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHORTDATECENTURYFORMAT | WS_DISABLED | WS_TABSTOP,54,72,54,15
+    CONTROL         "",IDC_TIMEUNTIL,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_DISABLED | WS_TABSTOP | 0x8,108,72,54,15
+    LTEXT           "from application",IDC_STATIC,12,98,66,8
+    EDITTEXT        IDC_FROM_APPLICATION,84,96,114,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,96,120,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,150,120,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -270,6 +296,14 @@ BEGIN
         RIGHTMARGIN, 118
         TOPMARGIN, 7
         BOTTOMMARGIN, 65
+    END
+
+    IDD_SEARCH_ITEM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 202
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 122
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -309,6 +343,8 @@ BEGIN
     IDS_MENU_VIEWER         "主窗口(&V)..."
     IDS_MENU_OPTION         "选项(&O)..."
     IDS_MENU_CLIPBOARD_WATCH "监视剪贴板(&W)"
+    IDS_MENU_HELP           "帮助(&H)"
+    IDS_MENU_QUICKSEARCH    "Quick Search"
     IDS_TREEITEM_CLIPBOARD  "剪贴板"
     IDS_TREEITEM_HISTORY    "历史"
     IDS_TREEITEM_REGIST     "模板"
@@ -351,7 +387,7 @@ STRINGTABLE
 BEGIN
     IDS_VIEWER_COPYNAME     "%s 副本"
     IDS_VIEWER_COPYNAME_NUM "%s 副本 (%d)"
-    IDS_VIEWER_MENU_TOOL_NOTHING "(None)"
+    IDS_VIEWER_MENU_TOOL_NOTHING "(无)"
 END
 
 STRINGTABLE

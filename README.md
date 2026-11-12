@@ -26,7 +26,7 @@ It provides quick access to recent clipboard items via a customizable pop-up men
 - **History & Templates** - Persistent and automatically saving clipboard history and templates
 - **Free and Open Source** - on [github.com/nakkag/CLCL](https://github.com/nakkag/CLCL)
 
-__Additional Features only in extended/experimental version__
+__Additional Features only in the extended/experimental Plus edition__
 --
 
 - **Quicksearch** - in tray menu and with Hotkey
@@ -39,7 +39,7 @@ CLCL runs on Windows 7 and later.
 
 For "Nakka pure" download and install [clcl221.exe](https://nakka.com/soft/clcl/download/clcl221.exe) or [clcl221.zip](https://nakka.com/soft/clcl/download/clcl221.zip).  
 
-For extended/experimental version download and launch [setup_clcl_2_2_1.exe](https://www.linguversa.de/clcl/download/setup_clcl_2_2_1.exe).
+For the extended "Plus edition" download and launch [setup_clcl_2_2_1.exe](https://www.linguversa.de/clcl/download/setup_clcl_2_2_1.exe).
 The setup may issue a warning when started. This does not imply a threat, but is due to the fact that as a private developer I cannot afford to purchase a certificate to sign the binary for an Open Source project.
 
 If you want to uninstall, do so from the Control Panel __after__ closing CLCL.
@@ -656,9 +656,8 @@ Continue so with as many pop-up menus as you like. You can even cascade the popu
 The author is not responsible for any problems caused by this program. It is strongly recommended that you back up important files. 
 
 Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved. https://nakka.com/soft/clcl  
-Current sources: https://github.com/nakkag/CLCL  
+Original sources of Ohno Tomoaki: [https://github.com/nakkag/CLCL](https://github.com/nakkag/CLCL)  
 2025 - 2026 MIT License.  
 
-Documentation and downloads: https://linguversa.de/clcl  
-Extended sources: https://github.com/wilfz/CLCL  
-
+Documentation and downloads: [https://linguversa.de/clcl](https://linguversa.de/clcl)  
+Sourcecode of the Plus-Edition and plugins: [https://github.com/wilfz/CLCL](https://github.com/wilfz/CLCL)  

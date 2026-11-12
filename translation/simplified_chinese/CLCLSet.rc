@@ -21,6 +21,11 @@
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 
+STRINGTABLE
+BEGIN
+    IDS_ERROR_PLUGIN_BLOCKED "由于 CLCL 以管理员身份运行，且以下插件位于普通用户可修改的位置，因此未加载这些插件。\n请将其放在应用程序文件夹或普通用户无法写入的文件夹中。"
+END
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog
@@ -427,7 +432,6 @@ BEGIN
     CONTROL         "When disconnect Session",IDC_CHECK_LEAVE_SESSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,135,225,100,10
     DEFPUSHBUTTON   "确定",IDOK,135,245,50,14
     PUSHBUTTON      "取消",IDCANCEL,191,245,50,14
-    CONTROL         "旧",IDC_CHECK_OLD,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,10,245,45,10
 END
 
 

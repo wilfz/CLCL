@@ -3127,7 +3127,7 @@ static LRESULT CALLBACK viewer_message_proc(HWND hWnd, UINT msg, WPARAM wParam, 
 			TCHAR path[MAX_PATH];
 			DWORD size;
 			lstrcpyn(var_msg, APP_NAME, BUF_SIZE);
-			lstrcat(var_msg, TEXT(" plus beta"));
+			lstrcat(var_msg, TEXT(" plus"));
 			if (GetModuleFileName(NULL, path, MAX_PATH) == 0) {
 				*path = TEXT('\0');
 			}
