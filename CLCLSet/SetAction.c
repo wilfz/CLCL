@@ -462,6 +462,7 @@ static void set_enable_control(const HWND hDlg)
 		i == MENU_CONTENT_APP ||
 		i == MENU_CONTENT_QUICKSEARCH ||
 		i == MENU_CONTENT_HELP ||
+		i == MENU_CONTENT_ABOUT ||
 		i == MENU_CONTENT_CANCEL ||
 		i == MENU_CONTENT_EXIT);
 	EnableWindow(GetDlgItem(hDlg, IDC_EDIT_TITLE), enable);
@@ -563,6 +564,11 @@ static TCHAR *get_tree_text(const MENU_INFO *menu_info)
 	case MENU_CONTENT_HELP:
 		ret = (menu_info->title == NULL || *menu_info->title == TEXT('\0')) ?
 			message_get_res(IDS_MENU_HELP) : menu_info->title;
+		break;
+
+	case MENU_CONTENT_ABOUT:
+		ret = (menu_info->title == NULL || *menu_info->title == TEXT('\0')) ?
+			message_get_res(IDS_MENU_ABOUT) : menu_info->title;
 		break;
 
 	case MENU_CONTENT_CANCEL:
@@ -845,6 +851,7 @@ static INT_PTR CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_EXIT));
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_QUICKSEARCH));
 		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_HELP));
+		SET_COMBO_ITEM(IDC_COMBO_CONTENT, message_get_res(IDS_ACTION_CONTENT_ABOUT));
 
 		if (lParam == 0) {
 			// 新規追加

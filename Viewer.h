@@ -42,6 +42,7 @@ void viewer_get_clipboard_data(const HWND hWnd, const HTREEITEM hItem);
 
 BOOL viewer_regist(const HINSTANCE hInstance);
 HWND viewer_create(const HWND pWnd, const int CmdShow);
+void show_about(const HWND hWnd);
 
 #endif
 /* End of source */

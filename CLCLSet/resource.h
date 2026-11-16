@@ -11,6 +11,7 @@
 #define IDS_MENU_CLIPBOARD_WATCH        6
 #define IDS_MENU_HELP                   7
 #define IDS_MENU_QUICKSEARCH            8
+#define IDS_MENU_ABOUT                  9
 #define IDS_TREEITEM_REGIST             12
 #define IDD_DIALOG_HISTORY              101
 #define IDD_DIALOG_ACTION               102
@@ -214,6 +215,7 @@
 #define IDS_ACTION_TITLE_TOOL           4036
 #define IDS_ACTION_CONTENT_HELP         4037
 #define IDS_ACTION_QUICKSEARCH          4038
+#define IDS_ACTION_CONTENT_ABOUT        4039
 #define IDS_FORMAT_LIST_NAME            5000
 #define IDS_FORMAT_LIST_DLL             5001
 #define IDS_FORMAT_LIST_HEADER          5002
