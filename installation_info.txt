@@ -2,7 +2,7 @@ CLCL clipboard manager
 ======================
 CLCL is a software that records clipboard history and offers means to store text templates and various tools to enhance the usage of the clipboard.
 
-Ver 0.2.0 - 2.2.0 Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.  
+Ver 0.2.0 - 2.2.1 Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.  
 Mr. Tomoaki put it under MIT license in 2024.
 
 This installation package has been compiled from https://github.com/wilfz/CLCL.
