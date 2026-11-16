@@ -603,7 +603,8 @@ void SetPopupColors(HWND hwndFrame,
     if (pData->hwndList) {
         DynamicPopupInitThemeApi();
         if (g_dynamic_popup_SetWindowTheme != NULL) {
-            g_dynamic_popup_SetWindowTheme(pData->hwndList, L"DarkMode_Explorer", NULL);
+            g_dynamic_popup_SetWindowTheme(pData->hwndList, 
+                DynamicPopupIsDarkModeEnabled() ? L"DarkMode_Explorer" : L"", NULL);
         }
         SendMessage(pData->hwndList, LB_SETBKCOLOR, 0, (LPARAM)pData->listBgColor);
         SendMessage(pData->hwndList, LB_SETTEXTCOLOR, 0, (LPARAM)pData->listTextColor);

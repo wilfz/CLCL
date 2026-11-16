@@ -27,9 +27,7 @@ Es bietet schnellen Zugriff auf die zuletzt verwendeten Zwischenablagee-Objekte 
 - **Lokale Speicherung aller Daten** - Keine Übertragung in die Cloud
 - **Kostenlos und Open Source** - auf [github.com/nakkag/CLCL](https://github.com/nakkag/CLCL)
 
-__Zusätzliche Funktionen nur in der extended bzw experimentellen Version__
---
-
+__Zusätzliche Funktionen nur in der Plus-Version__
 - **Schnellsuche** - im Tray-Menü und mit Hotkey
 - **Installationsprogramm mit optionalen Plugins** - mit vielen zusätzlichen Funktionen
 - **Integrierte Hilfe** - Drücken Sie `<F1>` in Einstellungen oder Viewer für englische oder deutsche Hilfe
@@ -486,7 +484,7 @@ Fahren Sie fort, so viele Popup-Menüs hinzuzufügen, wie Sie möchten. Sie kön
 ## Änderungsverlauf
 
 - Ver 2.2.0 -> Ver 2.2.1
-	- Behebn eines Absturzes beim Doppelklicken auf das Tray-Icon.
+	- Beheben eines Absturzes beim Doppelklicken auf das Tray-Icon.
 
 - Ver 2.1.7 -> Ver 2.2.0
 	- Unterstützung des Dark Mode von Windows.
@@ -653,8 +651,8 @@ Fahren Sie fort, so viele Popup-Menüs hinzuzufügen, wie Sie möchten. Sie kön
 Der Autor ist nicht verantwortlich für durch dieses Programm verursachte Probleme. Es wird dringend empfohlen, wichtige Dateien zu sichern. 
 
 Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved. https://nakka.com/soft/clcl/index_eng.html  
-Quellcode: https://github.com/nakkag/CLCL  
+Original-Quellcode von Ohno Tomoaki: [https://github.com/nakkag/CLCL](https://github.com/nakkag/CLCL)  
 2025 - 2026 MIT License.  
 
-DoKumentation und Downloads: https://linguversa.de/clcl  
-Erweiterter Quellcode: https://github.com/wilfz/CLCL  
+Dokumentation und Downloads: [https://linguversa.de/clcl](https://linguversa.de/clcl)  
+Quellcode der Plus-Edition und Erweiterungen: [https://github.com/wilfz/CLCL](https://github.com/wilfz/CLCL)  
