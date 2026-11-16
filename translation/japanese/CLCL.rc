@@ -496,6 +496,7 @@ BEGIN
     IDS_MENU_VIEWER         "ビューア(&V)..."
     IDS_MENU_OPTION         "オプション(&O)..."
     IDS_MENU_CLIPBOARD_WATCH "クリップボード監視(&W)"
+    IDS_MENU_ABOUT          "バージョン情報(&A)..."
     IDS_MENU_HELP           "ヘルプ(&H)"
     IDS_MENU_QUICKSEARCH    "Quick Search"
     IDS_TREEITEM_CLIPBOARD  "クリップボード"
